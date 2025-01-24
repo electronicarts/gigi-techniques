@@ -1,0 +1,188 @@
+{
+    "$schema": "gigischema.json",
+    "name": "FBGBV",
+    "comment": "A frostbite gbuffer viewer",
+    "version": "0.93b",
+    "variables": [
+        {
+            "name": "DirLightDir",
+            "type": "Float3",
+            "dflt": "0.0f, -1.0f, 0.0f",
+            "visibility": "User"
+        },
+        {
+            "name": "DirLightColor",
+            "type": "Float3",
+            "dflt": "1.0f, 1.0f, 1.0f",
+            "visibility": "User",
+            "UIHint": "Color"
+        },
+        {
+            "name": "DirLightIntensity",
+            "type": "Float",
+            "dflt": "10.0f",
+            "visibility": "User"
+        },
+        {
+            "name": "AmbientLightColor",
+            "type": "Float3",
+            "dflt": "1.0f, 1.0f, 1.0f",
+            "visibility": "User",
+            "UIHint": "Color"
+        },
+        {
+            "name": "AmbientLightIntensity",
+            "type": "Float",
+            "dflt": "0.0f",
+            "visibility": "User"
+        },
+        {
+            "name": "Skybox",
+            "type": "Int",
+            "visibility": "User",
+            "Enum": "Skyboxes"
+        }
+    ],
+    "shaders": [
+        {
+            "name": "DoLightingCS",
+            "fileName": "FBGBufferViewer_Lighting.hlsl",
+            "entryPoint": "csmain",
+            "resources": [
+                {
+                    "name": "Output",
+                    "type": "Texture",
+                    "access": "UAV"
+                }
+            ],
+            "samplers": [
+                {
+                    "name": "LinearWrap"
+                }
+            ]
+        }
+    ],
+    "fileCopies": [
+        {
+            "fileName": "..\\PBR.hlsl",
+            "type": "Shader",
+            "destFileName": "PBR.hlsl"
+        }
+    ],
+    "nodes": [
+        {
+            "actionComputeShader": {
+                "name": "DoLighting",
+                "editorPos": [
+                    468.0,
+                    331.0
+                ],
+                "shader": {
+                    "name": "DoLightingCS"
+                },
+                "dispatchSize": {
+                    "node": {
+                        "name": "Output"
+                    },
+                    "indirectBuffer": {
+                        "node": "Tonemapping"
+                    }
+                },
+                "connections": [
+                    {
+                        "srcPin": "Output",
+                        "dstNode": "Output",
+                        "dstPin": "resource"
+                    }
+                ]
+            }
+        },
+        {
+            "resourceTexture": {
+                "name": "Output",
+                "editorPos": [
+                    343.0,
+                    340.0
+                ],
+                "format": {
+                    "format": "RGBA32_Float"
+                },
+                "size": {
+                    "multiply": [
+                        1920,
+                        1080,
+                        1
+                    ]
+                }
+            }
+        },
+        {
+            "actionSubGraph": {
+                "name": "Tonemapping",
+                "editorPos": [
+                    659.0,
+                    335.0
+                ],
+                "fileName": "..\\..\\PostProcessing\\Tonemap.gg",
+                "connections": [
+                    {
+                        "srcPin": "Color HDR",
+                        "dstNode": "DoLighting",
+                        "dstPin": "Output"
+                    },
+                    {
+                        "srcPin": "Color SDR"
+                    }
+                ],
+                "subGraphData": {
+                    "importedResources": [
+                        "Color HDR"
+                    ],
+                    "exportedResources": [
+                        "Color SDR"
+                    ],
+                    "variables": [
+                        {
+                            "name": "ExposureFStops",
+                            "type": "Float",
+                            "dflt": "0.0f",
+                            "visibility": "User"
+                        },
+                        {
+                            "name": "ToneMapper",
+                            "type": "Int",
+                            "visibility": "User",
+                            "Enum": "ToneMappingOperation"
+                        }
+                    ]
+                },
+                "variableSettings": [
+                    {
+                        "name": "ExposureFStops",
+                        "visibility": "User"
+                    },
+                    {
+                        "name": "ToneMapper",
+                        "visibility": "User"
+                    }
+                ]
+            }
+        }
+    ],
+    "enums": [
+        {
+            "name": "Skyboxes",
+            "items": [
+                {
+                    "label": "Vasa"
+                },
+                {
+                    "label": "AshCanyon"
+                },
+                {
+                    "label": "Marriot"
+                }
+            ]
+        }
+    ]
+}

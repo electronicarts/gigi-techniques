@@ -1,0 +1,11 @@
+{
+    "Title":"Gauss Blur",
+    "Description":"A gaussian blur technique. Meant to be used as a subgraph node in other techniques.",
+    "Author":"Demofox",
+    "Tags":"post process, blur",
+    "Technique": "GaussBlur.gg",
+    "Website": "",
+    "Screenshot":"Screenshot.png",
+    "License":"",
+    "GigiVersion":"0.99b",
+}

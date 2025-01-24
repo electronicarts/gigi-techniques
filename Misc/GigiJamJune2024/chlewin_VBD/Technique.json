@@ -1,0 +1,11 @@
+{
+    "Title":"Inflatable pig head",
+    "Description":"This is an implementation of Vertex Block Descent, which is a physics sim technique that will be presented at this year's siggraph.",
+    "Author":"Chris Lewin",
+    "Tags":"compute,simulation,GigiJam2024",
+    "Technique": "vbd.gg",
+    "Website": "",
+    "Screenshot":"_Screenshot.png",
+    "License":"",
+    "GigiVersion":"0.99b",
+}

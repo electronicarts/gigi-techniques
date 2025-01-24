@@ -1,0 +1,11 @@
+{
+    "Title":"Reconstruct Material",
+    "Description":"Thanks to Gigi having Slang integration I can experiment with differentiable rendering. This is an experiment to reconstruct the material properties from shaded pixels. A application for this would be to generate the PBR textures from light stage input images with varying light direction. The current implementation produces some good results which are very close. With extra work this can be made faster (currently takes multiple seconds). The state visualized in images (GBufferA is baseColor&roughness and GBufferB is normal&metallic). Left to right: targetGBufferA, targetGBufferB, shaded image from target G Buffer, reconstructedGBufferA, reconstructedGBufferB, shaded with reconstructedGBuffer. Top: RGB channel, Bottom: A channel.",
+    "Author":"Martin Mittring",
+    "Tags":"automatic differentiation,inverse rendering,GigiJam2024",
+    "Technique": "ReconstructMaterial.gg",
+    "Website": "",
+    "Screenshot":"_Screenshot.png",
+    "License":"",
+    "GigiVersion":"0.99b",
+}

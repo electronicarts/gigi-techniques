@@ -1,0 +1,125 @@
+{
+    "$schema": "gigischema.json",
+    "version": "0.98b",
+    "variables": [
+        {
+            "name": "LeftSizePercent",
+            "comment": "between 0 and 1",
+            "type": "Float",
+            "dflt": "0.5",
+            "visibility": "User"
+        },
+        {
+            "name": "ShowSameHalf",
+            "type": "Bool",
+            "dflt": "false",
+            "visibility": "Host"
+        }
+    ],
+    "shaders": [
+        {
+            "name": "Compare2",
+            "fileName": "Compare2.hlsl",
+            "entryPoint": "csmain",
+            "resources": [
+                {
+                    "name": "A",
+                    "type": "Texture",
+                    "access": "SRV"
+                },
+                {
+                    "name": "B",
+                    "type": "Texture",
+                    "access": "SRV"
+                },
+                {
+                    "name": "Out",
+                    "type": "Texture",
+                    "access": "UAV"
+                }
+            ]
+        }
+    ],
+    "nodes": [
+        {
+            "resourceTexture": {
+                "name": "A",
+                "editorPos": [
+                    93.0,
+                    194.0
+                ],
+                "visibility": "Imported"
+            }
+        },
+        {
+            "resourceTexture": {
+                "name": "B",
+                "editorPos": [
+                    93.0,
+                    258.0
+                ],
+                "visibility": "Imported"
+            }
+        },
+        {
+            "resourceTexture": {
+                "name": "Out",
+                "editorPos": [
+                    93.0,
+                    322.0
+                ],
+                "visibility": "Exported",
+                "format": {
+                    "node": {
+                        "name": "A"
+                    }
+                },
+                "size": {
+                    "node": {
+                        "name": "A"
+                    }
+                }
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "Compare2",
+                "editorPos": [
+                    233.0,
+                    226.0
+                ],
+                "linkProperties": [
+                    {},
+                    {},
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "A",
+                        "dstNode": "A",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "B",
+                        "dstNode": "B",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "Out",
+                        "dstNode": "Out",
+                        "dstPin": "resource"
+                    }
+                ],
+                "shader": {
+                    "name": "Compare2"
+                },
+                "dispatchSize": {
+                    "node": {
+                        "name": "Out"
+                    }
+                }
+            }
+        }
+    ]
+}

@@ -1,0 +1,11 @@
+{
+    "Title":"ML Interface Example",
+    "Description":"An example of how to use python to have a machine learning interface loop with rendering. Run the RTAO_Viewer.py script.",
+    "Author":"Alan Wolfe",
+    "Tags":"ML,machine learning,RTAO",
+    "Technique": "RTAO_Viewer.gg",
+    "Website": "",
+    "Screenshot":"Screenshot.png",
+    "License":"",
+    "GigiVersion":"0.99b",
+}

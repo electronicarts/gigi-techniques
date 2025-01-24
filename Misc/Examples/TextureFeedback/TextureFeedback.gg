@@ -1,0 +1,154 @@
+{
+    "$schema": "gigischema.json",
+    "version": "0.99b",
+    "variables": [
+        {
+            "name": "Reset",
+            "type": "Bool",
+            "visibility": "User",
+            "UISettings": {
+                "UIHint": "Button"
+            }
+        },
+        {
+            "name": "iFrame",
+            "type": "Int"
+        }
+    ],
+    "shaders": [
+        {
+            "name": "FeedbackCS",
+            "fileName": "FeedbackCS.hlsl",
+            "entryPoint": "csmain",
+            "resources": [
+                {
+                    "name": "Input",
+                    "type": "Texture",
+                    "access": "SRV"
+                },
+                {
+                    "name": "LastFrame",
+                    "type": "Texture",
+                    "access": "SRV"
+                },
+                {
+                    "name": "NextFrame",
+                    "type": "Texture",
+                    "access": "UAV"
+                }
+            ]
+        }
+    ],
+    "nodes": [
+        {
+            "resourceTexture": {
+                "name": "Input",
+                "editorPos": [
+                    75.0,
+                    -110.0
+                ],
+                "visibility": "Imported"
+            }
+        },
+        {
+            "resourceTexture": {
+                "name": "LastFrame",
+                "editorPos": [
+                    75.0,
+                    -62.0
+                ],
+                "transient": false,
+                "format": {
+                    "node": {
+                        "name": "Input"
+                    }
+                },
+                "size": {
+                    "node": {
+                        "name": "Input"
+                    }
+                }
+            }
+        },
+        {
+            "resourceTexture": {
+                "name": "NextFrame",
+                "editorPos": [
+                    75.0,
+                    -14.0
+                ],
+                "format": {
+                    "node": {
+                        "name": "Input"
+                    }
+                },
+                "size": {
+                    "node": {
+                        "name": "Input"
+                    }
+                }
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "DoFeedback",
+                "editorPos": [
+                    197.0,
+                    -84.0
+                ],
+                "linkProperties": [
+                    {},
+                    {},
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Input",
+                        "dstNode": "Input",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "LastFrame",
+                        "dstNode": "LastFrame",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "NextFrame",
+                        "dstNode": "NextFrame",
+                        "dstPin": "resource"
+                    }
+                ],
+                "shader": {
+                    "name": "FeedbackCS"
+                },
+                "dispatchSize": {
+                    "node": {
+                        "name": "Input"
+                    }
+                }
+            }
+        },
+        {
+            "actionCopyResource": {
+                "name": "CopyNextToLast",
+                "editorPos": [
+                    389.0,
+                    -62.0
+                ],
+                "linkProperties": [
+                    {},
+                    {}
+                ],
+                "source": {
+                    "node": "DoFeedback",
+                    "pin": "NextFrame"
+                },
+                "dest": {
+                    "node": "DoFeedback",
+                    "pin": "LastFrame"
+                }
+            }
+        }
+    ]
+}

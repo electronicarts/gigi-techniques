@@ -1,0 +1,11 @@
+{
+    "Title":"Verlet Car",
+    "Description":"A verlet physics car game. Arrow keys to drive the car.  Collect red orbs to refill gas. Space bar to reset to last checkpoint when you crash.",
+    "Author":"Demofox",
+    "Tags":"game,sdf,2d",
+    "Technique": "DemofoxVerletCar.gg",
+    "Website": "",
+    "Screenshot":"Screenshot.png",
+    "License":"LICENSE",
+    "GigiVersion":"0.99b",
+}

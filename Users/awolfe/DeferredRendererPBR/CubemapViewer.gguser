@@ -1,0 +1,36 @@
+{
+    "version": "2.0",
+    "systemVars": {
+        "ProjMtx_textureName": "Color_Buffer"
+    },
+    "snapshot": {
+        "resourceViewNodeIndex": 0,
+        "resourceViewResourceIndex": 23,
+        "importedResources": [
+            {
+                "nodeName": "Color_Buffer",
+                "texture": {
+                    "size": [
+                        1024,
+                        1024,
+                        1
+                    ]
+                }
+            }
+        ],
+        "savedVariables": [
+            {
+                "name": "Skybox",
+                "value": "0"
+            },
+            {
+                "name": "View",
+                "value": "0"
+            },
+            {
+                "name": "exposureFStops",
+                "value": "0.000000"
+            }
+        ]
+    }
+}

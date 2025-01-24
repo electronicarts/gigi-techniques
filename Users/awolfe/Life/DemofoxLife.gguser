@@ -1,0 +1,62 @@
+{
+    "version": "2.0",
+    "snapshot": {
+        "resourceViewNodeIndex": 1,
+        "resourceViewResourceIndex": 3,
+        "cameraPos": [
+            0.024671871215105058,
+            0.007828988134860993,
+            -10.04283332824707
+        ],
+        "cameraAltitudeAzimuth": [
+            -1.8221731185913087,
+            5.476059436798096
+        ],
+        "savedVariables": [
+            {
+                "name": "Clear",
+                "value": "false"
+            },
+            {
+                "name": "GridSize",
+                "value": "32,32"
+            },
+            {
+                "name": "Grid",
+                "value": "true"
+            },
+            {
+                "name": "WrapAround",
+                "value": "true"
+            },
+            {
+                "name": "RenderSize",
+                "value": "512,512"
+            },
+            {
+                "name": "SimPeriod",
+                "value": "5"
+            },
+            {
+                "name": "Pause",
+                "value": "false"
+            },
+            {
+                "name": "SingleStep",
+                "value": "false"
+            },
+            {
+                "name": "RandomDensity",
+                "value": "0.500000"
+            },
+            {
+                "name": "Randomize",
+                "value": "false"
+            },
+            {
+                "name": "FrameIndex",
+                "value": "349"
+            }
+        ]
+    }
+}

@@ -1,0 +1,11 @@
+{
+    "Title":"Moon",
+    "Description":"3D rendering of real moon data. Includes tonemapping, simple temporal anti aliasing, and a depth based outline.",
+    "Author":"Demofox",
+    "Tags":"3d,TAA,tonemap,outline",
+    "Technique": "Globe.gg",
+    "Website": "",
+    "Screenshot":"Screenshot.png",
+    "License":"LICENSE",
+    "GigiVersion":"0.99b",
+}

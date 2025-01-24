@@ -1,0 +1,11 @@
+{
+    "Title":"DOF Demo",
+    "Description":"Comparison of a few depth of field techniques. GatherDOF 2018, Gustafsson 2018 and Infinity Ward 2007.",
+    "Author":"Demofox",
+    "Tags":"depth of field, DOF, post processing",
+    "Technique": "dof_demo.gg",
+    "Website": "",
+    "Screenshot":"Screenshot.png",
+    "License":"",
+    "GigiVersion":"0.99b",
+}

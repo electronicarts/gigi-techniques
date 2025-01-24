@@ -1,0 +1,1944 @@
+{
+    "$schema": "gigischema.json",
+    "name": "main",
+    "version": "0.99b",
+    "variables": [
+        {
+            "name": "MouseState",
+            "type": "Float4",
+            "dflt": "0.0f, 0.0f, 0.0f, 0.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "MouseStateLastFrame",
+            "type": "Float4",
+            "dflt": "0.0f, 0.0f, 0.0f, 0.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "iResolution",
+            "type": "Float3",
+            "dflt": "0.0f, 0.0f, 0.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "iTime",
+            "type": "Float",
+            "dflt": "0.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "iTimeDelta",
+            "type": "Float",
+            "dflt": "0.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "iFrameRate",
+            "type": "Float",
+            "dflt": "0.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "iFrame",
+            "type": "Int",
+            "dflt": "0",
+            "visibility": "Host"
+        },
+        {
+            "name": "iMouse",
+            "type": "Float4",
+            "dflt": "0.0f, 0.0f, 0.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "ViewMtx",
+            "type": "Float4x4",
+            "dflt": "1.0f, 0.0f, 0.0f, 0.0f,   0.0f, 1.0f, 0.0f, 0.0f,   0.0f, 0.0f, 1.0f, 0.0f,   0.0f, 0.0f, 0.0f, 1.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "InvViewMtx",
+            "type": "Float4x4",
+            "dflt": "1.0f, 0.0f, 0.0f, 0.0f,   0.0f, 1.0f, 0.0f, 0.0f,   0.0f, 0.0f, 1.0f, 0.0f,   0.0f, 0.0f, 0.0f, 1.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "ProjMtx",
+            "type": "Float4x4",
+            "dflt": "1.0f, 0.0f, 0.0f, 0.0f,   0.0f, 1.0f, 0.0f, 0.0f,   0.0f, 0.0f, 1.0f, 0.0f,   0.0f, 0.0f, 0.0f, 1.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "InvProjMtx",
+            "type": "Float4x4",
+            "dflt": "1.0f, 0.0f, 0.0f, 0.0f,   0.0f, 1.0f, 0.0f, 0.0f,   0.0f, 0.0f, 1.0f, 0.0f,   0.0f, 0.0f, 0.0f, 1.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "ViewProjMtx",
+            "type": "Float4x4",
+            "dflt": "1.0f, 0.0f, 0.0f, 0.0f,   0.0f, 1.0f, 0.0f, 0.0f,   0.0f, 0.0f, 1.0f, 0.0f,   0.0f, 0.0f, 0.0f, 1.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "InvViewProjMtx",
+            "type": "Float4x4",
+            "dflt": "1.0f, 0.0f, 0.0f, 0.0f,   0.0f, 1.0f, 0.0f, 0.0f,   0.0f, 0.0f, 1.0f, 0.0f,   0.0f, 0.0f, 0.0f, 1.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "CameraPos",
+            "type": "Float3",
+            "dflt": "0.0f, 0.0f, 0.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "CameraChanged",
+            "type": "Bool",
+            "dflt": "false",
+            "visibility": "Host"
+        },
+        {
+            "name": "DepthClearValue",
+            "type": "Float",
+            "dflt": "0.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "RenderSize",
+            "type": "Uint2",
+            "visibility": "User"
+        },
+        {
+            "name": "RayTMin",
+            "comment": "For shadow rays",
+            "type": "Float",
+            "dflt": "0.01f",
+            "visibility": "User"
+        },
+        {
+            "name": "RayTMax",
+            "comment": "For shadow rays",
+            "type": "Float",
+            "dflt": "1000.0f",
+            "visibility": "User"
+        },
+        {
+            "name": "RayNormalBias",
+            "type": "Float",
+            "dflt": "0.0f",
+            "visibility": "User"
+        }
+    ],
+    "structs": [
+        {
+            "name": "VB",
+            "fields": [
+                {
+                    "name": "position",
+                    "type": "Float3",
+                    "semantic": "Position"
+                },
+                {
+                    "name": "normal",
+                    "type": "Float3",
+                    "semantic": "Normal"
+                },
+                {
+                    "name": "tangent",
+                    "type": "Float4",
+                    "semantic": "Tangent"
+                },
+                {
+                    "name": "uv",
+                    "type": "Float2",
+                    "semantic": "UV"
+                },
+                {
+                    "name": "materialID",
+                    "type": "Int",
+                    "semantic": "MaterialID"
+                },
+                {
+                    "name": "shapeID",
+                    "type": "Int",
+                    "semantic": "ShapeID"
+                }
+            ]
+        }
+    ],
+    "fileCopies": [
+        {
+            "fileName": "Octahedral.hlsl",
+            "type": "Shader"
+        },
+        {
+            "fileName": "GBuffer.hlsl",
+            "type": "Shader"
+        }
+    ],
+    "nodes": [
+        {
+            "resourceBuffer": {
+                "name": "VertexBuffer",
+                "editorPos": [
+                    213.0,
+                    -94.0
+                ],
+                "visibility": "Imported"
+            }
+        },
+        {
+            "resourceTexture": {
+                "name": "Model Albedo",
+                "editorPos": [
+                    225.0,
+                    66.0
+                ],
+                "visibility": "Imported"
+            }
+        },
+        {
+            "resourceTexture": {
+                "name": "Model Roughness",
+                "editorPos": [
+                    204.0,
+                    114.0
+                ],
+                "visibility": "Imported"
+            }
+        },
+        {
+            "resourceTexture": {
+                "name": "Model Normal",
+                "editorPos": [
+                    221.0,
+                    162.0
+                ],
+                "visibility": "Imported"
+            }
+        },
+        {
+            "resourceTexture": {
+                "name": "Model Metallic",
+                "editorPos": [
+                    217.0,
+                    210.0
+                ],
+                "visibility": "Imported"
+            }
+        },
+        {
+            "resourceTexture": {
+                "name": "Model AO",
+                "editorPos": [
+                    248.0,
+                    258.0
+                ],
+                "visibility": "Imported"
+            }
+        },
+        {
+            "actionSubGraph": {
+                "name": "RTPointLight1",
+                "editorPos": [
+                    742.0,
+                    -181.0
+                ],
+                "linkProperties": [
+                    {},
+                    {},
+                    {},
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Scene",
+                        "dstNode": "VertexBufferRTScene",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "Depth",
+                        "dstNode": "GBuffer Fill",
+                        "dstPin": "Depth"
+                    },
+                    {
+                        "srcPin": "Albedo_Roughness",
+                        "dstNode": "GBuffer Fill",
+                        "dstPin": "Albedo_Roughness"
+                    },
+                    {
+                        "srcPin": "Normal_Metallic_AO",
+                        "dstNode": "GBuffer Fill",
+                        "dstPin": "Normal_Metallic_AO"
+                    },
+                    {
+                        "srcPin": "Color HDR",
+                        "dstNode": "Color HDR",
+                        "dstPin": "resource"
+                    }
+                ],
+                "fileName": "RTPointLight.gg",
+                "subGraphData": {
+                    "importedResources": [
+                        "Scene",
+                        "Depth",
+                        "Albedo_Roughness",
+                        "Normal_Metallic_AO",
+                        "Color HDR"
+                    ],
+                    "variables": [
+                        {
+                            "name": "Enabled",
+                            "visibility": "User"
+                        },
+                        {
+                            "name": "CastsShadows",
+                            "visibility": "User"
+                        },
+                        {
+                            "name": "Position",
+                            "visibility": "User"
+                        },
+                        {
+                            "name": "Color",
+                            "visibility": "User"
+                        },
+                        {
+                            "name": "Intensity",
+                            "visibility": "User"
+                        },
+                        {
+                            "name": "DepthClearValue",
+                            "visibility": "User"
+                        },
+                        {
+                            "name": "MouseState",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "MouseStateLastFrame",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "iResolution",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "iTime",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "iTimeDelta",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "iFrameRate",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "iFrame",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "iMouse",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "ViewMtx",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "InvViewMtx",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "ProjMtx",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "InvProjMtx",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "ViewProjMtx",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "InvViewProjMtx",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "CameraPos",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "CameraChanged",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "RayTMin",
+                            "visibility": "User"
+                        },
+                        {
+                            "name": "RayNormalBias",
+                            "visibility": "User"
+                        }
+                    ]
+                },
+                "variableSettings": [
+                    {
+                        "name": "Enabled",
+                        "visibility": "User"
+                    },
+                    {
+                        "name": "CastsShadows",
+                        "visibility": "User"
+                    },
+                    {
+                        "name": "Position",
+                        "visibility": "User"
+                    },
+                    {
+                        "name": "Color",
+                        "visibility": "User"
+                    },
+                    {
+                        "name": "Intensity",
+                        "visibility": "User"
+                    },
+                    {
+                        "name": "DepthClearValue",
+                        "visibility": "User",
+                        "replaceWithStr": "DepthClearValue",
+                        "replaceWith": {
+                            "name": "DepthClearValue"
+                        }
+                    },
+                    {
+                        "name": "MouseState",
+                        "visibility": "Host",
+                        "replaceWithStr": "MouseState",
+                        "replaceWith": {
+                            "name": "MouseState"
+                        }
+                    },
+                    {
+                        "name": "MouseStateLastFrame",
+                        "visibility": "Host",
+                        "replaceWithStr": "MouseStateLastFrame",
+                        "replaceWith": {
+                            "name": "MouseStateLastFrame"
+                        }
+                    },
+                    {
+                        "name": "iResolution",
+                        "visibility": "Host",
+                        "replaceWithStr": "iResolution",
+                        "replaceWith": {
+                            "name": "iResolution"
+                        }
+                    },
+                    {
+                        "name": "iTime",
+                        "visibility": "Host",
+                        "replaceWithStr": "iTime",
+                        "replaceWith": {
+                            "name": "iTime"
+                        }
+                    },
+                    {
+                        "name": "iTimeDelta",
+                        "visibility": "Host",
+                        "replaceWithStr": "iTimeDelta",
+                        "replaceWith": {
+                            "name": "iTimeDelta"
+                        }
+                    },
+                    {
+                        "name": "iFrameRate",
+                        "visibility": "Host",
+                        "replaceWithStr": "iFrameRate",
+                        "replaceWith": {
+                            "name": "iFrameRate"
+                        }
+                    },
+                    {
+                        "name": "iFrame",
+                        "visibility": "Host",
+                        "replaceWithStr": "iFrame",
+                        "replaceWith": {
+                            "name": "iFrame"
+                        }
+                    },
+                    {
+                        "name": "iMouse",
+                        "visibility": "Host",
+                        "replaceWithStr": "iMouse",
+                        "replaceWith": {
+                            "name": "iMouse"
+                        }
+                    },
+                    {
+                        "name": "ViewMtx",
+                        "visibility": "Host",
+                        "replaceWithStr": "ViewMtx",
+                        "replaceWith": {
+                            "name": "ViewMtx"
+                        }
+                    },
+                    {
+                        "name": "InvViewMtx",
+                        "visibility": "Host",
+                        "replaceWithStr": "InvViewMtx",
+                        "replaceWith": {
+                            "name": "InvViewMtx"
+                        }
+                    },
+                    {
+                        "name": "ProjMtx",
+                        "visibility": "Host",
+                        "replaceWithStr": "ProjMtx",
+                        "replaceWith": {
+                            "name": "ProjMtx"
+                        }
+                    },
+                    {
+                        "name": "InvProjMtx",
+                        "visibility": "Host",
+                        "replaceWithStr": "InvProjMtx",
+                        "replaceWith": {
+                            "name": "InvProjMtx"
+                        }
+                    },
+                    {
+                        "name": "ViewProjMtx",
+                        "visibility": "Host",
+                        "replaceWithStr": "ViewProjMtx",
+                        "replaceWith": {
+                            "name": "ViewProjMtx"
+                        }
+                    },
+                    {
+                        "name": "InvViewProjMtx",
+                        "visibility": "Host",
+                        "replaceWithStr": "InvViewProjMtx",
+                        "replaceWith": {
+                            "name": "InvViewProjMtx"
+                        }
+                    },
+                    {
+                        "name": "CameraPos",
+                        "visibility": "Host",
+                        "replaceWithStr": "CameraPos",
+                        "replaceWith": {
+                            "name": "CameraPos"
+                        }
+                    },
+                    {
+                        "name": "CameraChanged",
+                        "visibility": "Host",
+                        "replaceWithStr": "CameraChanged",
+                        "replaceWith": {
+                            "name": "CameraChanged"
+                        }
+                    },
+                    {
+                        "name": "RayTMin",
+                        "visibility": "User",
+                        "replaceWithStr": "RayTMin",
+                        "replaceWith": {
+                            "name": "RayTMin"
+                        }
+                    },
+                    {
+                        "name": "RayNormalBias",
+                        "visibility": "User",
+                        "replaceWithStr": "RayNormalBias",
+                        "replaceWith": {
+                            "name": "RayNormalBias"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "resourceTexture": {
+                "name": "Color HDR",
+                "editorPos": [
+                    517.0,
+                    -110.0
+                ],
+                "format": {
+                    "format": "RGBA32_Float"
+                },
+                "size": {
+                    "variable": {
+                        "name": "RenderSize"
+                    }
+                }
+            }
+        },
+        {
+            "resourceBuffer": {
+                "name": "VertexBufferRTScene",
+                "editorPos": [
+                    455.0,
+                    -174.0
+                ],
+                "visibility": "Imported"
+            }
+        },
+        {
+            "actionSubGraph": {
+                "name": "RTDirectionalLight1",
+                "editorPos": [
+                    742.0,
+                    123.0
+                ],
+                "linkProperties": [
+                    {},
+                    {},
+                    {},
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Scene",
+                        "dstNode": "VertexBufferRTScene",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "Depth",
+                        "dstNode": "GBuffer Fill",
+                        "dstPin": "Depth"
+                    },
+                    {
+                        "srcPin": "Albedo_Roughness",
+                        "dstNode": "GBuffer Fill",
+                        "dstPin": "Albedo_Roughness"
+                    },
+                    {
+                        "srcPin": "Normal_Metallic_AO",
+                        "dstNode": "GBuffer Fill",
+                        "dstPin": "Normal_Metallic_AO"
+                    },
+                    {
+                        "srcPin": "Color HDR",
+                        "dstNode": "Color HDR",
+                        "dstPin": "resource"
+                    }
+                ],
+                "fileName": "RTDirectionalLight.gg",
+                "subGraphData": {
+                    "importedResources": [
+                        "Scene",
+                        "Depth",
+                        "Albedo_Roughness",
+                        "Normal_Metallic_AO",
+                        "Color HDR"
+                    ],
+                    "variables": [
+                        {
+                            "name": "Enabled",
+                            "visibility": "User"
+                        },
+                        {
+                            "name": "CastsShadows",
+                            "visibility": "User"
+                        },
+                        {
+                            "name": "Direction",
+                            "visibility": "User"
+                        },
+                        {
+                            "name": "Color",
+                            "visibility": "User"
+                        },
+                        {
+                            "name": "Intensity",
+                            "visibility": "User"
+                        },
+                        {
+                            "name": "DepthClearValue",
+                            "visibility": "User"
+                        },
+                        {
+                            "name": "MouseState",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "MouseStateLastFrame",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "iResolution",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "iTime",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "iTimeDelta",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "iFrameRate",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "iFrame",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "iMouse",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "ViewMtx",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "InvViewMtx",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "ProjMtx",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "InvProjMtx",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "ViewProjMtx",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "InvViewProjMtx",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "CameraPos",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "CameraChanged",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "RayTMin",
+                            "visibility": "User"
+                        },
+                        {
+                            "name": "RayTMax",
+                            "visibility": "User"
+                        },
+                        {
+                            "name": "RayNormalBias",
+                            "visibility": "User"
+                        }
+                    ]
+                },
+                "variableSettings": [
+                    {
+                        "name": "Enabled",
+                        "visibility": "User"
+                    },
+                    {
+                        "name": "CastsShadows",
+                        "visibility": "User"
+                    },
+                    {
+                        "name": "Direction",
+                        "visibility": "User"
+                    },
+                    {
+                        "name": "Color",
+                        "visibility": "User"
+                    },
+                    {
+                        "name": "Intensity",
+                        "visibility": "User"
+                    },
+                    {
+                        "name": "DepthClearValue",
+                        "visibility": "User",
+                        "replaceWithStr": "DepthClearValue",
+                        "replaceWith": {
+                            "name": "DepthClearValue"
+                        }
+                    },
+                    {
+                        "name": "MouseState",
+                        "visibility": "Host",
+                        "replaceWithStr": "MouseState",
+                        "replaceWith": {
+                            "name": "MouseState"
+                        }
+                    },
+                    {
+                        "name": "MouseStateLastFrame",
+                        "visibility": "Host",
+                        "replaceWithStr": "MouseStateLastFrame",
+                        "replaceWith": {
+                            "name": "MouseStateLastFrame"
+                        }
+                    },
+                    {
+                        "name": "iResolution",
+                        "visibility": "Host",
+                        "replaceWithStr": "iResolution",
+                        "replaceWith": {
+                            "name": "iResolution"
+                        }
+                    },
+                    {
+                        "name": "iTime",
+                        "visibility": "Host",
+                        "replaceWithStr": "iTime",
+                        "replaceWith": {
+                            "name": "iTime"
+                        }
+                    },
+                    {
+                        "name": "iTimeDelta",
+                        "visibility": "Host",
+                        "replaceWithStr": "iTimeDelta",
+                        "replaceWith": {
+                            "name": "iTimeDelta"
+                        }
+                    },
+                    {
+                        "name": "iFrameRate",
+                        "visibility": "Host",
+                        "replaceWithStr": "iFrameRate",
+                        "replaceWith": {
+                            "name": "iFrameRate"
+                        }
+                    },
+                    {
+                        "name": "iFrame",
+                        "visibility": "Host",
+                        "replaceWithStr": "iFrame",
+                        "replaceWith": {
+                            "name": "iFrame"
+                        }
+                    },
+                    {
+                        "name": "iMouse",
+                        "visibility": "Host",
+                        "replaceWithStr": "iMouse",
+                        "replaceWith": {
+                            "name": "iMouse"
+                        }
+                    },
+                    {
+                        "name": "ViewMtx",
+                        "visibility": "Host",
+                        "replaceWithStr": "ViewMtx",
+                        "replaceWith": {
+                            "name": "ViewMtx"
+                        }
+                    },
+                    {
+                        "name": "InvViewMtx",
+                        "visibility": "Host",
+                        "replaceWithStr": "InvViewMtx",
+                        "replaceWith": {
+                            "name": "InvViewMtx"
+                        }
+                    },
+                    {
+                        "name": "ProjMtx",
+                        "visibility": "Host",
+                        "replaceWithStr": "ProjMtx",
+                        "replaceWith": {
+                            "name": "ProjMtx"
+                        }
+                    },
+                    {
+                        "name": "InvProjMtx",
+                        "visibility": "Host",
+                        "replaceWithStr": "InvProjMtx",
+                        "replaceWith": {
+                            "name": "InvProjMtx"
+                        }
+                    },
+                    {
+                        "name": "ViewProjMtx",
+                        "visibility": "Host",
+                        "replaceWithStr": "ViewProjMtx",
+                        "replaceWith": {
+                            "name": "ViewProjMtx"
+                        }
+                    },
+                    {
+                        "name": "InvViewProjMtx",
+                        "visibility": "Host",
+                        "replaceWithStr": "InvViewProjMtx",
+                        "replaceWith": {
+                            "name": "InvViewProjMtx"
+                        }
+                    },
+                    {
+                        "name": "CameraPos",
+                        "visibility": "Host",
+                        "replaceWithStr": "CameraPos",
+                        "replaceWith": {
+                            "name": "CameraPos"
+                        }
+                    },
+                    {
+                        "name": "CameraChanged",
+                        "visibility": "Host",
+                        "replaceWithStr": "CameraChanged",
+                        "replaceWith": {
+                            "name": "CameraChanged"
+                        }
+                    },
+                    {
+                        "name": "RayTMin",
+                        "visibility": "User",
+                        "replaceWithStr": "RayTMin",
+                        "replaceWith": {
+                            "name": "RayTMin"
+                        }
+                    },
+                    {
+                        "name": "RayTMax",
+                        "visibility": "User",
+                        "replaceWithStr": "RayTMax",
+                        "replaceWith": {
+                            "name": "RayTMax"
+                        }
+                    },
+                    {
+                        "name": "RayNormalBias",
+                        "visibility": "User",
+                        "replaceWithStr": "RayNormalBias",
+                        "replaceWith": {
+                            "name": "RayNormalBias"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "actionSubGraph": {
+                "name": "RTPointLight2",
+                "editorPos": [
+                    739.0,
+                    -30.0
+                ],
+                "linkProperties": [
+                    {},
+                    {},
+                    {},
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Scene",
+                        "dstNode": "VertexBufferRTScene",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "Depth",
+                        "dstNode": "GBuffer Fill",
+                        "dstPin": "Depth"
+                    },
+                    {
+                        "srcPin": "Albedo_Roughness",
+                        "dstNode": "GBuffer Fill",
+                        "dstPin": "Albedo_Roughness"
+                    },
+                    {
+                        "srcPin": "Normal_Metallic_AO",
+                        "dstNode": "GBuffer Fill",
+                        "dstPin": "Normal_Metallic_AO"
+                    },
+                    {
+                        "srcPin": "Color HDR",
+                        "dstNode": "Color HDR",
+                        "dstPin": "resource"
+                    }
+                ],
+                "fileName": "RTPointLight.gg",
+                "subGraphData": {
+                    "importedResources": [
+                        "Scene",
+                        "Depth",
+                        "Albedo_Roughness",
+                        "Normal_Metallic_AO",
+                        "Color HDR"
+                    ],
+                    "variables": [
+                        {
+                            "name": "Enabled",
+                            "visibility": "User"
+                        },
+                        {
+                            "name": "CastsShadows",
+                            "visibility": "User"
+                        },
+                        {
+                            "name": "Position",
+                            "visibility": "User"
+                        },
+                        {
+                            "name": "Color",
+                            "visibility": "User"
+                        },
+                        {
+                            "name": "Intensity",
+                            "visibility": "User"
+                        },
+                        {
+                            "name": "DepthClearValue",
+                            "visibility": "User"
+                        },
+                        {
+                            "name": "MouseState",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "MouseStateLastFrame",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "iResolution",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "iTime",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "iTimeDelta",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "iFrameRate",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "iFrame",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "iMouse",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "ViewMtx",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "InvViewMtx",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "ProjMtx",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "InvProjMtx",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "ViewProjMtx",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "InvViewProjMtx",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "CameraPos",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "CameraChanged",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "RayTMin",
+                            "visibility": "User"
+                        },
+                        {
+                            "name": "RayNormalBias",
+                            "visibility": "User"
+                        }
+                    ]
+                },
+                "variableSettings": [
+                    {
+                        "name": "Enabled",
+                        "visibility": "User"
+                    },
+                    {
+                        "name": "CastsShadows",
+                        "visibility": "User"
+                    },
+                    {
+                        "name": "Position",
+                        "visibility": "User"
+                    },
+                    {
+                        "name": "Color",
+                        "visibility": "User"
+                    },
+                    {
+                        "name": "Intensity",
+                        "visibility": "User"
+                    },
+                    {
+                        "name": "DepthClearValue",
+                        "visibility": "User",
+                        "replaceWithStr": "DepthClearValue",
+                        "replaceWith": {
+                            "name": "DepthClearValue"
+                        }
+                    },
+                    {
+                        "name": "MouseState",
+                        "visibility": "Host",
+                        "replaceWithStr": "MouseState",
+                        "replaceWith": {
+                            "name": "MouseState"
+                        }
+                    },
+                    {
+                        "name": "MouseStateLastFrame",
+                        "visibility": "Host",
+                        "replaceWithStr": "MouseStateLastFrame",
+                        "replaceWith": {
+                            "name": "MouseStateLastFrame"
+                        }
+                    },
+                    {
+                        "name": "iResolution",
+                        "visibility": "Host",
+                        "replaceWithStr": "iResolution",
+                        "replaceWith": {
+                            "name": "iResolution"
+                        }
+                    },
+                    {
+                        "name": "iTime",
+                        "visibility": "Host",
+                        "replaceWithStr": "iTime",
+                        "replaceWith": {
+                            "name": "iTime"
+                        }
+                    },
+                    {
+                        "name": "iTimeDelta",
+                        "visibility": "Host",
+                        "replaceWithStr": "iTimeDelta",
+                        "replaceWith": {
+                            "name": "iTimeDelta"
+                        }
+                    },
+                    {
+                        "name": "iFrameRate",
+                        "visibility": "Host",
+                        "replaceWithStr": "iFrameRate",
+                        "replaceWith": {
+                            "name": "iFrameRate"
+                        }
+                    },
+                    {
+                        "name": "iFrame",
+                        "visibility": "Host",
+                        "replaceWithStr": "iFrame",
+                        "replaceWith": {
+                            "name": "iFrame"
+                        }
+                    },
+                    {
+                        "name": "iMouse",
+                        "visibility": "Host",
+                        "replaceWithStr": "iMouse",
+                        "replaceWith": {
+                            "name": "iMouse"
+                        }
+                    },
+                    {
+                        "name": "ViewMtx",
+                        "visibility": "Host",
+                        "replaceWithStr": "ViewMtx",
+                        "replaceWith": {
+                            "name": "ViewMtx"
+                        }
+                    },
+                    {
+                        "name": "InvViewMtx",
+                        "visibility": "Host",
+                        "replaceWithStr": "InvViewMtx",
+                        "replaceWith": {
+                            "name": "InvViewMtx"
+                        }
+                    },
+                    {
+                        "name": "ProjMtx",
+                        "visibility": "Host",
+                        "replaceWithStr": "ProjMtx",
+                        "replaceWith": {
+                            "name": "ProjMtx"
+                        }
+                    },
+                    {
+                        "name": "InvProjMtx",
+                        "visibility": "Host",
+                        "replaceWithStr": "InvProjMtx",
+                        "replaceWith": {
+                            "name": "InvProjMtx"
+                        }
+                    },
+                    {
+                        "name": "ViewProjMtx",
+                        "visibility": "Host",
+                        "replaceWithStr": "ViewProjMtx",
+                        "replaceWith": {
+                            "name": "ViewProjMtx"
+                        }
+                    },
+                    {
+                        "name": "InvViewProjMtx",
+                        "visibility": "Host",
+                        "replaceWithStr": "InvViewProjMtx",
+                        "replaceWith": {
+                            "name": "InvViewProjMtx"
+                        }
+                    },
+                    {
+                        "name": "CameraPos",
+                        "visibility": "Host",
+                        "replaceWithStr": "CameraPos",
+                        "replaceWith": {
+                            "name": "CameraPos"
+                        }
+                    },
+                    {
+                        "name": "CameraChanged",
+                        "visibility": "Host",
+                        "replaceWithStr": "CameraChanged",
+                        "replaceWith": {
+                            "name": "CameraChanged"
+                        }
+                    },
+                    {
+                        "name": "RayTMin",
+                        "visibility": "User",
+                        "replaceWithStr": "RayTMin",
+                        "replaceWith": {
+                            "name": "RayTMin"
+                        }
+                    },
+                    {
+                        "name": "RayNormalBias",
+                        "visibility": "User",
+                        "replaceWithStr": "RayNormalBias",
+                        "replaceWith": {
+                            "name": "RayNormalBias"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "actionBarrier": {
+                "name": "Post Lighting Barrier",
+                "editorPos": [
+                    1011.0,
+                    70.0
+                ],
+                "linkProperties": [
+                    {},
+                    {},
+                    {},
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Pin 0",
+                        "dstNode": "RTPointLight1",
+                        "dstPin": "Color HDR"
+                    },
+                    {
+                        "srcPin": "Pin 1",
+                        "dstNode": "RTPointLight2",
+                        "dstPin": "Color HDR"
+                    },
+                    {
+                        "srcPin": "Pin 2",
+                        "dstNode": "RTDirectionalLight1",
+                        "dstPin": "Color HDR"
+                    },
+                    {
+                        "srcPin": "Pin 3",
+                        "dstNode": "Skybox IBL",
+                        "dstPin": "Color HDR"
+                    },
+                    {
+                        "srcPin": "Pin 4"
+                    }
+                ]
+            }
+        },
+        {
+            "actionSubGraph": {
+                "name": "Tonemapping",
+                "editorPos": [
+                    1216.0,
+                    79.0
+                ],
+                "linkProperties": [
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Color HDR",
+                        "dstNode": "Post Lighting Barrier",
+                        "dstPin": "Pin 0"
+                    },
+                    {
+                        "srcPin": "Color SDR"
+                    }
+                ],
+                "fileName": "Tonemap\\Tonemap.gg",
+                "subGraphData": {
+                    "importedResources": [
+                        "Color HDR"
+                    ],
+                    "exportedResources": [
+                        "Color SDR"
+                    ],
+                    "variables": [
+                        {
+                            "name": "ExposureFStops",
+                            "visibility": "User"
+                        },
+                        {
+                            "name": "ToneMapper",
+                            "visibility": "User"
+                        }
+                    ]
+                },
+                "variableSettings": [
+                    {
+                        "name": "ExposureFStops",
+                        "visibility": "User"
+                    },
+                    {
+                        "name": "ToneMapper",
+                        "visibility": "User"
+                    }
+                ]
+            }
+        },
+        {
+            "actionSubGraph": {
+                "name": "GBuffer Fill",
+                "editorPos": [
+                    423.0,
+                    48.0
+                ],
+                "linkProperties": [
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "VertexBuffer",
+                        "dstNode": "VertexBuffer",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "Model Albedo",
+                        "dstNode": "Model Albedo",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "Model Roughness",
+                        "dstNode": "Model Roughness",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "Model Normal",
+                        "dstNode": "Model Normal",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "Model Metallic",
+                        "dstNode": "Model Metallic",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "Model AO",
+                        "dstNode": "Model AO",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "Albedo_Roughness",
+                        "dstNode": "Albedo_Roughness",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "Normal_Metallic_AO",
+                        "dstNode": "Normal_Metallic_AO",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "Depth",
+                        "dstNode": "Depth",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "GBuffer Debug"
+                    }
+                ],
+                "fileName": "FillGBuffer.gg",
+                "subGraphData": {
+                    "importedResources": [
+                        "VertexBuffer",
+                        "Model Albedo",
+                        "Model Roughness",
+                        "Model Normal",
+                        "Model Metallic",
+                        "Model AO"
+                    ],
+                    "exportedResources": [
+                        "Albedo_Roughness",
+                        "Normal_Metallic_AO",
+                        "Depth",
+                        "GBuffer Debug"
+                    ],
+                    "variables": [
+                        {
+                            "name": "MouseState",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "MouseStateLastFrame",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "iResolution",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "iTime",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "iTimeDelta",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "iFrameRate",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "iFrame",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "iMouse",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "ViewMtx",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "InvViewMtx",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "ProjMtx",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "InvProjMtx",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "ViewProjMtx",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "InvViewProjMtx",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "CameraPos",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "CameraChanged",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "DepthClearValue",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "RenderSize",
+                            "visibility": "User"
+                        },
+                        {
+                            "name": "DebugMode",
+                            "visibility": "User"
+                        },
+                        {
+                            "name": "NormalMapping",
+                            "visibility": "User"
+                        }
+                    ]
+                },
+                "variableSettings": [
+                    {
+                        "name": "MouseState",
+                        "visibility": "Host",
+                        "replaceWithStr": "MouseState",
+                        "replaceWith": {
+                            "name": "MouseState"
+                        }
+                    },
+                    {
+                        "name": "MouseStateLastFrame",
+                        "visibility": "Host",
+                        "replaceWithStr": "MouseStateLastFrame",
+                        "replaceWith": {
+                            "name": "MouseStateLastFrame"
+                        }
+                    },
+                    {
+                        "name": "iResolution",
+                        "visibility": "Host",
+                        "replaceWithStr": "iResolution",
+                        "replaceWith": {
+                            "name": "iResolution"
+                        }
+                    },
+                    {
+                        "name": "iTime",
+                        "visibility": "Host",
+                        "replaceWithStr": "iTime",
+                        "replaceWith": {
+                            "name": "iTime"
+                        }
+                    },
+                    {
+                        "name": "iTimeDelta",
+                        "visibility": "Host",
+                        "replaceWithStr": "iTimeDelta",
+                        "replaceWith": {
+                            "name": "iTimeDelta"
+                        }
+                    },
+                    {
+                        "name": "iFrameRate",
+                        "visibility": "Host",
+                        "replaceWithStr": "iFrameRate",
+                        "replaceWith": {
+                            "name": "iFrameRate"
+                        }
+                    },
+                    {
+                        "name": "iFrame",
+                        "visibility": "Host",
+                        "replaceWithStr": "iFrame",
+                        "replaceWith": {
+                            "name": "iFrame"
+                        }
+                    },
+                    {
+                        "name": "iMouse",
+                        "visibility": "Host",
+                        "replaceWithStr": "iMouse",
+                        "replaceWith": {
+                            "name": "iMouse"
+                        }
+                    },
+                    {
+                        "name": "ViewMtx",
+                        "visibility": "Host",
+                        "replaceWithStr": "ViewMtx",
+                        "replaceWith": {
+                            "name": "ViewMtx"
+                        }
+                    },
+                    {
+                        "name": "InvViewMtx",
+                        "visibility": "Host",
+                        "replaceWithStr": "InvViewMtx",
+                        "replaceWith": {
+                            "name": "InvViewMtx"
+                        }
+                    },
+                    {
+                        "name": "ProjMtx",
+                        "visibility": "Host",
+                        "replaceWithStr": "ProjMtx",
+                        "replaceWith": {
+                            "name": "ProjMtx"
+                        }
+                    },
+                    {
+                        "name": "InvProjMtx",
+                        "visibility": "Host",
+                        "replaceWithStr": "InvProjMtx",
+                        "replaceWith": {
+                            "name": "InvProjMtx"
+                        }
+                    },
+                    {
+                        "name": "ViewProjMtx",
+                        "visibility": "Host",
+                        "replaceWithStr": "ViewProjMtx",
+                        "replaceWith": {
+                            "name": "ViewProjMtx"
+                        }
+                    },
+                    {
+                        "name": "InvViewProjMtx",
+                        "visibility": "Host",
+                        "replaceWithStr": "InvViewProjMtx",
+                        "replaceWith": {
+                            "name": "InvViewProjMtx"
+                        }
+                    },
+                    {
+                        "name": "CameraPos",
+                        "visibility": "Host",
+                        "replaceWithStr": "CameraPos",
+                        "replaceWith": {
+                            "name": "CameraPos"
+                        }
+                    },
+                    {
+                        "name": "CameraChanged",
+                        "visibility": "Host",
+                        "replaceWithStr": "CameraChanged",
+                        "replaceWith": {
+                            "name": "CameraChanged"
+                        }
+                    },
+                    {
+                        "name": "DepthClearValue",
+                        "visibility": "Host",
+                        "replaceWithStr": "DepthClearValue",
+                        "replaceWith": {
+                            "name": "DepthClearValue"
+                        }
+                    },
+                    {
+                        "name": "RenderSize",
+                        "visibility": "User",
+                        "replaceWithStr": "RenderSize",
+                        "replaceWith": {
+                            "name": "RenderSize"
+                        }
+                    },
+                    {
+                        "name": "DebugMode",
+                        "visibility": "User"
+                    },
+                    {
+                        "name": "NormalMapping",
+                        "visibility": "User"
+                    }
+                ]
+            }
+        },
+        {
+            "actionSubGraph": {
+                "name": "Skybox IBL",
+                "editorPos": [
+                    739.0,
+                    271.0
+                ],
+                "linkProperties": [
+                    {},
+                    {},
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Depth",
+                        "dstNode": "GBuffer Fill",
+                        "dstPin": "Depth"
+                    },
+                    {
+                        "srcPin": "Albedo_Roughness",
+                        "dstNode": "GBuffer Fill",
+                        "dstPin": "Albedo_Roughness"
+                    },
+                    {
+                        "srcPin": "Normal_Metallic_AO",
+                        "dstNode": "GBuffer Fill",
+                        "dstPin": "Normal_Metallic_AO"
+                    },
+                    {
+                        "srcPin": "Color HDR",
+                        "dstNode": "Color HDR",
+                        "dstPin": "resource"
+                    }
+                ],
+                "fileName": "RTIBL.gg",
+                "subGraphData": {
+                    "importedResources": [
+                        "Depth",
+                        "Albedo_Roughness",
+                        "Normal_Metallic_AO",
+                        "Color HDR"
+                    ],
+                    "variables": [
+                        {
+                            "name": "Enabled",
+                            "visibility": "User"
+                        },
+                        {
+                            "name": "Skybox",
+                            "visibility": "User"
+                        },
+                        {
+                            "name": "MouseState",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "MouseStateLastFrame",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "iResolution",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "iTime",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "iTimeDelta",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "iFrameRate",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "iFrame",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "iMouse",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "ViewMtx",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "InvViewMtx",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "ProjMtx",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "InvProjMtx",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "ViewProjMtx",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "InvViewProjMtx",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "CameraPos",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "CameraChanged",
+                            "visibility": "Host"
+                        },
+                        {
+                            "name": "DepthClearValue",
+                            "visibility": "User"
+                        }
+                    ]
+                },
+                "variableSettings": [
+                    {
+                        "name": "Enabled",
+                        "visibility": "User"
+                    },
+                    {
+                        "name": "Skybox",
+                        "visibility": "User"
+                    },
+                    {
+                        "name": "MouseState",
+                        "visibility": "Host",
+                        "replaceWithStr": "MouseState",
+                        "replaceWith": {
+                            "name": "MouseState"
+                        }
+                    },
+                    {
+                        "name": "MouseStateLastFrame",
+                        "visibility": "Host",
+                        "replaceWithStr": "MouseStateLastFrame",
+                        "replaceWith": {
+                            "name": "MouseStateLastFrame"
+                        }
+                    },
+                    {
+                        "name": "iResolution",
+                        "visibility": "Host",
+                        "replaceWithStr": "iResolution",
+                        "replaceWith": {
+                            "name": "iResolution"
+                        }
+                    },
+                    {
+                        "name": "iTime",
+                        "visibility": "Host",
+                        "replaceWithStr": "iTime",
+                        "replaceWith": {
+                            "name": "iTime"
+                        }
+                    },
+                    {
+                        "name": "iTimeDelta",
+                        "visibility": "Host",
+                        "replaceWithStr": "iTimeDelta",
+                        "replaceWith": {
+                            "name": "iTimeDelta"
+                        }
+                    },
+                    {
+                        "name": "iFrameRate",
+                        "visibility": "Host",
+                        "replaceWithStr": "iFrameRate",
+                        "replaceWith": {
+                            "name": "iFrameRate"
+                        }
+                    },
+                    {
+                        "name": "iFrame",
+                        "visibility": "Host",
+                        "replaceWithStr": "iFrame",
+                        "replaceWith": {
+                            "name": "iFrame"
+                        }
+                    },
+                    {
+                        "name": "iMouse",
+                        "visibility": "Host",
+                        "replaceWithStr": "iMouse",
+                        "replaceWith": {
+                            "name": "iMouse"
+                        }
+                    },
+                    {
+                        "name": "ViewMtx",
+                        "visibility": "Host",
+                        "replaceWithStr": "ViewMtx",
+                        "replaceWith": {
+                            "name": "ViewMtx"
+                        }
+                    },
+                    {
+                        "name": "InvViewMtx",
+                        "visibility": "Host",
+                        "replaceWithStr": "InvViewMtx",
+                        "replaceWith": {
+                            "name": "InvViewMtx"
+                        }
+                    },
+                    {
+                        "name": "ProjMtx",
+                        "visibility": "Host",
+                        "replaceWithStr": "ProjMtx",
+                        "replaceWith": {
+                            "name": "ProjMtx"
+                        }
+                    },
+                    {
+                        "name": "InvProjMtx",
+                        "visibility": "Host",
+                        "replaceWithStr": "InvProjMtx",
+                        "replaceWith": {
+                            "name": "InvProjMtx"
+                        }
+                    },
+                    {
+                        "name": "ViewProjMtx",
+                        "visibility": "Host",
+                        "replaceWithStr": "ViewProjMtx",
+                        "replaceWith": {
+                            "name": "ViewProjMtx"
+                        }
+                    },
+                    {
+                        "name": "InvViewProjMtx",
+                        "visibility": "Host",
+                        "replaceWithStr": "InvViewProjMtx",
+                        "replaceWith": {
+                            "name": "InvViewProjMtx"
+                        }
+                    },
+                    {
+                        "name": "CameraPos",
+                        "visibility": "Host",
+                        "replaceWithStr": "CameraPos",
+                        "replaceWith": {
+                            "name": "CameraPos"
+                        }
+                    },
+                    {
+                        "name": "CameraChanged",
+                        "visibility": "Host",
+                        "replaceWithStr": "CameraChanged",
+                        "replaceWith": {
+                            "name": "CameraChanged"
+                        }
+                    },
+                    {
+                        "name": "DepthClearValue",
+                        "visibility": "User",
+                        "replaceWithStr": "DepthClearValue",
+                        "replaceWith": {
+                            "name": "DepthClearValue"
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}

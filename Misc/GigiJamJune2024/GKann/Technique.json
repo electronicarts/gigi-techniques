@@ -1,0 +1,11 @@
+{
+    "Title":"Cooley-Tuckey & Stockham FFT",
+    "Description":"Implementations of Cooley-Tuckey and Stockham FFT in compute shaders, and also frequency space operations. There are 4 subfolders with a readme in each for more information",
+    "Author":"Gabriel Kannenberg",
+    "Tags":"compute,fft,GigiJam2024",
+    "Technique": "",
+    "Website": "",
+    "Screenshot":"_Screenshot.png",
+    "License":"",
+    "GigiVersion":"0.99b",
+}

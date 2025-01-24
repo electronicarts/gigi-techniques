@@ -1,0 +1,11 @@
+{
+    "Title":"Temporal Accumulation",
+    "Description":"Simple temporal accumulation using exponential moving average with a variable alpha value. Meant to be used as a subgraph node in other techniques.",
+    "Author":"Demofox",
+    "Tags":"2d,temporal accumulation,post process",
+    "Technique": "TemporalAccumulation.gg",
+    "Website": "",
+    "Screenshot":"Screenshot.png",
+    "License":"",
+    "GigiVersion":"0.99b",
+}

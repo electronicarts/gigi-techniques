@@ -1,0 +1,1 @@
+an exr test image from https://openexr.com/en/latest/test_images/ScanLines/Desk.html

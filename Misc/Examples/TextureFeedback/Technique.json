@@ -1,0 +1,10 @@
+{
+    "Title":"Texture Feedback Example",
+    "Description":"This shows how to have a process feed back into itself over time.",
+    "Author":"EA",
+    "Tags":"example",
+    "Technique": "TextureFeedback.gg",
+    "Website": "",
+    "Screenshot":"Screenshot.png",
+    "GigiVersion":"0.99b",
+}

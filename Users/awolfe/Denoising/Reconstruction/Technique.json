@@ -1,0 +1,11 @@
+{
+    "Title":"Pull Push Demo",
+    "Description":"Demonstrates a pull push denoising filter, while alos allowing you to choose between white noise, blue noise, and binomial noise - animated and still. Blue and binomial noise was made using FAST.",
+    "Author":"Demofox",
+    "Tags":"denoising",
+    "Technique": "PullPushDemo.gg",
+    "Website": "",
+    "Screenshot":"Screenshot.png",
+    "License":"",
+    "GigiVersion":"0.99b",
+}

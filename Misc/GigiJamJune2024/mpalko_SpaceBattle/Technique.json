@@ -1,0 +1,11 @@
+{
+    "Title":"Space Battle",
+    "Description":"A space battle simulator! Teams of boids battle it out to be the last ones standing. Just open with the Gigi viewer and enjoy. No user input necessary. Settings can be tweaked both in the code and as variables to change the simulation parameters.",
+    "Author":"Martin Palko",
+    "Tags":"simulation,GigiJam2024",
+    "Technique": "SpaceBattle.gg",
+    "Website": "",
+    "Screenshot":"_Screenshot.png",
+    "License":"",
+    "GigiVersion":"0.99b",
+}

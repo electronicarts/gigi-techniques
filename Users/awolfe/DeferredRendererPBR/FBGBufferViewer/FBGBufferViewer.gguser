@@ -1,0 +1,48 @@
+{
+    "resourceViewNodeIndex": 3,
+    "resourceViewResourceIndex": 3,
+    "savedVariables": [
+        {
+            "name": "DirLightDir",
+            "value": "0.000000,-1.000000,0.000000"
+        },
+        {
+            "name": "DirLightColor",
+            "value": "1.000000,1.000000,1.000000"
+        },
+        {
+            "name": "DirLightIntensity",
+            "value": "10.000000"
+        },
+        {
+            "name": "AmbientLightColor",
+            "value": "1.000000,1.000000,1.000000"
+        },
+        {
+            "name": "AmbientLightIntensity",
+            "value": "0.000000"
+        },
+        {
+            "name": "Skybox",
+            "value": "0"
+        },
+        {
+            "name": "Tonemapping_ExposureFStops",
+            "value": "1.000000"
+        },
+        {
+            "name": "Tonemapping_ToneMapper",
+            "value": "1"
+        }
+    ],
+    "bookmarks": [
+        {
+            "name": "1. HDR",
+            "viewableResourceDisplayName": "DoLighting.Output: Output (UAV - After)"
+        },
+        {
+            "name": "2. SDR",
+            "viewableResourceDisplayName": "Tonemapping_Tonemap.SDR: Tonemapping_Color_SDR (UAV - After)"
+        }
+    ]
+}

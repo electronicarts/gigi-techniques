@@ -1,0 +1,11 @@
+{
+    "Title":"Chaos Game 3D",
+    "Description":"The chaos game is a way to make fractals through a random walk. You start with vertices and initialize a cursor to a random vertex. From there, you pick a vertex at random again and move towards that vertex some percentage amount and plot a point. Repeat many many times and you'll get a fractal. Using different numbers of points in different configurations with different percentage movements results in different fractals. This is the chaos game in 3d and has a checkbox to turn on red/blue 3d glasses mode.",
+    "Author":"Demofox",
+    "Tags":"compute,fractal,chaos,GigiJam2024",
+    "Technique": "Demofox_ChaosGame_3D.gg",
+    "Website": "",
+    "Screenshot":"_Screenshot.png",
+    "License":"",
+    "GigiVersion":"0.99b",
+}

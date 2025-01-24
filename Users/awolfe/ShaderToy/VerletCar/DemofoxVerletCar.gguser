@@ -1,0 +1,33 @@
+{
+    "version": "2.0",
+    "systemVars": {
+        "iResolution_textureName": "Output",
+        "ProjMtx_textureName": "Output",
+        "KeyState_bufferName": "KeyStates"
+    },
+    "snapshot": {
+        "resourceViewNodeIndex": 1,
+        "resourceViewResourceIndex": 3,
+        "cameraPos": [
+            22.904205322265626,
+            0.0,
+            -11.802383422851563
+        ],
+        "cameraAltitudeAzimuth": [
+            0.010197481140494347,
+            0.0
+        ],
+        "importedResources": [
+            {
+                "nodeName": "Output",
+                "texture": {
+                    "size": [
+                        1024,
+                        768,
+                        1
+                    ]
+                }
+            }
+        ]
+    }
+}

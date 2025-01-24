@@ -1,0 +1,11 @@
+{
+    "Title":"Tonemap",
+    "Description":"A tone mapping technique with options for Reinhard, ACES luminance and ACES tone mapping. Also exposure. Meant to be used as a subgraph node in other techniques.",
+    "Author":"Demofox",
+    "Tags":"2d,tonemap,post process",
+    "Technique": "Tonemap.gg",
+    "Website": "",
+    "Screenshot":"Screenshot.png",
+    "License":"",
+    "GigiVersion":"0.99b",
+}

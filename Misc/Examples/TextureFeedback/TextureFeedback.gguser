@@ -1,0 +1,22 @@
+{
+    "version": "2.0",
+    "snapshot": {
+        "resourceViewNodeIndex": 4,
+        "resourceViewResourceIndex": 2,
+        "importedResources": [
+            {
+                "nodeName": "Input",
+                "texture": {
+                    "fileName": "cabinsmall.png",
+                    "binaryFormat": "Any"
+                }
+            }
+        ],
+        "savedVariables": [
+            {
+                "name": "Reset",
+                "value": "false"
+            }
+        ]
+    }
+}

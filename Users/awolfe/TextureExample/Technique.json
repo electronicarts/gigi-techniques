@@ -1,0 +1,11 @@
+{
+    "Title":"Texture Example",
+    "Description":"A simple example of using textures in a Gigi technique.",
+    "Author":"Demofox",
+    "Tags":"2d,textures",
+    "Technique": "TextureExample.gg",
+    "Website": "",
+    "Screenshot":"Screenshot.png",
+    "License":"",
+    "GigiVersion":"0.99b",
+}

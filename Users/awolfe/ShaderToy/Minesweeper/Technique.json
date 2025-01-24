@@ -1,0 +1,11 @@
+{
+    "Title":"Minesweeper",
+    "Description":"Minesweeper! Left click to reveal a square. Right click to place a flag. Click the reset button to reset the board. Board goes green when you win, red when you lose.",
+    "Author":"Demofox",
+    "Tags":"game,simulation,compute",
+    "Technique": "DemofoxMinesweeper.gg",
+    "Website": "",
+    "Screenshot":"Screenshot.png",
+    "License":"LICENSE",
+    "GigiVersion":"0.99b",
+}

@@ -1,0 +1,11 @@
+{
+    "Title":"SVGF",
+    "Description":"SVGF implementation following https://github.com/NVIDIAGameWorks/Falcor/tree/master/Source/RenderPasses/SVGFPass. Written to be used as a subgraph, but not currently working as one due to some features Gigi needs, so you need to manually inline it for now.",
+    "Author":"Demofox",
+    "Tags":"denoising",
+    "Technique": "SVGF.gg",
+    "Website": "https://github.com/NVIDIAGameWorks/Falcor/tree/master/Source/RenderPasses/SVGFPass",
+    "Screenshot":"Screenshot.png",
+    "License":"",
+    "GigiVersion":"0.99b",
+}

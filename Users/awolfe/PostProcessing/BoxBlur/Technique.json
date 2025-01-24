@@ -1,0 +1,11 @@
+{
+    "Title":"Box Blur",
+    "Description":"A box blur technique. Meant to be used as a subgraph node in other techniques.",
+    "Author":"Demofox",
+    "Tags":"post process, blur",
+    "Technique": "BoxBlur.gg",
+    "Website": "",
+    "Screenshot":"Screenshot.png",
+    "License":"",
+    "GigiVersion":"0.99b",
+}

@@ -1,0 +1,11 @@
+{
+    "Title":"PathTracer",
+    "Description":"A simple path tracer. May not be fully correct. Compute only, no raytracing nodes.",
+    "Author":"Demofox",
+    "Tags":"raytracing,pathtracing",
+    "Technique": "DemofoxPathTracer.gg",
+    "Website": "",
+    "Screenshot":"Screenshot.png",
+    "License":"LICENSE",
+    "GigiVersion":"0.99b",
+}

@@ -1,0 +1,11 @@
+{
+    "Title":"Simple TAA",
+    "Description":"A simple TAA implementation that takes in depth, color, and velocity. Meant to be used as a subgraph node in other techniques.",
+    "Author":"Demofox",
+    "Tags":"2d,temporal,post process,TAA",
+    "Technique": "SimpleTAA.gg",
+    "Website": "",
+    "Screenshot":"Screenshot.png",
+    "License":"",
+    "GigiVersion":"0.99b",
+}

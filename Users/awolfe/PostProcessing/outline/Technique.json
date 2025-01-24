@@ -1,0 +1,11 @@
+{
+    "Title":"Outline",
+    "Description":"A depth based outline technique. Meant to be used as a subgraph node in other techniques.",
+    "Author":"Demofox",
+    "Tags":"post process",
+    "Technique": "outline.gg",
+    "Website": "",
+    "Screenshot":"Screenshot.png",
+    "License":"",
+    "GigiVersion":"0.99b",
+}

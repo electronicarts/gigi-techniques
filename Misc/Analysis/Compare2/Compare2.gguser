@@ -1,0 +1,48 @@
+{
+    "resourceViewNodeIndex": 3,
+    "resourceViewResourceIndex": 4,
+    "importedResources": [
+        {
+            "nodeName": "A",
+            "texture": {
+                "size": [
+                    256,
+                    256,
+                    1
+                ],
+                "color": [
+                    1.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ]
+            }
+        },
+        {
+            "nodeName": "B",
+            "texture": {
+                "size": [
+                    256,
+                    256,
+                    1
+                ],
+                "color": [
+                    0.0,
+                    1.0,
+                    0.0,
+                    1.0
+                ]
+            }
+        }
+    ],
+    "savedVariables": [
+        {
+            "name": "LeftSizePercent",
+            "value": "0.700000"
+        },
+        {
+            "name": "ShowSameHalf",
+            "value": "false"
+        }
+    ]
+}

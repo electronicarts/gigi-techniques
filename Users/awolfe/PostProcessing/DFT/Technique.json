@@ -1,0 +1,11 @@
+{
+    "Title":"DFT",
+    "Description":"A naive discrete fourier transform. Can be used as a subgraph, or you can plug in an image on disk.",
+    "Author":"Demofox",
+    "Tags":"DFT",
+    "Technique": "DFT.gg",
+    "Website": "",
+    "Screenshot":"Screenshot.png",
+    "License":"",
+    "GigiVersion":"0.99b",
+}

@@ -1,0 +1,44 @@
+{
+    "version": "2.0",
+    "systemVars": {
+        "iFrame_varName": "frameIndex"
+    },
+    "snapshot": {
+        "resourceViewNodeIndex": 14,
+        "resourceViewResourceIndex": 3,
+        "importedResources": [
+            {
+                "nodeName": "Source",
+                "texture": {
+                    "fileName": "cabinsmall.png"
+                }
+            }
+        ],
+        "savedVariables": [
+            {
+                "name": "Density",
+                "value": "0.200000"
+            },
+            {
+                "name": "NoiseType",
+                "value": "1"
+            },
+            {
+                "name": "Animate",
+                "value": "true"
+            },
+            {
+                "name": "TemporalAlpha",
+                "value": "0.100000"
+            },
+            {
+                "name": "Tonemap_ExposureFStops",
+                "value": "1.000000"
+            },
+            {
+                "name": "Tonemap_ToneMapper",
+                "value": "0"
+            }
+        ]
+    }
+}

@@ -1,0 +1,27 @@
+{
+    "version": "2.0",
+    "snapshot": {
+        "importedResources": [
+            {
+                "nodeName": "Input",
+                "texture": {
+                    "binaryFormat": "Any"
+                }
+            }
+        ],
+        "savedVariables": [
+            {
+                "name": "Alpha",
+                "value": "0.100000"
+            },
+            {
+                "name": "Enabled",
+                "value": "true"
+            },
+            {
+                "name": "Reset",
+                "value": "false"
+            }
+        ]
+    }
+}

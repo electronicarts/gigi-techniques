@@ -1,0 +1,11 @@
+{
+    "Title":"Compare2",
+    "Description":"Compare 2 images of the same size and format by having a sliding bar that slides left and right. Same size and format out as given as input. Meant to be used as a subgraph node.",
+    "Author":"EA",
+    "Tags":"subgraph,analysis,image",
+    "Technique": "Compare2.gg",
+    "Website": "",
+    "Screenshot":"Screenshot.png",
+    "License":"LICENSE",
+    "GigiVersion":"0.99b",
+}

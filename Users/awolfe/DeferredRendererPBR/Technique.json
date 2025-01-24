@@ -1,0 +1,11 @@
+{
+    "Title":"DeferredRendererPBR",
+    "Description":"A very basic PBR deferred renderer with ray traced directional lights, and skybox IBL.",
+    "Author":"Demofox",
+    "Tags":"3d,PBR",
+    "Technique": "main.gg",
+    "Website": "",
+    "Screenshot":"Screenshot.png",
+    "License":"LICENSE",
+    "GigiVersion":"0.99b",
+}
