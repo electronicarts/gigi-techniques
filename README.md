@@ -11,8 +11,8 @@ To add your Gigi technique to the list, you may either make a pull request to ad
 Example:
 
 1. https://github.com/electronicarts/gigi-techniques.git
-1. Users/awolfe/Life/Technique.json
-1. a32e7683ad6c49cb2c0712b1feffb22d0dd28009
+1. [Users/awolfe/Life/Technique.json](Users/awolfe/Life/Technique.json)
+1. [a32e7683ad6c49cb2c0712b1feffb22d0dd28009](https://github.com/electronicarts/gigi-techniques/commit/a32e7683ad6c49cb2c0712b1feffb22d0dd28009)
 
 Please see the [Gigi](https://github.com/electronicarts/gigi/) repository for more information.
 
