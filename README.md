@@ -1,6 +1,6 @@
 # Gigi-Techniques
 
-This repository hosts the list of techniques viewable in the [Gigi](https://github.com/electronicarts/gigi/) browser.
+This repository hosts the list of techniques viewable in the [Gigi](https://github.com/electronicarts/gigi/) browser and is maintained by Alan Wolfe (https://github.com/Atrix256/).
 
 To add your Gigi technique to the list, you may either make a pull request to add your technique to Techniques.json, or you can open an issue asking for your technique to be added to the list, providing:
 
