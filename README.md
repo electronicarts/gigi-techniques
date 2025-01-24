@@ -12,7 +12,7 @@ Example:
 
 1. https://github.com/electronicarts/gigi-techniques.git
 1. Users/awolfe/Life/Technique.json
-1. 31d1b271c0b15ad884b0497678d1d7d8604aebd6
+1. a32e7683ad6c49cb2c0712b1feffb22d0dd28009
 
 Please see the [Gigi](https://github.com/electronicarts/gigi/) repository for more information.
 
