@@ -6,6 +6,6 @@
     "Technique": "SVGF.gg",
     "Website": "https://github.com/NVIDIAGameWorks/Falcor/tree/master/Source/RenderPasses/SVGFPass",
     "Screenshot":"Screenshot.png",
-    "License":"",
+    "License":"LICENSE.txt",
     "GigiVersion":"0.99b",
 }
