@@ -15,3 +15,10 @@ Example:
 1. 31d1b271c0b15ad884b0497678d1d7d8604aebd6
 
 Please see the [Gigi](https://github.com/electronicarts/gigi/) repository for more information.
+
+#
+
+<p align="center"><a href="https://seed.ea.com"><img src="SEED.jpg" width="150px"></a><br>
+<b>Search for Extraordinary Experiences Division (SEED) - Electronic Arts <br> http://seed.ea.com</b><br>
+We are a cross-disciplinary team within EA Worldwide Studios.<br>
+Our mission is to explore, build and help define the future of interactive entertainment.</p>
