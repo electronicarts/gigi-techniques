@@ -1,0 +1,259 @@
+{
+    "version": "2.0",
+    "snapshot": {
+        "resourceViewNodeIndex": 13,
+        "resourceViewResourceIndex": 5,
+        "importedResources": [
+            {
+                "nodeName": "Input",
+                "texture": {
+                    "fileName": "Assets\\Lens_kernel_compositingpro.204.png",
+                    "fileIsSRGB": false,
+                    "format": "BGRA8_Unorm",
+                    "binaryFormat": "Any"
+                }
+            }
+        ],
+        "savedVariables": [
+            {
+                "name": "InputDotProduct",
+                "value": "0.299000,0.587000,0.114000,0.000000"
+            },
+            {
+                "name": "InputMaxValue",
+                "value": "0.000000"
+            },
+            {
+                "name": "Create",
+                "value": "false"
+            },
+            {
+                "name": "ColorMap",
+                "value": "true"
+            },
+            {
+                "name": "RelativeError",
+                "value": "true"
+            },
+            {
+                "name": "ShowColorMapLegend",
+                "value": "true"
+            },
+            {
+                "name": "InputWidth",
+                "value": "512"
+            },
+            {
+                "name": "SampleIndex",
+                "value": "16570"
+            }
+        ]
+    },
+    "snapshots": [
+        {
+            "name": "1. Input",
+            "resourceViewType": 5,
+            "resourceViewNodeIndex": 0,
+            "resourceViewResourceIndex": 0,
+            "loadVars": false,
+            "loadCamera": false,
+            "loadResources": false,
+            "importedResources": [
+                {
+                    "nodeName": "Input",
+                    "texture": {
+                        "fileName": "Assets\\Lens_kernel_compositingpro.204.png",
+                        "binaryFormat": "Any"
+                    }
+                }
+            ],
+            "savedVariables": [
+                {
+                    "name": "OutputSize",
+                    "value": "256,256"
+                },
+                {
+                    "name": "InputDotProduct",
+                    "value": "1.000000,0.000000,0.000000,0.000000"
+                },
+                {
+                    "name": "Create",
+                    "value": "false"
+                },
+                {
+                    "name": "SampleCount",
+                    "value": "1000"
+                },
+                {
+                    "name": "Test",
+                    "value": "false"
+                },
+                {
+                    "name": "InputWidth",
+                    "value": "512"
+                }
+            ]
+        },
+        {
+            "name": "2. ICDF",
+            "resourceViewNodeIndex": 8,
+            "resourceViewResourceIndex": 3,
+            "loadVars": false,
+            "loadCamera": false,
+            "loadResources": false,
+            "importedResources": [
+                {
+                    "nodeName": "Input",
+                    "texture": {
+                        "fileName": "Assets\\Lens_kernel_compositingpro.204.png",
+                        "binaryFormat": "Any"
+                    }
+                }
+            ],
+            "savedVariables": [
+                {
+                    "name": "OutputSize",
+                    "value": "256,256"
+                },
+                {
+                    "name": "InputDotProduct",
+                    "value": "1.000000,0.000000,0.000000,0.000000"
+                },
+                {
+                    "name": "Create",
+                    "value": "false"
+                },
+                {
+                    "name": "SampleCount",
+                    "value": "1000"
+                },
+                {
+                    "name": "Test",
+                    "value": "false"
+                },
+                {
+                    "name": "InputWidth",
+                    "value": "512"
+                }
+            ]
+        },
+        {
+            "name": "3. Reconstruction",
+            "resourceViewNodeIndex": 9,
+            "resourceViewResourceIndex": 3,
+            "loadVars": false,
+            "loadCamera": false,
+            "loadResources": false,
+            "importedResources": [
+                {
+                    "nodeName": "Input",
+                    "texture": {
+                        "fileName": "Assets\\Lens_kernel_compositingpro.204.png",
+                        "binaryFormat": "Any"
+                    }
+                }
+            ],
+            "savedVariables": [
+                {
+                    "name": "OutputSize",
+                    "value": "256,256"
+                },
+                {
+                    "name": "InputDotProduct",
+                    "value": "1.000000,0.000000,0.000000,0.000000"
+                },
+                {
+                    "name": "Create",
+                    "value": "false"
+                },
+                {
+                    "name": "SampleCount",
+                    "value": "1000"
+                },
+                {
+                    "name": "SampleSeed",
+                    "value": "1337"
+                },
+                {
+                    "name": "Test",
+                    "value": "false"
+                },
+                {
+                    "name": "InputWidth",
+                    "value": "512"
+                },
+                {
+                    "name": "SampleIndex",
+                    "value": "138137"
+                }
+            ]
+        },
+        {
+            "name": "4. Comparison",
+            "resourceViewNodeIndex": 13,
+            "resourceViewResourceIndex": 5,
+            "loadVars": false,
+            "loadCamera": false,
+            "loadResources": false,
+            "importedResources": [
+                {
+                    "nodeName": "Input",
+                    "texture": {
+                        "fileName": "Assets\\Lens_kernel_compositingpro.204.png",
+                        "binaryFormat": "Any"
+                    }
+                }
+            ],
+            "savedVariables": [
+                {
+                    "name": "InputDotProduct",
+                    "value": "1.000000,0.000000,0.000000,0.000000"
+                },
+                {
+                    "name": "Create",
+                    "value": "false"
+                },
+                {
+                    "name": "InputWidth",
+                    "value": "512"
+                },
+                {
+                    "name": "SampleIndex",
+                    "value": "1665"
+                },
+                {
+                    "name": "InputDotProduct",
+                    "value": "1.000000,0.000000,0.000000,0.000000"
+                },
+                {
+                    "name": "Create",
+                    "value": "false"
+                },
+                {
+                    "name": "InputWidth",
+                    "value": "512"
+                },
+                {
+                    "name": "SampleIndex",
+                    "value": "2478"
+                },
+                {
+                    "name": "InputDotProduct",
+                    "value": "1.000000,0.000000,0.000000,0.000000"
+                },
+                {
+                    "name": "Create",
+                    "value": "false"
+                },
+                {
+                    "name": "InputWidth",
+                    "value": "512"
+                },
+                {
+                    "name": "SampleIndex",
+                    "value": "2846"
+                }
+            ]
+        }
+    ]
+}

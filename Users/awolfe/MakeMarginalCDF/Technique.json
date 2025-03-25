@@ -1,0 +1,11 @@
+{
+    "Title":"Texture Inverse CDF",
+    "Description":"Takes a texture as input and makes a 2D inverse CDF table. Lookup details are in PaintSample.hlsl. See readme.txt for more info.",
+    "Author":"Demofox",
+    "Tags":"2d,textures,sampling",
+    "Technique": "MakeMarginalICDF.gg",
+    "Website": "",
+    "Screenshot":"Screenshot.png",
+    "License":"LICENSE.txt",
+    "GigiVersion":"0.99b",
+}

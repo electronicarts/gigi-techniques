@@ -205,5 +205,11 @@
             "DetailsFile": "Misc/Examples/TextureFeedback/Technique.json",
             "ListedDate" : "2025-01-22",
         },
+        {
+            "Repo": "https://github.com/electronicarts/gigi-techniques.git",
+            "Commit": "main",
+            "DetailsFile": "Users/awolfe/MakeMarginalCDF/Technique.json",
+            "ListedDate" : "2025-03-25",
+        },
     ]
 }

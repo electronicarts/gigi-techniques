@@ -1,0 +1,747 @@
+{
+    "$schema": "gigischema.json",
+    "version": "0.99b",
+    "variables": [
+        {
+            "name": "InputDotProduct",
+            "type": "Float4",
+            "dflt": "1.0f, 0.0f, 0.0f, 0.0f",
+            "visibility": "User"
+        },
+        {
+            "name": "InputMaxValue",
+            "comment": "if > 0, the input will be clamped to be this value maximum. Can help with very bright sources, like the sun.",
+            "type": "Float",
+            "dflt": "0.0f",
+            "visibility": "User"
+        },
+        {
+            "name": "Create",
+            "type": "Bool",
+            "dflt": "false",
+            "visibility": "User",
+            "UISettings": {
+                "UIHint": "Button"
+            }
+        },
+        {
+            "name": "ColorMap",
+            "comment": "If true, uses a color map to show the comparison difference.",
+            "type": "Bool",
+            "dflt": "false",
+            "visibility": "User"
+        },
+        {
+            "name": "RelativeError",
+            "comment": "If true, shows relative error, instead of absolute",
+            "type": "Bool",
+            "dflt": "true",
+            "visibility": "User"
+        },
+        {
+            "name": "ShowColorMapLegend",
+            "comment": "Show or hide the color map legend",
+            "type": "Bool",
+            "dflt": "true",
+            "visibility": "User"
+        },
+        {
+            "name": "InputWidth",
+            "type": "Uint",
+            "dflt": "0"
+        },
+        {
+            "name": "SampleIndex",
+            "type": "Uint",
+            "dflt": "0"
+        }
+    ],
+    "shaders": [
+        {
+            "name": "SumColumns",
+            "fileName": "SumColumns.hlsl",
+            "entryPoint": "csmain",
+            "resources": [
+                {
+                    "name": "Input",
+                    "type": "Texture",
+                    "access": "SRV"
+                },
+                {
+                    "name": "Output",
+                    "type": "Buffer",
+                    "access": "UAV",
+                    "buffer": {
+                        "type": "Float"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "MakeYICDFs",
+            "fileName": "MakeYICDFs.hlsl",
+            "entryPoint": "csmain",
+            "resources": [
+                {
+                    "name": "Input",
+                    "type": "Texture",
+                    "access": "SRV"
+                },
+                {
+                    "name": "ColumnSums",
+                    "type": "Buffer",
+                    "access": "SRV",
+                    "buffer": {
+                        "type": "Float"
+                    }
+                },
+                {
+                    "name": "Output",
+                    "type": "Texture",
+                    "access": "UAV",
+                    "texture": {
+                        "viewType": "Float"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "MakeXICDF",
+            "fileName": "MakeXICDF.hlsl",
+            "entryPoint": "csmain",
+            "resources": [
+                {
+                    "name": "ColumnSums",
+                    "type": "Buffer",
+                    "access": "SRV",
+                    "buffer": {
+                        "type": "Float"
+                    }
+                },
+                {
+                    "name": "InputSum",
+                    "type": "Buffer",
+                    "access": "UAV",
+                    "buffer": {
+                        "type": "Float"
+                    }
+                },
+                {
+                    "name": "Output",
+                    "type": "Texture",
+                    "access": "UAV",
+                    "texture": {
+                        "viewType": "Float"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "CombineCDFs",
+            "fileName": "CombineCDFs.hlsl",
+            "entryPoint": "csmain",
+            "resources": [
+                {
+                    "name": "XICDF",
+                    "type": "Texture",
+                    "access": "SRV",
+                    "texture": {
+                        "viewType": "Float"
+                    }
+                },
+                {
+                    "name": "YICDFs",
+                    "type": "Texture",
+                    "access": "SRV",
+                    "texture": {
+                        "viewType": "Float"
+                    }
+                },
+                {
+                    "name": "Output",
+                    "type": "Texture",
+                    "access": "UAV",
+                    "texture": {
+                        "viewType": "Float"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "ClearReconstruction",
+            "fileName": "ClearReconstruction.hlsl",
+            "entryPoint": "csmain",
+            "resources": [
+                {
+                    "name": "Reconstruction",
+                    "type": "Texture",
+                    "access": "UAV",
+                    "texture": {
+                        "viewType": "Uint"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "PaintSample",
+            "fileName": "PaintSample.hlsl",
+            "entryPoint": "csmain",
+            "resources": [
+                {
+                    "name": "Output",
+                    "type": "Texture",
+                    "access": "UAV",
+                    "texture": {
+                        "viewType": "Uint"
+                    }
+                },
+                {
+                    "name": "MarginalCDF",
+                    "type": "Texture",
+                    "access": "SRV",
+                    "texture": {
+                        "viewType": "Float"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "MakeComparison",
+            "fileName": "MakeComparison.hlsl",
+            "entryPoint": "csmain",
+            "resources": [
+                {
+                    "name": "Input",
+                    "type": "Texture",
+                    "access": "SRV"
+                },
+                {
+                    "name": "Reconstruction",
+                    "type": "Texture",
+                    "access": "SRV",
+                    "texture": {
+                        "viewType": "Uint"
+                    }
+                },
+                {
+                    "name": "Comparison",
+                    "type": "Texture",
+                    "access": "UAV"
+                },
+                {
+                    "name": "InputSum",
+                    "type": "Buffer",
+                    "access": "SRV",
+                    "buffer": {
+                        "type": "Float"
+                    }
+                }
+            ]
+        }
+    ],
+    "fileCopies": [
+        {
+            "fileName": "PCG.hlsli",
+            "type": "Shader"
+        },
+        {
+            "fileName": "gnuplot.hlsl",
+            "type": "Shader"
+        }
+    ],
+    "nodes": [
+        {
+            "resourceTexture": {
+                "name": "Input",
+                "editorPos": [
+                    -16.0,
+                    -16.0
+                ],
+                "visibility": "Imported"
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "Sum Columns",
+                "editorPos": [
+                    123.0,
+                    -14.0
+                ],
+                "condition": {
+                    "variable1": "Create",
+                    "comparison": "IsTrue"
+                },
+                "linkProperties": [
+                    {},
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Input",
+                        "dstNode": "Input",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "Output",
+                        "dstNode": "ColumnSums",
+                        "dstPin": "resource"
+                    }
+                ],
+                "shader": {
+                    "name": "SumColumns"
+                },
+                "dispatchSize": {
+                    "variable": {
+                        "name": "InputWidth"
+                    },
+                    "indirectBuffer": {
+                        "node": "Comparison"
+                    }
+                }
+            }
+        },
+        {
+            "resourceBuffer": {
+                "name": "ColumnSums",
+                "editorPos": [
+                    -21.0,
+                    50.0
+                ],
+                "transient": false,
+                "format": {
+                    "type": "Float"
+                },
+                "count": {
+                    "variable": {
+                        "name": "InputWidth"
+                    }
+                }
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "Make Y ICDFs",
+                "editorPos": [
+                    299.0,
+                    -14.0
+                ],
+                "condition": {
+                    "variable1": "Create",
+                    "comparison": "IsTrue"
+                },
+                "linkProperties": [
+                    {},
+                    {},
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Input",
+                        "dstNode": "Sum Columns",
+                        "dstPin": "Input"
+                    },
+                    {
+                        "srcPin": "Output",
+                        "dstNode": "YICDFs",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "ColumnSums",
+                        "dstNode": "Sum Columns",
+                        "dstPin": "Output"
+                    }
+                ],
+                "shader": {
+                    "name": "MakeYICDFs"
+                },
+                "dispatchSize": {
+                    "variable": {
+                        "name": "InputWidth"
+                    },
+                    "indirectBuffer": {
+                        "node": "Comparison"
+                    }
+                }
+            }
+        },
+        {
+            "resourceTexture": {
+                "name": "YICDFs",
+                "editorPos": [
+                    151.0,
+                    98.0
+                ],
+                "transient": false,
+                "format": {
+                    "format": "R32_Float"
+                },
+                "size": {
+                    "node": {
+                        "name": "Input"
+                    }
+                }
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "Make X ICDF",
+                "editorPos": [
+                    507.0,
+                    -30.0
+                ],
+                "condition": {
+                    "variable1": "Create",
+                    "comparison": "IsTrue"
+                },
+                "linkProperties": [
+                    {},
+                    {},
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "ColumnSums",
+                        "dstNode": "Make Y ICDFs",
+                        "dstPin": "ColumnSums"
+                    },
+                    {
+                        "srcPin": "Output",
+                        "dstNode": "XICDF",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "InputSum",
+                        "dstNode": "InputSum",
+                        "dstPin": "resource"
+                    }
+                ],
+                "shader": {
+                    "name": "MakeXICDF"
+                }
+            }
+        },
+        {
+            "resourceTexture": {
+                "name": "XICDF",
+                "editorPos": [
+                    347.0,
+                    146.0
+                ],
+                "transient": false,
+                "format": {
+                    "format": "R32_Float"
+                },
+                "size": {
+                    "variable": {
+                        "name": "InputWidth"
+                    }
+                }
+            }
+        },
+        {
+            "resourceTexture": {
+                "name": "MarginalCDF",
+                "editorPos": [
+                    521.0,
+                    162.0
+                ],
+                "transient": false,
+                "visibility": "Exported",
+                "format": {
+                    "format": "R32_Float"
+                },
+                "size": {
+                    "node": {
+                        "name": "Input"
+                    },
+                    "postAdd": [
+                        0,
+                        1,
+                        0
+                    ]
+                }
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "CombineCDFs",
+                "editorPos": [
+                    667.0,
+                    82.0
+                ],
+                "condition": {
+                    "variable1": "Create",
+                    "comparison": "IsTrue"
+                },
+                "linkProperties": [
+                    {},
+                    {},
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "YICDFs",
+                        "dstNode": "Make Y ICDFs",
+                        "dstPin": "Output"
+                    },
+                    {
+                        "srcPin": "XICDF",
+                        "dstNode": "Make X ICDF",
+                        "dstPin": "Output"
+                    },
+                    {
+                        "srcPin": "Output",
+                        "dstNode": "MarginalCDF",
+                        "dstPin": "resource"
+                    }
+                ],
+                "shader": {
+                    "name": "CombineCDFs"
+                },
+                "dispatchSize": {
+                    "node": {
+                        "name": "MarginalCDF"
+                    },
+                    "indirectBuffer": {
+                        "node": "Comparison"
+                    }
+                }
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "PaintSample",
+                "editorPos": [
+                    1061.0,
+                    95.0
+                ],
+                "linkProperties": [
+                    {},
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "MarginalCDF",
+                        "dstNode": "CombineCDFs",
+                        "dstPin": "Output"
+                    },
+                    {
+                        "srcPin": "Output",
+                        "dstNode": "Clear Reconstruction",
+                        "dstPin": "Reconstruction"
+                    }
+                ],
+                "shader": {
+                    "name": "PaintSample"
+                },
+                "dispatchSize": {
+                    "indirectBuffer": {
+                        "node": "Comparison"
+                    },
+                    "multiply": [
+                        64,
+                        64,
+                        1
+                    ]
+                }
+            }
+        },
+        {
+            "resourceTexture": {
+                "name": "Reconstruction",
+                "editorPos": [
+                    686.0,
+                    34.0
+                ],
+                "transient": false,
+                "format": {
+                    "format": "R32_Uint"
+                },
+                "size": {
+                    "node": {
+                        "name": "Input"
+                    }
+                }
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "Clear Reconstruction",
+                "editorPos": [
+                    853.0,
+                    79.0
+                ],
+                "condition": {
+                    "variable1": "Create",
+                    "comparison": "IsTrue"
+                },
+                "linkProperties": [
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Reconstruction",
+                        "dstNode": "Reconstruction",
+                        "dstPin": "resource"
+                    }
+                ],
+                "shader": {
+                    "name": "ClearReconstruction"
+                },
+                "dispatchSize": {
+                    "node": {
+                        "name": "Reconstruction"
+                    },
+                    "indirectBuffer": {
+                        "node": "Comparison"
+                    }
+                }
+            }
+        },
+        {
+            "resourceTexture": {
+                "name": "Comparison",
+                "editorPos": [
+                    1259.0,
+                    130.0
+                ],
+                "format": {
+                    "format": "RGBA8_Unorm_sRGB"
+                },
+                "size": {
+                    "node": {
+                        "name": "Input"
+                    },
+                    "multiply": [
+                        3,
+                        1,
+                        1
+                    ]
+                }
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "Make Comparison",
+                "editorPos": [
+                    1397.0,
+                    -126.0
+                ],
+                "linkProperties": [
+                    {},
+                    {},
+                    {},
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "InputSum",
+                        "dstNode": "Make X ICDF",
+                        "dstPin": "InputSum"
+                    },
+                    {
+                        "srcPin": "Reconstruction",
+                        "dstNode": "PaintSample",
+                        "dstPin": "Output"
+                    },
+                    {
+                        "srcPin": "Comparison",
+                        "dstNode": "Comparison",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "InputSum"
+                    },
+                    {
+                        "srcPin": "Input",
+                        "dstNode": "Router",
+                        "dstPin": "Pin 0"
+                    }
+                ],
+                "shader": {
+                    "name": "MakeComparison"
+                },
+                "dispatchSize": {
+                    "node": {
+                        "name": "Comparison"
+                    }
+                }
+            }
+        },
+        {
+            "actionBarrier": {
+                "name": "Router",
+                "editorPos": [
+                    507.0,
+                    -126.0
+                ],
+                "linkProperties": [
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Pin 0",
+                        "dstNode": "Make Y ICDFs",
+                        "dstPin": "Input"
+                    },
+                    {
+                        "srcPin": "Pin 1"
+                    }
+                ]
+            }
+        },
+        {
+            "resourceBuffer": {
+                "name": "InputSum",
+                "editorPos": [
+                    331.0,
+                    98.0
+                ],
+                "transient": false,
+                "format": {
+                    "type": "Float"
+                }
+            }
+        }
+    ],
+    "setVars": [
+        {
+            "destination": {
+                "name": "InputWidth"
+            },
+            "AVarIndex": 0,
+            "ANode": {
+                "name": "Input"
+            },
+            "op": "Noop"
+        },
+        {
+            "destination": {
+                "name": "SampleIndex"
+            },
+            "ALiteral": "0",
+            "op": "Noop",
+            "condition": {
+                "variable1": "Create",
+                "comparison": "IsTrue"
+            }
+        },
+        {
+            "destination": {
+                "name": "SampleIndex"
+            },
+            "AVar": {
+                "name": "SampleIndex"
+            },
+            "BLiteral": "1"
+        }
+    ]
+}
