@@ -1,0 +1,11 @@
+{
+    "Title":"Random Numbers",
+    "Description":"A simple example showing how to generate random numbers.",
+    "Author":"Demofox",
+    "Tags":"rng,tutorial,random",
+    "Technique": "RngExample.gg",
+    "Website": "",
+    "Screenshot":"Screenshot.png",
+    "License":"LICENSE.txt",
+    "GigiVersion":"0.99b",
+}

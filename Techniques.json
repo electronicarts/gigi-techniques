@@ -211,5 +211,11 @@
             "DetailsFile": "Users/awolfe/MakeMarginalCDF/Technique.json",
             "ListedDate" : "2025-03-25",
         },
+        {
+            "Repo": "https://github.com/electronicarts/gigi-techniques.git",
+            "Commit": "main",
+            "DetailsFile": "Users/awolfe/RngExample/Technique.json",
+            "ListedDate" : "2025-03-28",
+        },
     ]
 }

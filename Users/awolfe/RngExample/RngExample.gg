@@ -1,0 +1,100 @@
+{
+    "$schema": "gigischema.json",
+    "version": "0.99b",
+    "variables": [
+        {
+            "name": "PerPixel",
+            "comment": "If true, generates a different random number per pixel",
+            "type": "Bool",
+            "dflt": "true",
+            "visibility": "User"
+        },
+        {
+            "name": "Color",
+            "comment": "If true, makes a different random number for R,G,B",
+            "type": "Bool",
+            "dflt": "true",
+            "visibility": "User"
+        },
+        {
+            "name": "Animate",
+            "comment": "If true, picks new random numbers every frame",
+            "type": "Bool",
+            "dflt": "true",
+            "visibility": "User"
+        },
+        {
+            "name": "iFrame",
+            "type": "Int"
+        }
+    ],
+    "shaders": [
+        {
+            "name": "MakeRNGCS",
+            "fileName": "MakeRNGCS.hlsl",
+            "entryPoint": "csmain",
+            "resources": [
+                {
+                    "name": "Output",
+                    "type": "Texture",
+                    "access": "UAV"
+                }
+            ]
+        }
+    ],
+    "fileCopies": [
+        {
+            "fileName": "PCG.hlsli",
+            "type": "Shader"
+        }
+    ],
+    "nodes": [
+        {
+            "actionComputeShader": {
+                "name": "MakeRNG",
+                "editorPos": [
+                    -14.0,
+                    -8.0
+                ],
+                "linkProperties": [
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Output",
+                        "dstNode": "Output",
+                        "dstPin": "resource"
+                    }
+                ],
+                "shader": {
+                    "name": "MakeRNGCS"
+                },
+                "dispatchSize": {
+                    "node": {
+                        "name": "Output"
+                    }
+                }
+            }
+        },
+        {
+            "resourceTexture": {
+                "name": "Output",
+                "editorPos": [
+                    -149.0,
+                    2.0
+                ],
+                "format": {
+                    "format": "RGBA8_Unorm_sRGB"
+                },
+                "size": {
+                    "multiply": [
+                        512,
+                        512,
+                        1
+                    ]
+                }
+            }
+        }
+    ]
+}
