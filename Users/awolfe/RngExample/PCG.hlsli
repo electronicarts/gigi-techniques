@@ -24,9 +24,16 @@ uint HashPCG(inout uint val)
     return (word >> 22u) ^ word;
 }
 
+uint HashPCGConst(in uint val)
+{
+    uint temp = val;
+    return HashPCG(temp);
+}
+
 uint HashInit(uint3 seed)
 {
-    return uint(seed.x * uint(1973) + seed.y * uint(9277) + seed.z * uint(26699)) | uint(1);
+    return HashPCGConst(seed.x + HashPCGConst(seed.y + HashPCGConst(seed.z)));
+    //return uint(seed.x * uint(1973) + seed.y * uint(9277) + seed.z * uint(26699)) | uint(1);
 }
 
 float RandomFloat01(inout uint state)
