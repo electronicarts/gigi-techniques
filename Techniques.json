@@ -217,5 +217,11 @@
             "DetailsFile": "Users/awolfe/RngExample/Technique.json",
             "ListedDate" : "2025-03-28",
         },
+        {
+            "Repo": "https://github.com/qualcomm/gigi-samples",
+            "Commit": "37df7c3ad344d0b72a1c058018327b16085dab69",
+            "DetailsFile": "gigi-soft-rasterizer-image-gradient/Technique.json",
+            "ListedDate" : "2025-05-12",
+        },
     ]
 }
