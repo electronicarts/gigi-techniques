@@ -232,7 +232,7 @@
         {
             "Repo": "https://github.com/electronicarts/importance-sampled-FAST-noise.git",
             "Commit": "main",
-            "DetailsFile": "importance-sampled-FAST-noise/Demo/Gigi/Technique.json",
+            "DetailsFile": "Demo/Gigi/Technique.json",
             "ListedDate" : "2025-05-20",
         },
     ]
