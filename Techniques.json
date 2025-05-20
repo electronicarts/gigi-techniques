@@ -229,5 +229,11 @@
             "DetailsFile": "Users/awolfe/BlueNoiseAreaLights/Technique.json",
             "ListedDate" : "2025-05-19",
         },
+        {
+            "Repo": "https://github.com/electronicarts/importance-sampled-FAST-noise.git",
+            "Commit": "main",
+            "DetailsFile": "importance-sampled-FAST-noise/Demo/Gigi/Technique.json",
+            "ListedDate" : "2025-05-20",
+        },
     ]
 }
