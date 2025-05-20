@@ -235,5 +235,11 @@
             "DetailsFile": "Demo/Gigi/Technique.json",
             "ListedDate" : "2025-05-20",
         },
+        {
+            "Repo": "https://github.com/electronicarts/gigi-techniques.git",
+            "Commit": "main",
+            "DetailsFile": "Users/awolfe/CasualPathtracing/Technique.json",
+            "ListedDate" : "2025-05-20",
+        },
     ]
 }

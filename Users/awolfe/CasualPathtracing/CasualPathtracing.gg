@@ -1,0 +1,234 @@
+{
+    "$schema": "gigischema.json",
+    "name": "CasualPathtracing",
+    "version": "0.991b",
+    "variables": [
+        {
+            "name": "RenderSize",
+            "type": "Uint2",
+            "dflt": "1280, 720",
+            "visibility": "User"
+        },
+        {
+            "name": "Scene",
+            "type": "Int",
+            "visibility": "User",
+            "Enum": "Scenes"
+        },
+        {
+            "name": "Animate",
+            "type": "Bool",
+            "dflt": "true",
+            "visibility": "User"
+        },
+        {
+            "name": "FrameIndex",
+            "type": "Uint",
+            "transient": true
+        },
+        {
+            "name": "InvViewProjMtx",
+            "type": "Float4x4"
+        },
+        {
+            "name": "CameraPos",
+            "type": "Float3"
+        },
+        {
+            "name": "SceneLastFrame",
+            "type": "Int",
+            "Enum": "Scenes"
+        },
+        {
+            "name": "Reset",
+            "type": "Bool",
+            "visibility": "User",
+            "UISettings": {
+                "UIHint": "Button"
+            }
+        },
+        {
+            "name": "CameraChanged",
+            "type": "Bool"
+        },
+        {
+            "name": "NumBounces",
+            "comment": "number of ray bounces allowed max",
+            "type": "Int",
+            "dflt": "8",
+            "visibility": "User"
+        },
+        {
+            "name": "SkyboxBrightness",
+            "comment": "a multiplier for the skybox brightness",
+            "type": "Float",
+            "dflt": "1.0f",
+            "visibility": "User"
+        },
+        {
+            "name": "Exposure",
+            "comment": "a pixel value multiplier of light before tone mapping and sRGB. In FStops. Every +1 doubles brightness, every -1 halves brightness/",
+            "type": "Float",
+            "dflt": "0.0f",
+            "visibility": "User"
+        },
+        {
+            "name": "RaysPerPixel",
+            "comment": "How many rays per pixel, per frame?",
+            "type": "Int",
+            "dflt": "16",
+            "visibility": "User"
+        }
+    ],
+    "shaders": [
+        {
+            "name": "RenderSceneCS",
+            "fileName": "RenderSceneCS.hlsl",
+            "entryPoint": "main",
+            "resources": [
+                {
+                    "name": "Accum",
+                    "type": "Texture",
+                    "access": "UAV"
+                },
+                {
+                    "name": "Output",
+                    "type": "Texture",
+                    "access": "UAV"
+                }
+            ],
+            "samplers": [
+                {
+                    "name": "texSampler",
+                    "addressMode": "Clamp"
+                }
+            ]
+        }
+    ],
+    "nodes": [
+        {
+            "resourceTexture": {
+                "name": "Accum",
+                "editorPos": [
+                    -5.0,
+                    -14.0
+                ],
+                "transient": false,
+                "format": {
+                    "format": "RGBA32_Float"
+                },
+                "size": {
+                    "variable": {
+                        "name": "RenderSize"
+                    }
+                }
+            }
+        },
+        {
+            "resourceTexture": {
+                "name": "Output",
+                "editorPos": [
+                    -5.0,
+                    34.0
+                ],
+                "visibility": "Exported",
+                "format": {
+                    "format": "RGBA8_Unorm_sRGB"
+                },
+                "size": {
+                    "variable": {
+                        "name": "RenderSize"
+                    }
+                }
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "RenderScene",
+                "editorPos": [
+                    117.0,
+                    -14.0
+                ],
+                "linkProperties": [
+                    {},
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Accum",
+                        "dstNode": "Accum",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "Output",
+                        "dstNode": "Output",
+                        "dstPin": "resource"
+                    }
+                ],
+                "shader": {
+                    "name": "RenderSceneCS"
+                },
+                "dispatchSize": {
+                    "node": {
+                        "name": "Accum"
+                    }
+                }
+            }
+        }
+    ],
+    "enums": [
+        {
+            "name": "Scenes",
+            "items": [
+                {
+                    "label": "Transparent Orange"
+                },
+                {
+                    "label": "Transparent Clear"
+                },
+                {
+                    "label": "Pink"
+                },
+                {
+                    "label": "Coffee"
+                },
+                {
+                    "label": "Focus"
+                },
+                {
+                    "label": "Transparent Pink"
+                }
+            ]
+        }
+    ],
+    "setVars": [
+        {
+            "destination": {
+                "name": "FrameIndex"
+            },
+            "AVar": {
+                "name": "FrameIndex"
+            },
+            "BLiteral": "1",
+            "setBefore": false,
+            "condition": {
+                "variable1": "Animate",
+                "comparison": "IsTrue"
+            }
+        },
+        {
+            "destination": {
+                "name": "SceneLastFrame"
+            },
+            "AVar": {
+                "name": "Scene"
+            },
+            "op": "Noop",
+            "setBefore": false
+        }
+    ],
+    "PrimaryOutput": {
+        "name": "Output"
+    }
+}

@@ -1,0 +1,11 @@
+{
+    "Title":"Casual Path Tracing",
+    "Description":"A port of the shadertoy for my article of the same name",
+    "Author":"Alan Wolfe",
+    "Tags":"lighting,monte carlo,path tracing",
+    "Technique": "CasualPathtracing.gg",
+    "Website": "https://staticweb-c9db91.gitlab.ea.com/Other/CasualPathtracing/index.html",
+    "Screenshot":"screenshot.png",
+    "License":"LICENSE.txt",
+    "GigiVersion":"0.991b",
+}

@@ -1,0 +1,32 @@
+{
+    "version": "2.0",
+    "syncInterval": 0,
+    "systemVars": {
+        "camera": {
+            "flySpeed": 0.5,
+            "startingCameraPos": [
+                -20.199012756347658,
+                -1.551325798034668,
+                -35.72502899169922
+            ],
+            "startingCameraAltitudeAzimuth": [
+                -0.005959773436188698,
+                5.923149585723877
+            ]
+        },
+        "ProjMtx_textureName": "Output"
+    },
+    "snapshot": {
+        "resourceViewNodeIndex": 2,
+        "resourceViewResourceIndex": 5,
+        "cameraPos": [
+            -20.199012756347658,
+            -1.551325798034668,
+            -35.72502899169922
+        ],
+        "cameraAltitudeAzimuth": [
+            -0.005959773436188698,
+            5.923149585723877
+        ]
+    }
+}
