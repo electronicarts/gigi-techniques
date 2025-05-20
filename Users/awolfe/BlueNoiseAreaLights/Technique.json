@@ -1,10 +1,10 @@
 {
     "Title":"Blue Noise Area Lights",
-    "Description":"Compare sampling for area lights: White noise, FAST noise, importance-sampled FAST noise. Website is webgpu demo.",
+    "Description":"Compare sampling for area lights: White noise, FAST noise, importance-sampled FAST noise. Website is importance sampled FAST noise repo.",
     "Author":"Alan Wolfe",
     "Tags":"lighting,noise,monte carlo",
     "Technique": "BlueNoiseAreaLights.gg",
-    "Website": "https://staticweb-c9db91.gitlab.ea.com/Other/BlueNoiseAreaLights/index.html",
+    "Website": "https://github.com/electronicarts/importance-sampled-FAST-noise",
     "Screenshot":"screenshot.png",
     "License":"LICENSE.txt",
     "GigiVersion":"0.991b",
