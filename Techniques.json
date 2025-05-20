@@ -223,5 +223,11 @@
             "DetailsFile": "gigi-soft-rasterizer-image-gradient/Technique.json",
             "ListedDate" : "2025-05-12",
         },
+        {
+            "Repo": "https://github.com/electronicarts/gigi-techniques.git",
+            "Commit": "main",
+            "DetailsFile": "Users/awolfe/BlueNoiseAreaLights/Technique.json",
+            "ListedDate" : "2025-05-19",
+        },
     ]
 }

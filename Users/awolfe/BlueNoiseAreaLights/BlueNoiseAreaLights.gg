@@ -1,0 +1,377 @@
+{
+    "$schema": "gigischema.json",
+    "version": "0.991b",
+    "variables": [
+        {
+            "name": "NoiseType",
+            "type": "Int",
+            "dflt": "FAST IS",
+            "visibility": "User",
+            "Enum": "NoiseTypes"
+        },
+        {
+            "name": "ExposureFStops",
+            "comment": "Exposure, in FStops. Every +1 is double brightness. Every -1 is half brightness.",
+            "type": "Float",
+            "visibility": "User"
+        },
+        {
+            "name": "ToneMapping",
+            "type": "Int",
+            "dflt": "ACES",
+            "visibility": "User",
+            "Enum": "ToneMappingOperation"
+        },
+        {
+            "name": "Animate",
+            "type": "Bool",
+            "dflt": "true",
+            "visibility": "User"
+        },
+        {
+            "name": "AmbientLight",
+            "type": "Float3",
+            "dflt": "0.05f, 0.05f, 0.05f",
+            "visibility": "User"
+        },
+        {
+            "name": "TemporalFilter",
+            "type": "Int",
+            "visibility": "User",
+            "Enum": "TemporalFilters"
+        },
+        {
+            "name": "EMAAlpha",
+            "comment": "How much to lerp towards the new from the old, when using EMA temporal filtering",
+            "type": "Float",
+            "dflt": "0.1f",
+            "visibility": "User"
+        },
+        {
+            "name": "DirLightEnabled",
+            "type": "Bool",
+            "dflt": "true",
+            "visibility": "User",
+            "UIGroup": "DirLight"
+        },
+        {
+            "name": "DirLightSampleCount",
+            "comment": "How many stochastic samples to take per frame",
+            "type": "Int",
+            "dflt": "16",
+            "visibility": "User",
+            "UIGroup": "DirLight"
+        },
+        {
+            "name": "DirLightColor",
+            "type": "Float3",
+            "dflt": "1.0f, 0.8f, 0.5f",
+            "visibility": "User",
+            "UISettings": {
+                "UIHint": "Color"
+            },
+            "UIGroup": "DirLight"
+        },
+        {
+            "name": "DirLightBrightness",
+            "type": "Float",
+            "dflt": "1.0f",
+            "visibility": "User",
+            "UIGroup": "DirLight"
+        },
+        {
+            "name": "DirLightDirection",
+            "comment": "What direction the light shines in",
+            "type": "Float3",
+            "dflt": "1.0f, -1.0f, -1.0f",
+            "visibility": "User",
+            "UIGroup": "DirLight"
+        },
+        {
+            "name": "DirLightRadius",
+            "comment": "radius of light disk at 1 unit away",
+            "type": "Float",
+            "dflt": "0.1f",
+            "visibility": "User",
+            "UIGroup": "DirLight"
+        },
+        {
+            "name": "CameraPos",
+            "type": "Float3"
+        },
+        {
+            "name": "InvViewProjMtx",
+            "type": "Float4x4"
+        },
+        {
+            "name": "FrameIndex",
+            "type": "Uint",
+            "visibility": "Host",
+            "transient": true
+        },
+        {
+            "name": "PosLightEnabled",
+            "type": "Bool",
+            "dflt": "true",
+            "visibility": "User",
+            "UIGroup": "PosLight"
+        },
+        {
+            "name": "PosLightSampleCount",
+            "comment": "How many stochastic samples to take per frame",
+            "type": "Int",
+            "dflt": "16",
+            "visibility": "User",
+            "UIGroup": "PosLight"
+        },
+        {
+            "name": "PosLightColor",
+            "type": "Float3",
+            "dflt": "0.5f, 0.8f, 1.0f",
+            "visibility": "User",
+            "UISettings": {
+                "UIHint": "Color"
+            },
+            "UIGroup": "PosLight"
+        },
+        {
+            "name": "PosLightBrightness",
+            "type": "Float",
+            "dflt": "1.0f",
+            "visibility": "User",
+            "UIGroup": "PosLight"
+        },
+        {
+            "name": "PosLightPosition",
+            "type": "Float3",
+            "dflt": "0.0f, 60.0f, 40.0f",
+            "visibility": "User",
+            "UIGroup": "PosLight"
+        },
+        {
+            "name": "PosLightRadius",
+            "type": "Float",
+            "dflt": "5.0f",
+            "visibility": "User",
+            "UIGroup": "PosLight"
+        },
+        {
+            "name": "PosLightShineDir",
+            "comment": "The direction of the spot light. Cos Theta Inner / Outer control the spot light",
+            "type": "Float3",
+            "dflt": "0.0f, -1.0f, -1.0f",
+            "visibility": "User",
+            "UIGroup": "PosLight"
+        },
+        {
+            "name": "PosLightShineCosThetaInner",
+            "comment": "direction to light, dotted by -c_lightDir. light starts to fade here.",
+            "type": "Float",
+            "dflt": "0.8f",
+            "visibility": "User",
+            "UIGroup": "PosLight"
+        },
+        {
+            "name": "PosLightShineCosThetaOuter",
+            "comment": "direction to light, dotted by -c_lightDir. light finishes fading here.",
+            "type": "Float",
+            "dflt": "0.7f",
+            "visibility": "User",
+            "UIGroup": "PosLight"
+        },
+        {
+            "name": "CameraChanged",
+            "type": "Bool"
+        },
+        {
+            "name": "ResetAccum",
+            "type": "Bool",
+            "visibility": "User",
+            "UISettings": {
+                "UIHint": "Button"
+            }
+        }
+    ],
+    "shaders": [
+        {
+            "name": "RayTraceCS",
+            "fileName": "RayTraceCS.hlsl",
+            "entryPoint": "main",
+            "resources": [
+                {
+                    "name": "Output",
+                    "type": "Texture",
+                    "access": "UAV"
+                },
+                {
+                    "name": "Accum",
+                    "type": "Texture",
+                    "access": "UAV"
+                }
+            ],
+            "samplers": [
+                {
+                    "name": "texSampler",
+                    "addressMode": "Clamp"
+                }
+            ]
+        }
+    ],
+    "fileCopies": [
+        {
+            "fileName": "PCG.hlsli",
+            "type": "Shader"
+        },
+        {
+            "fileName": "LDSShuffler.hlsli",
+            "type": "Shader"
+        },
+        {
+            "fileName": "Tonemap.hlsli",
+            "type": "Shader"
+        }
+    ],
+    "nodes": [
+        {
+            "resourceTexture": {
+                "name": "RenderTarget",
+                "editorPos": [
+                    -22.0,
+                    -4.0
+                ],
+                "format": {
+                    "format": "RGBA8_Unorm_sRGB"
+                },
+                "size": {
+                    "multiply": [
+                        1024,
+                        768,
+                        1
+                    ]
+                }
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "RayTrace",
+                "editorPos": [
+                    117.0,
+                    2.0
+                ],
+                "linkProperties": [
+                    {},
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Output",
+                        "dstNode": "RenderTarget",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "Accum",
+                        "dstNode": "Accum",
+                        "dstPin": "resource"
+                    }
+                ],
+                "shader": {
+                    "name": "RayTraceCS"
+                },
+                "dispatchSize": {
+                    "node": {
+                        "name": "RenderTarget"
+                    }
+                }
+            }
+        },
+        {
+            "resourceTexture": {
+                "name": "Accum",
+                "editorPos": [
+                    -21.0,
+                    66.0
+                ],
+                "transient": false,
+                "format": {
+                    "format": "RGBA32_Float"
+                },
+                "size": {
+                    "node": {
+                        "name": "RenderTarget"
+                    }
+                }
+            }
+        }
+    ],
+    "enums": [
+        {
+            "name": "NoiseTypes",
+            "items": [
+                {
+                    "label": "White"
+                },
+                {
+                    "label": "FAST"
+                },
+                {
+                    "label": "FAST IS"
+                }
+            ]
+        },
+        {
+            "name": "ToneMappingOperation",
+            "items": [
+                {
+                    "label": "None"
+                },
+                {
+                    "label": "Reinhard Simple"
+                },
+                {
+                    "label": "ACES Luminance"
+                },
+                {
+                    "label": "ACES"
+                }
+            ]
+        },
+        {
+            "name": "TemporalFilters",
+            "items": [
+                {
+                    "label": "None"
+                },
+                {
+                    "label": "EMA"
+                },
+                {
+                    "label": "MonteCarlo"
+                }
+            ]
+        }
+    ],
+    "setVars": [
+        {
+            "destination": {
+                "name": "FrameIndex"
+            },
+            "AVar": {
+                "name": "FrameIndex"
+            },
+            "BLiteral": "1",
+            "condition": {
+                "variable1": "Animate",
+                "comparison": "IsTrue"
+            }
+        }
+    ],
+    "settings": {
+        "dx12": {
+            "shaderModelCs": "cs_6_6"
+        }
+    },
+    "PrimaryOutput": {
+        "name": "RenderTarget"
+    }
+}
