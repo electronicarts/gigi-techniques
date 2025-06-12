@@ -296,7 +296,7 @@
                     {
                         "srcPin": "Level2",
                         "dstNode": "UpSample_1_2",
-                        "dstPin": "Level1"
+                        "dstPin": "Output"
                     },
                     {
                         "srcPin": "Output",
