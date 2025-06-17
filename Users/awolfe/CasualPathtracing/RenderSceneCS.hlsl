@@ -671,7 +671,7 @@ float3 GetColorForRay(in float3 startRayPos, in float3 startRayDir, inout uint r
         color += GetColorForRay(rayPos, rayDir, rngState) / float(c_numRendersPerFrame);
 
 	// average the frames together
-    float4 lastFrameColor = Accum[px];
+    float4 lastFrameColor = /*$(RWTextureR:Accum)*/[px];
     bool reset = /*$(Variable:FrameIndex)*/ < 2;
     reset = reset || (/*$(Variable:Scene)*/ != /*$(Variable:SceneLastFrame)*/);
     reset = reset || bool(/*$(Variable:Reset)*/);

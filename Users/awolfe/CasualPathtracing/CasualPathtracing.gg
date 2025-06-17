@@ -1,7 +1,7 @@
 {
     "$schema": "gigischema.json",
     "name": "CasualPathtracing",
-    "version": "0.991b",
+    "version": "1.0",
     "variables": [
         {
             "name": "RenderSize",
