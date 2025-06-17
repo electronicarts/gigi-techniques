@@ -89,7 +89,7 @@ float wang_hash_float01(inout uint state)
 	// Do a pass through if not simulating
 	if (!simulate)
 	{
-		GridState[uint3(px, simWriteIndex)]  = GridState[uint3(px, simReadIndex)];
+		GridState[uint3(px, simWriteIndex)]  = /*$(RWTextureR:GridState)*/[uint3(px, simReadIndex)];
 		return;
 	}
 
@@ -115,7 +115,7 @@ float wang_hash_float01(inout uint state)
 	switch (neighborCount)
 	{
 		// active cells with 2 neighbors stay active
-		case 2: GridState[uint3(px, simWriteIndex)] = GridState[uint3(px, simReadIndex)]; break;
+		case 2: GridState[uint3(px, simWriteIndex)] = /*$(RWTextureR:GridState)*/[uint3(px, simReadIndex)]; break;
 
 		// Cells with 3 neighbors become or stay active
 		case 3: GridState[uint3(px, simWriteIndex)] = 255; break;

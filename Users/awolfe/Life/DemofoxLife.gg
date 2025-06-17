@@ -1,6 +1,6 @@
 {
     "$schema": "gigischema.json",
-    "version": "0.99b",
+    "version": "1.0",
     "variables": [
         {
             "name": "Clear",
@@ -142,7 +142,7 @@
                 ],
                 "transient": false,
                 "format": {
-                    "format": "R8_Uint"
+                    "format": "R32_Uint"
                 },
                 "size": {
                     "variable": {
@@ -306,5 +306,8 @@
             "op": "Maximum",
             "BLiteral": "1"
         }
-    ]
+    ],
+    "PrimaryOutput": {
+        "name": "Color"
+    }
 }
