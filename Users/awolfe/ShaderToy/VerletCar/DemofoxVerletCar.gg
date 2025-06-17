@@ -2,7 +2,7 @@
     "$schema": "gigischema.json",
     "name": "DemofoxVerletCar",
     "comment": "Port of https://www.shadertoy.com/view/Msy3WD",
-    "version": "0.98b",
+    "version": "1.0",
     "variables": [
         {
             "name": "MouseState",
@@ -106,11 +106,6 @@
             "name": "CSGameplay",
             "fileName": "DemofoxVerletCar_gameplay.hlsl",
             "entryPoint": "CSGameplay",
-            "CSNumThreads": [
-                1,
-                1,
-                1
-            ],
             "NumThreads": [
                 1,
                 1,
@@ -124,7 +119,8 @@
                     "buffer": {
                         "typeStruct": {
                             "name": "GameState"
-                        }
+                        },
+                        "PODAsStructuredBuffer": false
                     }
                 },
                 {
@@ -132,9 +128,15 @@
                     "type": "Buffer",
                     "access": "SRV",
                     "buffer": {
-                        "type": "Uint"
+                        "type": "Uint",
+                        "PODAsStructuredBuffer": false
                     }
                 }
+            ],
+            "CSNumThreads": [
+                1,
+                1,
+                1
             ]
         },
         {
@@ -149,13 +151,17 @@
                     "buffer": {
                         "typeStruct": {
                             "name": "GameState"
-                        }
+                        },
+                        "PODAsStructuredBuffer": false
                     }
                 },
                 {
                     "name": "output",
                     "type": "Texture",
-                    "access": "UAV"
+                    "access": "UAV",
+                    "buffer": {
+                        "PODAsStructuredBuffer": false
+                    }
                 }
             ]
         }
@@ -292,7 +298,17 @@
                     637.0,
                     482.0
                 ],
-                "visibility": "Imported"
+                "visibility": "Exported",
+                "format": {
+                    "format": "RGBA8_Unorm_sRGB"
+                },
+                "size": {
+                    "multiply": [
+                        1024,
+                        768,
+                        1
+                    ]
+                }
             }
         },
         {
@@ -326,5 +342,8 @@
                 }
             }
         }
-    ]
+    ],
+    "PrimaryOutput": {
+        "name": "Output"
+    }
 }
