@@ -487,9 +487,9 @@ float3 GetColorForRay(in float3 startRayPos, in float3 startRayDir, inout uint r
     
     // get the linear color of the ray
     float3 color = GetColorForRay(rayOrigin, rayDirection, rngState);
-    
+
     // average the frames together
-    float4 lastFrameColor = accumulation[DTid.xy];
+    float4 lastFrameColor = /*$(RWTextureR:accumulation)*/[DTid.xy];
     float blend = (/*$(Variable:iFrame)*/ < 2 || /*$(Variable:Reset)*/ || lastFrameColor.a == 0.0f || /*$(Variable:CameraChanged)*/) ? 1.0f : 1.0f / (1.0f + (1.0f / lastFrameColor.a));
     color = lerp(lastFrameColor.rgb, color, blend);	
 

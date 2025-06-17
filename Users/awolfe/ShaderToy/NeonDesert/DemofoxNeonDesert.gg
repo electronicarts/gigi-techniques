@@ -1,8 +1,14 @@
 {
     "$schema": "gigischema.json",
     "name": "DemofoxNeonDesert",
-    "version": "0.98b",
+    "version": "1.0",
     "variables": [
+        {
+            "name": "RenderSize",
+            "type": "Uint2",
+            "dflt": "1280, 720",
+            "visibility": "User"
+        },
         {
             "name": "MouseState",
             "type": "Float4",
@@ -170,7 +176,10 @@
                 {
                     "name": "accumulation",
                     "type": "Texture",
-                    "access": "UAV"
+                    "access": "UAV",
+                    "buffer": {
+                        "PODAsStructuredBuffer": false
+                    }
                 }
             ]
         },
@@ -182,12 +191,18 @@
                 {
                     "name": "accumulation",
                     "type": "Texture",
-                    "access": "SRV"
+                    "access": "SRV",
+                    "buffer": {
+                        "PODAsStructuredBuffer": false
+                    }
                 },
                 {
                     "name": "scratch",
                     "type": "Texture",
-                    "access": "UAV"
+                    "access": "UAV",
+                    "buffer": {
+                        "PODAsStructuredBuffer": false
+                    }
                 }
             ]
         },
@@ -199,17 +214,26 @@
                 {
                     "name": "output",
                     "type": "Texture",
-                    "access": "UAV"
+                    "access": "UAV",
+                    "buffer": {
+                        "PODAsStructuredBuffer": false
+                    }
                 },
                 {
                     "name": "accumulation",
                     "type": "Texture",
-                    "access": "SRV"
+                    "access": "SRV",
+                    "buffer": {
+                        "PODAsStructuredBuffer": false
+                    }
                 },
                 {
                     "name": "scratch",
                     "type": "Texture",
-                    "access": "SRV"
+                    "access": "SRV",
+                    "buffer": {
+                        "PODAsStructuredBuffer": false
+                    }
                 }
             ]
         }
@@ -228,7 +252,15 @@
                     829.0,
                     226.0
                 ],
-                "visibility": "Imported"
+                "visibility": "Exported",
+                "format": {
+                    "format": "RGBA8_Unorm_sRGB"
+                },
+                "size": {
+                    "variable": {
+                        "name": "RenderSize"
+                    }
+                }
             }
         },
         {
@@ -243,8 +275,8 @@
                     "format": "RGBA32_Float"
                 },
                 "size": {
-                    "node": {
-                        "name": "Output"
+                    "variable": {
+                        "name": "RenderSize"
                     }
                 }
             }
@@ -288,13 +320,11 @@
                     370.0
                 ],
                 "format": {
-                    "node": {
-                        "name": "Accumulation"
-                    }
+                    "format": "RGBA32_Float"
                 },
                 "size": {
-                    "node": {
-                        "name": "Accumulation"
+                    "variable": {
+                        "name": "RenderSize"
                     }
                 }
             }
@@ -313,14 +343,14 @@
                 ],
                 "connections": [
                     {
-                        "srcPin": "scratch",
-                        "dstNode": "Bloom Scratch",
-                        "dstPin": "resource"
-                    },
-                    {
                         "srcPin": "accumulation",
                         "dstNode": "PathTrace",
                         "dstPin": "accumulation"
+                    },
+                    {
+                        "srcPin": "scratch",
+                        "dstNode": "Bloom Scratch",
+                        "dstPin": "resource"
                     }
                 ],
                 "shader": {
@@ -356,14 +386,14 @@
                         "dstPin": "resource"
                     },
                     {
-                        "srcPin": "scratch",
-                        "dstNode": "Bloom Horizontal",
-                        "dstPin": "scratch"
-                    },
-                    {
                         "srcPin": "accumulation",
                         "dstNode": "Bloom Horizontal",
                         "dstPin": "accumulation"
+                    },
+                    {
+                        "srcPin": "scratch",
+                        "dstNode": "Bloom Horizontal",
+                        "dstPin": "scratch"
                     }
                 ],
                 "shader": {
@@ -379,5 +409,8 @@
                 }
             }
         }
-    ]
+    ],
+    "PrimaryOutput": {
+        "name": "Output"
+    }
 }
