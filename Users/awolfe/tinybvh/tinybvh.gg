@@ -1,0 +1,384 @@
+{
+    "$schema": "gigischema.json",
+    "name": "tinybvh",
+    "comment": "Porting tiny_bvh_minimal_gpu to Gigi.\nBVHs in BVH_GPU format can be saved from the viewer.\nThis uses the traverse.cl logic to trace the rays.\ntinybvh is at: https://github.com/jbikker/tinybvh/",
+    "version": "1.0",
+    "variables": [
+        {
+            "name": "RenderSize",
+            "type": "Uint2",
+            "dflt": "1024, 768",
+            "visibility": "User"
+        },
+        {
+            "name": "ViewMode",
+            "type": "Int",
+            "visibility": "User",
+            "Enum": "ViewModes"
+        },
+        {
+            "name": "TMax",
+            "comment": "The maximum length ray allowed",
+            "type": "Float",
+            "dflt": "1000.0f",
+            "visibility": "User"
+        },
+        {
+            "name": "CameraPos",
+            "type": "Float3"
+        },
+        {
+            "name": "InvViewProjMtx",
+            "type": "Float4x4"
+        },
+        {
+            "name": "CostDivider",
+            "comment": "Cost View Mode: divides by this number to help show the range.",
+            "type": "Float",
+            "dflt": "100.0f",
+            "visibility": "User"
+        },
+        {
+            "name": "DistanceDivider",
+            "comment": "Distance View Mode: divides by this number to help show the range.",
+            "type": "Float",
+            "dflt": "10.0f",
+            "visibility": "User"
+        },
+        {
+            "name": "LightDirection",
+            "comment": "The direction the light is shining.",
+            "type": "Float3",
+            "dflt": "1, -1, 0",
+            "visibility": "User",
+            "UIGroup": "Lighting"
+        },
+        {
+            "name": "LightColor",
+            "type": "Float3",
+            "dflt": "1.0f, 1.0f, 1.0f",
+            "visibility": "User",
+            "UISettings": {
+                "UIHint": "Color"
+            },
+            "UIGroup": "Lighting"
+        },
+        {
+            "name": "LightBrightness",
+            "type": "Float",
+            "dflt": "3.0",
+            "visibility": "User",
+            "UIGroup": "Lighting"
+        },
+        {
+            "name": "AmbientColor",
+            "type": "Float3",
+            "dflt": "0.02, 0.02, 0.02",
+            "visibility": "User",
+            "UISettings": {
+                "UIHint": "Color"
+            },
+            "UIGroup": "Lighting"
+        },
+        {
+            "name": "AmbientBrightness",
+            "type": "Float",
+            "dflt": "1.0",
+            "visibility": "User",
+            "UIGroup": "Lighting"
+        },
+        {
+            "name": "Albedo",
+            "type": "Float3",
+            "dflt": "0.8, 0.8, 0.8",
+            "visibility": "User",
+            "UISettings": {
+                "UIHint": "Color"
+            },
+            "UIGroup": "Material"
+        },
+        {
+            "name": "Roughness",
+            "type": "Float",
+            "dflt": "0.4",
+            "visibility": "User",
+            "UIGroup": "Material"
+        },
+        {
+            "name": "SpecularLevel",
+            "type": "Float",
+            "dflt": "0.5",
+            "visibility": "User",
+            "UIGroup": "Material"
+        },
+        {
+            "name": "Metalic",
+            "type": "Float",
+            "dflt": "0.0",
+            "visibility": "User",
+            "UIGroup": "Material"
+        },
+        {
+            "name": "RayTestAgainst",
+            "type": "Int",
+            "visibility": "User",
+            "Enum": "RayTestAgainsts"
+        }
+    ],
+    "shaders": [
+        {
+            "name": "DoRT",
+            "fileName": "DoRT.hlsl",
+            "entryPoint": "main",
+            "resources": [
+                {
+                    "name": "Vertices",
+                    "type": "Buffer",
+                    "access": "SRV",
+                    "buffer": {
+                        "type": "Float4"
+                    }
+                },
+                {
+                    "name": "TriIndices",
+                    "type": "Buffer",
+                    "access": "SRV",
+                    "buffer": {
+                        "type": "Uint"
+                    }
+                },
+                {
+                    "name": "BVHNodes",
+                    "type": "Buffer",
+                    "access": "SRV",
+                    "buffer": {
+                        "typeStruct": {
+                            "name": "BVHNode"
+                        }
+                    }
+                },
+                {
+                    "name": "BVHCombinedData",
+                    "type": "Buffer",
+                    "access": "SRV",
+                    "buffer": {
+                        "type": "Uint"
+                    }
+                },
+                {
+                    "name": "Output",
+                    "type": "Texture",
+                    "access": "UAV"
+                }
+            ],
+            "samplers": [
+                {
+                    "name": "texSampler",
+                    "addressMode": "Clamp"
+                }
+            ]
+        }
+    ],
+    "structs": [
+        {
+            "name": "BVHNode",
+            "fields": [
+                {
+                    "name": "lmin",
+                    "type": "Float3"
+                },
+                {
+                    "name": "left",
+                    "type": "Uint"
+                },
+                {
+                    "name": "lmax",
+                    "type": "Float3"
+                },
+                {
+                    "name": "right",
+                    "type": "Uint"
+                },
+                {
+                    "name": "rmin",
+                    "type": "Float3"
+                },
+                {
+                    "name": "triCount",
+                    "type": "Uint"
+                },
+                {
+                    "name": "rmax",
+                    "type": "Float3"
+                },
+                {
+                    "name": "firstTri",
+                    "type": "Uint"
+                }
+            ]
+        }
+    ],
+    "fileCopies": [
+        {
+            "fileName": "PBR.hlsli",
+            "type": "Shader"
+        },
+        {
+            "fileName": "BVH.hlsli",
+            "type": "Shader"
+        }
+    ],
+    "nodes": [
+        {
+            "resourceBuffer": {
+                "name": "Vertices",
+                "editorPos": [
+                    -37.0,
+                    -14.0
+                ],
+                "visibility": "Imported"
+            }
+        },
+        {
+            "resourceBuffer": {
+                "name": "TriIndices",
+                "editorPos": [
+                    -37.0,
+                    34.0
+                ],
+                "visibility": "Imported"
+            }
+        },
+        {
+            "resourceBuffer": {
+                "name": "BVHNodes",
+                "editorPos": [
+                    -37.0,
+                    82.0
+                ],
+                "visibility": "Imported"
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "DoRTCS",
+                "editorPos": [
+                    203.0,
+                    2.0
+                ],
+                "linkProperties": [
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Vertices",
+                        "dstNode": "Vertices",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "TriIndices",
+                        "dstNode": "TriIndices",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "BVHNodes",
+                        "dstNode": "BVHNodes",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "BVHCombinedData",
+                        "dstNode": "BVHCombinedData",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "Output",
+                        "dstNode": "Output",
+                        "dstPin": "resource"
+                    }
+                ],
+                "shader": {
+                    "name": "DoRT"
+                },
+                "dispatchSize": {
+                    "node": {
+                        "name": "Output"
+                    }
+                }
+            }
+        },
+        {
+            "resourceTexture": {
+                "name": "Output",
+                "editorPos": [
+                    59.0,
+                    178.0
+                ],
+                "format": {
+                    "format": "RGBA8_Unorm_sRGB"
+                },
+                "size": {
+                    "variable": {
+                        "name": "RenderSize"
+                    }
+                }
+            }
+        },
+        {
+            "resourceBuffer": {
+                "name": "BVHCombinedData",
+                "editorPos": [
+                    -94.0,
+                    130.0
+                ],
+                "visibility": "Imported"
+            }
+        }
+    ],
+    "enums": [
+        {
+            "name": "ViewModes",
+            "items": [
+                {
+                    "label": "Shaded"
+                },
+                {
+                    "label": "Occluded"
+                },
+                {
+                    "label": "Cost"
+                },
+                {
+                    "label": "Normals"
+                },
+                {
+                    "label": "Distance"
+                },
+                {
+                    "label": "Barycentrics"
+                }
+            ]
+        },
+        {
+            "name": "RayTestAgainsts",
+            "items": [
+                {
+                    "label": "BVHSeparate"
+                },
+                {
+                    "label": "BVHCombined"
+                },
+                {
+                    "label": "NoBVH"
+                }
+            ]
+        }
+    ],
+    "PrimaryOutput": {
+        "name": "Output"
+    }
+}

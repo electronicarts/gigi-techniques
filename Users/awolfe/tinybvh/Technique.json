@@ -1,0 +1,11 @@
+{
+    "Title":"tinybvh",
+    "Description":"Raytracing using a BVH made by the tinybvh library, and also using their traversal code.  Website is WebGPU generated version of this.",
+    "Author":"Alan Wolfe",
+    "Tags":"Raytracing,BVH",
+    "Technique": "tinybvh.gg",
+    "Website": "",
+    "Screenshot":"Screenshot.png",
+    "License":"LICENSE.txt",
+    "GigiVersion":"1.0",
+}

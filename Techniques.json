@@ -224,12 +224,6 @@
             "ListedDate" : "2025-05-12",
         },
         {
-            "Repo": "https://github.com/electronicarts/gigi-techniques.git",
-            "Commit": "main",
-            "DetailsFile": "Users/awolfe/BlueNoiseAreaLights/Technique.json",
-            "ListedDate" : "2025-05-19",
-        },
-        {
             "Repo": "https://github.com/electronicarts/importance-sampled-FAST-noise.git",
             "Commit": "main",
             "DetailsFile": "Demo/Gigi/Technique.json",
@@ -240,6 +234,24 @@
             "Commit": "main",
             "DetailsFile": "Users/awolfe/CasualPathtracing/Technique.json",
             "ListedDate" : "2025-05-20",
+        },
+        {
+            "Repo": "https://github.com/electronicarts/gigi-techniques.git",
+            "Commit": "main",
+            "DetailsFile": "Users/awolfe/tinybvh/Technique.json",
+            "ListedDate" : "2025-06-17",
+        },
+        {
+            "Repo": "https://github.com/electronicarts/gigi-techniques.git",
+            "Commit": "main",
+            "DetailsFile": "Users/awolfe/BlueNoiseAreaLights/Technique.json",
+            "ListedDate" : "2025-06-17",
+        },
+        {
+            "Repo": "https://github.com/electronicarts/gigi-techniques.git",
+            "Commit": "main",
+            "DetailsFile": "Users/awolfe/MNIST_CV/Technique.json",
+            "ListedDate" : "2025-06-17",
         },
     ]
 }

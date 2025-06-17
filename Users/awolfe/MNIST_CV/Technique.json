@@ -1,0 +1,11 @@
+{
+    "Title":"Cooperative Vector MNIST",
+    "Description":"Real time inference of MLP using cooperative vectors. For running instructions, see _README.txt in this folder after downloading.",
+    "Author":"Demofox",
+    "Tags":"ML,inference",
+    "Technique": "mnist.gg",
+    "Website": "",
+    "Screenshot":"Screenshot.png",
+    "License":"LICENSE.txt",
+    "GigiVersion":"1.0",
+}

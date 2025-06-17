@@ -1,0 +1,128 @@
+{
+    "version": "2.0",
+    "syncInterval": 0,
+    "systemVars": {
+        "iResolution_textureName": "Drawing_Canvas",
+        "iFrame_varName": ""
+    },
+    "snapshot": {
+        "resourceViewNodeIndex": 9,
+        "resourceViewResourceIndex": 19,
+        "cameraAltitudeAzimuth": [
+            -0.41732925176620486,
+            6.012036323547363
+        ],
+        "importedResources": [
+            {
+                "nodeName": "CV_NN_Hidden_Bias",
+                "resetEveryFrame": false,
+                "isATexture": false,
+                "buffer": {
+                    "fileName": "Backprop_Weights.Hidden.Bias.bin",
+                    "type": "Float",
+                    "BLASOpaque": true,
+                    "cvData": {
+                        "convert": true,
+                        "height": 30,
+                        "srcLayout": "ColMajor",
+                        "destLayout": "ColMajor"
+                    }
+                }
+            },
+            {
+                "nodeName": "CV_NN_Hidden_Weights",
+                "resetEveryFrame": false,
+                "isATexture": false,
+                "buffer": {
+                    "fileName": "Backprop_Weights.Hidden.Weights.ColMajor.bin",
+                    "type": "Float",
+                    "BLASOpaque": true,
+                    "cvData": {
+                        "convert": true,
+                        "width": 30,
+                        "height": 784,
+                        "srcLayout": "ColMajor",
+                        "destLayout": "MulOptimal"
+                    }
+                }
+            },
+            {
+                "nodeName": "CV_NN_Output_Bias",
+                "resetEveryFrame": false,
+                "isATexture": false,
+                "buffer": {
+                    "fileName": "Backprop_Weights.Output.Bias.bin",
+                    "type": "Float",
+                    "BLASOpaque": true,
+                    "cvData": {
+                        "convert": true,
+                        "height": 10,
+                        "srcLayout": "ColMajor",
+                        "destLayout": "ColMajor"
+                    }
+                }
+            },
+            {
+                "nodeName": "CV_NN_Output_Weights",
+                "resetEveryFrame": false,
+                "isATexture": false,
+                "buffer": {
+                    "fileName": "Backprop_Weights.Output.Weights.ColMajor.bin",
+                    "type": "Float",
+                    "BLASOpaque": true,
+                    "cvData": {
+                        "convert": true,
+                        "width": 10,
+                        "height": 30,
+                        "srcLayout": "ColMajor",
+                        "destLayout": "MulOptimal"
+                    }
+                }
+            },
+            {
+                "nodeName": "Imported_Image",
+                "resetEveryFrame": false,
+                "texture": {
+                    "fileName": "9.png",
+                    "size": [
+                        28,
+                        28,
+                        1
+                    ],
+                    "format": "R8_Unorm"
+                }
+            },
+            {
+                "nodeName": "NN_Weights",
+                "resetEveryFrame": false,
+                "isATexture": false,
+                "buffer": {
+                    "fileName": "Backprop_Weights.bin",
+                    "type": "Float"
+                }
+            }
+        ],
+        "savedVariables": [
+            {
+                "name": "Clear",
+                "value": "false"
+            },
+            {
+                "name": "PenSize",
+                "value": "10.000000"
+            },
+            {
+                "name": "UseImportedImage",
+                "value": "false"
+            },
+            {
+                "name": "NormalizeDrawing",
+                "value": "true"
+            },
+            {
+                "name": "UseCooperativeVectors",
+                "value": "true"
+            }
+        ]
+    }
+}

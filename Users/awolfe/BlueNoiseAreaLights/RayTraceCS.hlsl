@@ -369,14 +369,14 @@ SRayHitInfo RayVsScene(in float3 rayPos, in float3 rayDir, bool shadowRay)
             case TemporalFilters::None: Accum[px] = float4(color, 1.0f); break;
             case TemporalFilters::EMA:
             {
-                float3 oldColor = Accum[px].rgb;
+                float3 oldColor = /*$(RWTextureR:Accum)*/[px].rgb;
                 color = lerp(oldColor, color, /*$(Variable:EMAAlpha)*/);
                 Accum[px] = float4(color, 1.0f);
                 break;
             }
             case TemporalFilters::MonteCarlo:
             {
-                float4 oldColor = Accum[px].rgba;
+                float4 oldColor = /*$(RWTextureR:Accum)*/[px].rgba;
                 float sampleCount = oldColor.a;
                 color = lerp(oldColor.rgb, color, 1.0f / sampleCount);
                 Accum[px] = float4(color, sampleCount + 1.0f);

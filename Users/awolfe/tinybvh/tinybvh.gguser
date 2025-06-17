@@ -1,0 +1,68 @@
+{
+    "version": "2.0",
+    "systemVars": {
+        "camera": {
+            "startingCameraPos": [
+                -1.8079217672348023,
+                2.133518934249878,
+                4.500464916229248
+            ],
+            "startingCameraAltitudeAzimuth": [
+                -0.3381662964820862,
+                3.4708218574523927
+            ]
+        },
+        "ProjMtx_textureName": "Output"
+    },
+    "snapshot": {
+        "resourceViewNodeIndex": 3,
+        "resourceViewResourceIndex": 7,
+        "cameraPos": [
+            -1.8079217672348023,
+            2.133518934249878,
+            4.500464916229248
+        ],
+        "cameraAltitudeAzimuth": [
+            -0.3381662964820862,
+            3.4708218574523927
+        ],
+        "importedResources": [
+            {
+                "nodeName": "BVHCombinedData",
+                "isATexture": false,
+                "buffer": {
+                    "fileName": "bunny.combined.bvh",
+                    "type": "Uint",
+                    "BLASOpaque": true
+                }
+            },
+            {
+                "nodeName": "BVHNodes",
+                "isATexture": false,
+                "buffer": {
+                    "fileName": "bunny.nodes.bvh",
+                    "structIndex": 0,
+                    "BLASOpaque": true
+                }
+            },
+            {
+                "nodeName": "TriIndices",
+                "isATexture": false,
+                "buffer": {
+                    "fileName": "bunny.triindices.bvh",
+                    "type": "Uint",
+                    "BLASOpaque": true
+                }
+            },
+            {
+                "nodeName": "Vertices",
+                "isATexture": false,
+                "buffer": {
+                    "fileName": "bunny.vertices.bvh",
+                    "type": "Float4",
+                    "BLASOpaque": true
+                }
+            }
+        ]
+    }
+}
