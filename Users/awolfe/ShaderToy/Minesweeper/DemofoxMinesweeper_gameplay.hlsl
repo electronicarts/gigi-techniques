@@ -70,7 +70,7 @@ void PixelToCell (in float2 fragCoord, out float2 uv, out float2 cell, out float
 float4 GetCellData (in float2 cell)
 {
     if (cell.x >= 0.0 && cell.y >= 0.0 && cell.x <= (/*$(Variable:c_gridSize1D)*/-1) && cell.y <= (/*$(Variable:c_gridSize1D)*/-1))
-        return gameBoard[cell];
+        return /*$(RWTextureR:gameBoard)*/[cell];
     else
         return float4(0.0f, 0.0f, 0.0f, 0.0f);
 }
@@ -85,9 +85,9 @@ float4 GetCellData (in float2 cell)
 
     uint gameStateReadIndex = uint(/*$(Variable:iFrame)*/) % 2;
     uint gameStateWriteIndex = (gameStateReadIndex + 1) % 2;
-    
-    float4 state    = gameState[gameStateReadIndex];
-    float4 cellData = gameBoard[cell];//GetCellData(cell);//loadValue(fragCoord.xy-0.5);
+
+    float4 state = gameState[gameStateReadIndex];
+    float4 cellData = /*$(RWTextureR:gameBoard)*/[cell];//GetCellData(cell);//loadValue(fragCoord.xy-0.5);
     
     // calculate the cell to check, from state.zw
     float2 cellCheck = state.zw;
@@ -139,7 +139,7 @@ float4 GetCellData (in float2 cell)
             (cellDataDL.z > 0.0 ? 1.0 : 0.0) +
             (cellDataL.z  > 0.0 ? 1.0 : 0.0);
         
-        cellData.y = neighborBombs / 8.0;
+        cellData.y = neighborBombs / 255.0;
         
         // DEBUG: visualize the numbers by uncommenting this
 		//cellData.y = clamp(cell.x / 8.0, 0.0, 1.0);

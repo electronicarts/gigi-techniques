@@ -1,8 +1,8 @@
 {
     "$schema": "gigischema.json",
     "name": "DemofoxMinesweeper",
-    "comment": "A port of https://www.shadertoy.com/view/XdK3zz",
-    "version": "0.98b",
+    "comment": "A port of https://www.shadertoy.com/view/XdK3z\nRight click to place a flag, left click to reveal a square.\nReset button to reset the game.\nRandom board each play!",
+    "version": "1.0",
     "variables": [
         {
             "name": "c_gridSize1D",
@@ -133,20 +133,27 @@
                 {
                     "name": "gameBoard",
                     "type": "Texture",
-                    "access": "UAV"
+                    "access": "UAV",
+                    "buffer": {
+                        "PODAsStructuredBuffer": false
+                    }
                 },
                 {
                     "name": "gameState",
                     "type": "Buffer",
                     "access": "UAV",
                     "buffer": {
-                        "type": "Float4"
+                        "type": "Float4",
+                        "PODAsStructuredBuffer": false
                     }
                 },
                 {
                     "name": "output",
                     "type": "Texture",
-                    "access": "SRV"
+                    "access": "SRV",
+                    "buffer": {
+                        "PODAsStructuredBuffer": false
+                    }
                 }
             ]
         },
@@ -158,20 +165,27 @@
                 {
                     "name": "gameBoard",
                     "type": "Texture",
-                    "access": "SRV"
+                    "access": "SRV",
+                    "buffer": {
+                        "PODAsStructuredBuffer": false
+                    }
                 },
                 {
                     "name": "gameState",
                     "type": "Buffer",
                     "access": "SRV",
                     "buffer": {
-                        "type": "Float4"
+                        "type": "Float4",
+                        "PODAsStructuredBuffer": false
                     }
                 },
                 {
                     "name": "output",
                     "type": "Texture",
-                    "access": "UAV"
+                    "access": "UAV",
+                    "buffer": {
+                        "PODAsStructuredBuffer": false
+                    }
                 }
             ],
             "samplers": [
@@ -277,7 +291,7 @@
                 ],
                 "transient": false,
                 "format": {
-                    "format": "RGBA32_Float"
+                    "format": "RGBA8_Unorm"
                 },
                 "size": {
                     "variable": {
@@ -309,8 +323,21 @@
                     397.0,
                     402.0
                 ],
-                "visibility": "Imported"
+                "visibility": "Exported",
+                "format": {
+                    "format": "RGBA8_Unorm_sRGB"
+                },
+                "size": {
+                    "multiply": [
+                        512,
+                        512,
+                        1
+                    ]
+                }
             }
         }
-    ]
+    ],
+    "PrimaryOutput": {
+        "name": "Output"
+    }
 }

@@ -182,7 +182,7 @@ float3 TileColor (in float2 cell, in float2 cellFract, float4 cellData, float2 m
 			return HiddenTileColor(cell, cellFract, mouseCell);
         // else show the number of bomb neighbors there are
         else
-            return CountTileColor(cellFract, floor(cellData.y * 8.0));
+            return CountTileColor(cellFract, floor(cellData.y * 255.0));
     }
     // else we are playing normal so show everything
     else
@@ -205,7 +205,7 @@ float3 TileColor (in float2 cell, in float2 cellFract, float4 cellData, float2 m
                 return BombColor(cellFract);
             // else draw how many neighbors are bombs
             else
-                return CountTileColor(cellFract, floor(cellData.y * 8.0));
+                return CountTileColor(cellFract, floor(cellData.y * 255.0));
         }
     }
 }
@@ -220,7 +220,7 @@ float3 TileColor (in float2 cell, in float2 cellFract, float4 cellData, float2 m
     // draw the background if we are outside of the grid
     float2 uv, cell, cellFract;
     PixelToCell(DTid.xy, uv, cell, cellFract);
-    if (cell.x < 0.0 || cell.y < 0.0 || cell.x > (/*$(Variable:c_gridSize1D)*/-1) || cell.y > (/*$(Variable:c_gridSize1D)*/-1))
+    if ((cell.x < 0.0f) || (cell.y < 0.0f) || (cell.x > (/*$(Variable:c_gridSize1D)*/-1.0f)) || (cell.y > (/*$(Variable:c_gridSize1D)*/-1.0f)))
     {
         output[DTid.xy] = float4(BackgroundPixel(uv), 1.0);
         return;
@@ -233,7 +233,7 @@ float3 TileColor (in float2 cell, in float2 cellFract, float4 cellData, float2 m
     mouseCell *= mouseState.z > 0.0 ? 1.0 : -1.0;
 
     // get the data for the current cell
-    float4 cellData = gameBoard[cell];
+    float4 cellData = /*$(RWTextureR:gameBoard)*/[cell];
     
     // draw grid of cells
     bool gameOver = state.x > 0.2;
