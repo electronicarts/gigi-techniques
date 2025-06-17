@@ -115,20 +115,20 @@ float4 hash4(inout float seed) {
 // compute blurred G-Buffer A
 float4 getSmoothStateA(uint2 DTid)
 {
-	float4 a = saturate(StateA[DTid.xy + int2(-1, 0)]);
-	float4 b = saturate(StateA[DTid.xy + int2( 1, 0)]);
-	float4 c = saturate(StateA[DTid.xy + int2( 0,-1)]);
-	float4 d = saturate(StateA[DTid.xy + int2( 0, 1)]);
+    float4 a = saturate(/*$(RWTextureR:StateA)*/[DTid.xy + int2(-1, 0)]);
+    float4 b = saturate(/*$(RWTextureR:StateA)*/[DTid.xy + int2(1, 0)]);
+    float4 c = saturate(/*$(RWTextureR:StateA)*/[DTid.xy + int2(0, -1)]);
+    float4 d = saturate(/*$(RWTextureR:StateA)*/[DTid.xy + int2( 0, 1)]);
 
 	return (a + b + c + d) * 0.25f;
 }
 // compute blurred G-Buffer B
 float4 getSmoothStateB(uint2 DTid)
 {
-	float4 a = saturate(StateB[DTid.xy + int2(-1, 0)]);
-	float4 b = saturate(StateB[DTid.xy + int2( 1, 0)]);
-	float4 c = saturate(StateB[DTid.xy + int2( 0,-1)]);
-	float4 d = saturate(StateB[DTid.xy + int2( 0, 1)]);
+    float4 a = saturate(/*$(RWTextureR:StateB)*/[DTid.xy + int2(-1, 0)]);
+    float4 b = saturate(/*$(RWTextureR:StateB)*/[DTid.xy + int2(1, 0)]);
+    float4 c = saturate(/*$(RWTextureR:StateB)*/[DTid.xy + int2(0, -1)]);
+    float4 d = saturate(/*$(RWTextureR:StateB)*/[DTid.xy + int2( 0, 1)]);
 
 	return (a + b + c + d) * 0.25f;
 }
@@ -172,10 +172,10 @@ float3 random_in_unit_sphere(inout float seed) {
 	
 	// G-Buffer
 
-	// float4(albedo color 0..1, roughness 0..1)
-	float4 stateA = saturate(StateA[DTid.xy]);
-	// float4(normal mapped to 0..1, metallic 0..1)
-	float4 stateB = saturate(StateB[DTid.xy]);
+    // float4(albedo color 0..1, roughness 0..1)
+    float4 stateA = saturate(/*$(RWTextureR:StateA)*/[DTid.xy]);
+    // float4(normal mapped to 0..1, metallic 0..1)
+    float4 stateB = saturate(/*$(RWTextureR:StateB)*/[DTid.xy]);
 
 	// blurred G-Buffer
 	float4 smoothStateA = getSmoothStateA(DTid.xy);
