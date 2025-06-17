@@ -107,7 +107,7 @@ float wang_hash_float01(inout uint state)
 			if (!/*$(Variable:WrapAround)*/ && (readpx.x != readpxWrapped.x || readpx.y != readpxWrapped.y))
 				continue;
 
-			if (GridState[uint3(readpxWrapped, simReadIndex)] == 255)
+            if (/*$(RWTextureR:GridState)*/[uint3(readpxWrapped, simReadIndex)] == 255)
 				neighborCount++;
 		}
 	}
