@@ -253,5 +253,11 @@
             "DetailsFile": "Users/awolfe/MNIST_CV/Technique.json",
             "ListedDate" : "2025-06-17",
         },
+        {
+            "Repo": "https://github.com/qualcomm/gigi-samples",
+            "Commit": "4fa8e7a1878b528c121a7e556f6e5050c1e8fbb2",
+            "DetailsFile": "gigi-NN-Adam-Optimizer/Technique.json",
+            "ListedDate" : "2025-06-18",
+        },
     ]
 }
