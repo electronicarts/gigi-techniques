@@ -1,10 +1,10 @@
 {
     "Title":"tinybvh",
-    "Description":"Raytracing using a BVH made by the tinybvh library, and also using their traversal code.  Website is WebGPU generated version of this.",
+    "Description":"Raytracing using a BVH made by the tinybvh library, and also using their traversal code.  Website is the WebGPU generated version of this.",
     "Author":"Alan Wolfe",
     "Tags":"Raytracing,BVH",
     "Technique": "tinybvh.gg",
-    "Website": "",
+    "Website": "https://electronicarts.github.io/gigi/Demos/tinybvh/index.html",
     "Screenshot":"Screenshot.png",
     "License":"LICENSE.txt",
     "GigiVersion":"1.0",

@@ -1,10 +1,10 @@
 {
     "Title":"Life",
-    "Description":"Conway's game of life. Left mouse button draws, right mouse button erases.",
+    "Description":"Conway's game of life. Left mouse button draws, right mouse button erases. Website is the WebGPU generated version.",
     "Author":"Demofox",
     "Tags":"game,simulation,compute",
     "Technique": "DemofoxLife.gg",
-    "Website": "",
+    "Website": "https://electronicarts.github.io/gigi/Demos/Life/index.html",
     "Screenshot":"Screenshot.png",
     "License":"LICENSE.txt",
     "GigiVersion":"0.99b",

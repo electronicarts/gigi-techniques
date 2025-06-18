@@ -1,10 +1,10 @@
 {
     "Title":"PathTracer",
-    "Description":"A simple path tracer. May not be fully correct. Compute only, no raytracing nodes.",
+    "Description":"A simple path tracer. May not be fully correct. Compute only, no raytracing nodes. Website is the WebGPU generated version.",
     "Author":"Demofox",
     "Tags":"raytracing,pathtracing",
     "Technique": "DemofoxPathTracer.gg",
-    "Website": "",
+    "Website": "https://electronicarts.github.io/gigi/Demos/CasualPathtracing/index.html",
     "Screenshot":"Screenshot.png",
     "License":"LICENSE.txt",
     "GigiVersion":"0.99b",

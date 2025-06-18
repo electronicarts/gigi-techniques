@@ -1,10 +1,10 @@
 {
     "Title":"Neon Desert",
-    "Description":"A stylized path tracer using DXR and ray marching to intersect rays with the scene. Also bloom and slight depth of field.",
+    "Description":"A stylized path tracer using DXR and ray marching to intersect rays with the scene. Also bloom and slight depth of field. Website is the WebGPU version.",
     "Author":"Demofox",
     "Tags":"raytracing,pathtracing,dxr,raymarching,dof,bloom",
     "Technique": "DemofoxNeonDesert.gg",
-    "Website": "",
+    "Website": "https://electronicarts.github.io/gigi/Demos/NeonDesert/index.html",
     "Screenshot":"Screenshot.png",
     "License":"LICENSE.txt",
     "GigiVersion":"0.99b",
