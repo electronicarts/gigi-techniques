@@ -175,8 +175,8 @@
             "resources": [
                 {
                     "name": "accumulation",
-                    "type": "Texture",
                     "access": "UAV",
+                    "type": "Texture",
                     "buffer": {
                         "PODAsStructuredBuffer": false
                     }
@@ -190,16 +190,16 @@
             "resources": [
                 {
                     "name": "accumulation",
-                    "type": "Texture",
                     "access": "SRV",
+                    "type": "Texture",
                     "buffer": {
                         "PODAsStructuredBuffer": false
                     }
                 },
                 {
                     "name": "scratch",
-                    "type": "Texture",
                     "access": "UAV",
+                    "type": "Texture",
                     "buffer": {
                         "PODAsStructuredBuffer": false
                     }
@@ -213,24 +213,24 @@
             "resources": [
                 {
                     "name": "output",
-                    "type": "Texture",
                     "access": "UAV",
+                    "type": "Texture",
                     "buffer": {
                         "PODAsStructuredBuffer": false
                     }
                 },
                 {
                     "name": "accumulation",
-                    "type": "Texture",
                     "access": "SRV",
+                    "type": "Texture",
                     "buffer": {
                         "PODAsStructuredBuffer": false
                     }
                 },
                 {
                     "name": "scratch",
-                    "type": "Texture",
                     "access": "SRV",
+                    "type": "Texture",
                     "buffer": {
                         "PODAsStructuredBuffer": false
                     }
@@ -410,6 +410,13 @@
             }
         }
     ],
+    "settings": {
+        "webGPU": {
+            "features": {
+                "float32Filterable": true
+            }
+        }
+    },
     "PrimaryOutput": {
         "name": "Output"
     }

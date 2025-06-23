@@ -129,28 +129,27 @@
         {
             "name": "DoRT",
             "fileName": "DoRT.hlsl",
-            "entryPoint": "main",
             "resources": [
                 {
                     "name": "Vertices",
-                    "type": "Buffer",
                     "access": "SRV",
+                    "type": "Buffer",
                     "buffer": {
                         "type": "Float4"
                     }
                 },
                 {
                     "name": "TriIndices",
-                    "type": "Buffer",
                     "access": "SRV",
+                    "type": "Buffer",
                     "buffer": {
                         "type": "Uint"
                     }
                 },
                 {
                     "name": "BVHNodes",
-                    "type": "Buffer",
                     "access": "SRV",
+                    "type": "Buffer",
                     "buffer": {
                         "typeStruct": {
                             "name": "BVHNode"
@@ -159,16 +158,16 @@
                 },
                 {
                     "name": "BVHCombinedData",
-                    "type": "Buffer",
                     "access": "SRV",
+                    "type": "Buffer",
                     "buffer": {
                         "type": "Uint"
                     }
                 },
                 {
                     "name": "Output",
-                    "type": "Texture",
-                    "access": "UAV"
+                    "access": "UAV",
+                    "type": "Texture"
                 }
             ],
             "samplers": [
@@ -224,7 +223,7 @@
             "type": "Shader"
         },
         {
-            "fileName": "BVH.hlsli",
+            "fileName": "BVHTraverse.hlsli",
             "type": "Shader"
         }
     ],

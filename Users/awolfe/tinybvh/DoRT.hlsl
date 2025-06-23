@@ -2,7 +2,7 @@
 /*$(ShaderResources)*/
 
 #include "PBR.hlsli"
-#include "BVH.hlsli"
+#include "BVHTraverse.hlsli"
 
 // from https://learnopengl.com/PBR/IBL/Diffuse-irradiance
 float2 SampleSphericalMap(float3 v)

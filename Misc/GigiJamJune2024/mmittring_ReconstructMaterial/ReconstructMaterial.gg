@@ -46,12 +46,11 @@
         {
             "name": "GenInputImage",
             "fileName": "GenInputImage.hlsl",
-            "entryPoint": "main",
             "resources": [
                 {
                     "name": "Data",
-                    "type": "Texture",
                     "access": "UAV",
+                    "type": "Texture",
                     "buffer": {
                         "PODAsStructuredBuffer": false
                     }
@@ -62,31 +61,30 @@
             "name": "ComputeGradient",
             "fileName": "ComputeGradient.hlsl",
             "language": "Slang",
-            "entryPoint": "main",
             "slangOptions": {
                 "process": true
             },
             "resources": [
                 {
                     "name": "OutputGradient",
-                    "type": "Texture",
                     "access": "UAV",
+                    "type": "Texture",
                     "buffer": {
                         "PODAsStructuredBuffer": false
                     }
                 },
                 {
                     "name": "StateA",
-                    "type": "Texture",
                     "access": "UAV",
+                    "type": "Texture",
                     "buffer": {
                         "PODAsStructuredBuffer": false
                     }
                 },
                 {
                     "name": "StateB",
-                    "type": "Texture",
                     "access": "UAV",
+                    "type": "Texture",
                     "buffer": {
                         "PODAsStructuredBuffer": false
                     }
@@ -97,39 +95,38 @@
             "name": "Overview",
             "fileName": "Overview.hlsl",
             "language": "Slang",
-            "entryPoint": "main",
             "slangOptions": {
                 "process": true
             },
             "resources": [
                 {
                     "name": "OutputGradient",
-                    "type": "Texture",
                     "access": "SRV",
+                    "type": "Texture",
                     "buffer": {
                         "PODAsStructuredBuffer": false
                     }
                 },
                 {
                     "name": "StateA",
-                    "type": "Texture",
                     "access": "SRV",
+                    "type": "Texture",
                     "buffer": {
                         "PODAsStructuredBuffer": false
                     }
                 },
                 {
                     "name": "StateB",
-                    "type": "Texture",
                     "access": "SRV",
+                    "type": "Texture",
                     "buffer": {
                         "PODAsStructuredBuffer": false
                     }
                 },
                 {
                     "name": "OverviewImage",
-                    "type": "Texture",
                     "access": "UAV",
+                    "type": "Texture",
                     "buffer": {
                         "PODAsStructuredBuffer": false
                     }
@@ -340,6 +337,14 @@
             "shaderModelCs": "cs_5_1",
             "shaderModelVs": "vs_5_1",
             "shaderModelPs": "ps_5_1"
+        },
+        "webGPU": {
+            "features": {
+                "float32Filterable": true
+            },
+            "limits": {
+                "maxStorageTexturesPerShaderStage": 8
+            }
         }
     },
     "PrimaryOutput": {
