@@ -1,6 +1,6 @@
 {
     "Title":"MNIST CNN",
-    "Description":"Recognizes what number you draw by doing convolutional neural network inference in real time, in compute shaders",
+    "Description":"Recognizes what number you draw by doing convolutional neural network inference in real time, in compute shaders. Includes python training scripts, see readme.txt for more information.",
     "Author":"Demofox",
     "Tags":"ML,inference",
     "Technique": "mnist.gg",
