@@ -259,5 +259,11 @@
             "DetailsFile": "gigi-NN-Adam-Optimizer/Technique.json",
             "ListedDate" : "2025-06-18",
         },
+        {
+            "Repo": "https://github.com/electronicarts/gigi-techniques.git",
+            "Commit": "main",
+            "DetailsFile": "Users/awolfe/MNIST_CNN/Technique.json",
+            "ListedDate" : "2025-07-14",
+        },
     ]
 }
