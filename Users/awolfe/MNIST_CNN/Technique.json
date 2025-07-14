@@ -1,0 +1,11 @@
+{
+    "Title":"MNIST CNN",
+    "Description":"Recognizes what number you draw by doing convolutional neural network inference in real time, in compute shaders",
+    "Author":"Demofox",
+    "Tags":"ML,inference",
+    "Technique": "mnist.gg",
+    "Website": "https://github.com/electronicarts/cpp-ml-intro",
+    "Screenshot":"Screenshot.png",
+    "License":"LICENSE.txt",
+    "GigiVersion":"1.0",
+}
