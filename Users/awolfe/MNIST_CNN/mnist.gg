@@ -1,0 +1,1412 @@
+{
+    "$schema": "gigischema.json",
+    "name": "mnist",
+    "comment": "Left mouse to draw, right mouse to erase.\n\nFrom left to right:\n- Input (28x28)\n- Convolution 1 (24x24x2)\n- Max Pool 1 (12x12x2)\n- Convolution 2 (10x10x4)\n- Max Pool 2 (5x5x4)\n- Linear (10)",
+    "version": "1.0",
+    "variables": [
+        {
+            "name": "Clear",
+            "type": "Bool",
+            "dflt": "false",
+            "visibility": "User",
+            "UISettings": {
+                "UIHint": "Button"
+            },
+            "UIHint": "Button"
+        },
+        {
+            "name": "MouseState",
+            "type": "Float4",
+            "dflt": "0.0f, 0.0f, 0.0f, 0.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "MouseStateLastFrame",
+            "type": "Float4",
+            "dflt": "0.0f, 0.0f, 0.0f, 0.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "iResolution",
+            "type": "Float3",
+            "dflt": "0.0f, 0.0f, 0.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "iTime",
+            "type": "Float",
+            "dflt": "0.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "iTimeDelta",
+            "type": "Float",
+            "dflt": "0.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "iFrameRate",
+            "type": "Float",
+            "dflt": "0.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "iFrame",
+            "type": "Int",
+            "dflt": "0",
+            "visibility": "Host",
+            "transient": true
+        },
+        {
+            "name": "iMouse",
+            "type": "Float4",
+            "dflt": "0.0f, 0.0f, 0.0f",
+            "visibility": "Host"
+        },
+        {
+            "name": "PenSize",
+            "type": "Float",
+            "dflt": "10.0f",
+            "visibility": "User"
+        },
+        {
+            "name": "c_NNInputImageSize",
+            "type": "Uint2",
+            "Const": true,
+            "Static": true,
+            "dflt": "28, 28"
+        },
+        {
+            "name": "c_drawingCanvasSize",
+            "type": "Uint2",
+            "Const": true,
+            "Static": true,
+            "dflt": "256, 256"
+        },
+        {
+            "name": "UseImportedImage",
+            "type": "Bool",
+            "dflt": "false",
+            "visibility": "User"
+        },
+        {
+            "name": "NormalizeDrawing",
+            "comment": "MNIST normalization: shrink image to 20x20 and put center of mass in the middle of a 28x28 image",
+            "type": "Bool",
+            "dflt": "true",
+            "visibility": "User"
+        },
+        {
+            "name": "initialized",
+            "type": "Bool",
+            "dflt": "false",
+            "transient": true
+        },
+        {
+            "name": "Conv1OutputScale",
+            "comment": "Scale Conv1 output. 24x24x2 unscaled.",
+            "type": "Int",
+            "dflt": "4",
+            "visibility": "User",
+            "UIGroup": "UI"
+        },
+        {
+            "name": "MaxPool1OutputScale",
+            "comment": "Scale MaxPool1 output. 12x12x2 unscaled.",
+            "type": "Int",
+            "dflt": "8",
+            "visibility": "User",
+            "UIGroup": "UI"
+        },
+        {
+            "name": "Conv2OutputScale",
+            "comment": "Scale Conv2 output. 10x10x4 unscaled.",
+            "type": "Int",
+            "dflt": "8",
+            "visibility": "User",
+            "UIGroup": "UI"
+        },
+        {
+            "name": "MaxPool2OutputScale",
+            "comment": "Scale MaxPool2 output. 5x5x4 unscaled.",
+            "type": "Int",
+            "dflt": "16",
+            "visibility": "User",
+            "UIGroup": "UI"
+        }
+    ],
+    "shaders": [
+        {
+            "name": "Draw",
+            "fileName": "draw.hlsl",
+            "entryPoint": "Draw",
+            "resources": [
+                {
+                    "name": "Canvas",
+                    "access": "UAV",
+                    "type": "Texture",
+                    "buffer": {
+                        "PODAsStructuredBuffer": false
+                    },
+                    "texture": {
+                        "viewType": "Float"
+                    }
+                },
+                {
+                    "name": "DrawExtents",
+                    "access": "UAV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "typeStruct": {
+                            "name": "DrawExtents"
+                        },
+                        "PODAsStructuredBuffer": false
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Shrink",
+            "fileName": "shrink.hlsl",
+            "entryPoint": "Shrink",
+            "resources": [
+                {
+                    "name": "Canvas",
+                    "access": "SRV",
+                    "type": "Texture",
+                    "buffer": {
+                        "PODAsStructuredBuffer": false
+                    },
+                    "texture": {
+                        "viewType": "Float"
+                    }
+                },
+                {
+                    "name": "DrawExtents",
+                    "access": "SRV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "typeStruct": {
+                            "name": "DrawExtents"
+                        },
+                        "PODAsStructuredBuffer": false
+                    }
+                },
+                {
+                    "name": "NNInput",
+                    "access": "UAV",
+                    "type": "Texture",
+                    "buffer": {
+                        "PODAsStructuredBuffer": false
+                    },
+                    "texture": {
+                        "viewType": "Float"
+                    }
+                },
+                {
+                    "name": "ImportedImage",
+                    "access": "SRV",
+                    "type": "Texture",
+                    "buffer": {
+                        "PODAsStructuredBuffer": false
+                    },
+                    "texture": {
+                        "viewType": "Float"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Presentation",
+            "fileName": "Presentation.hlsl",
+            "entryPoint": "Presentation",
+            "resources": [
+                {
+                    "name": "DrawCanvas",
+                    "access": "SRV",
+                    "type": "Texture",
+                    "buffer": {
+                        "PODAsStructuredBuffer": false
+                    },
+                    "texture": {
+                        "viewType": "Float"
+                    }
+                },
+                {
+                    "name": "NNInput",
+                    "access": "SRV",
+                    "type": "Texture",
+                    "buffer": {
+                        "PODAsStructuredBuffer": false
+                    },
+                    "texture": {
+                        "viewType": "Float"
+                    }
+                },
+                {
+                    "name": "Conv1Output",
+                    "access": "SRV",
+                    "type": "Texture",
+                    "texture": {
+                        "dimension": "Texture2DArray",
+                        "viewType": "Float"
+                    }
+                },
+                {
+                    "name": "MaxPool1Output",
+                    "access": "SRV",
+                    "type": "Texture",
+                    "texture": {
+                        "dimension": "Texture2DArray",
+                        "viewType": "Float"
+                    }
+                },
+                {
+                    "name": "Conv2Output",
+                    "access": "SRV",
+                    "type": "Texture",
+                    "texture": {
+                        "dimension": "Texture2DArray",
+                        "viewType": "Float"
+                    }
+                },
+                {
+                    "name": "MaxPool2Output",
+                    "access": "SRV",
+                    "type": "Texture",
+                    "texture": {
+                        "dimension": "Texture2DArray",
+                        "viewType": "Float"
+                    }
+                },
+                {
+                    "name": "MaxValues",
+                    "access": "SRV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "type": "Uint"
+                    }
+                },
+                {
+                    "name": "LinearOutput",
+                    "access": "SRV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "type": "Float"
+                    },
+                    "texture": {
+                        "dimension": "Texture2DArray",
+                        "viewType": "Float"
+                    }
+                },
+                {
+                    "name": "PresentationCanvas",
+                    "access": "UAV",
+                    "type": "Texture",
+                    "buffer": {
+                        "PODAsStructuredBuffer": false
+                    }
+                }
+            ]
+        },
+        {
+            "name": "CalculateExtents",
+            "fileName": "CalculateExtents.hlsl",
+            "entryPoint": "CalculateExtents",
+            "resources": [
+                {
+                    "name": "Canvas",
+                    "access": "SRV",
+                    "type": "Texture",
+                    "buffer": {
+                        "PODAsStructuredBuffer": false
+                    },
+                    "texture": {
+                        "viewType": "Float"
+                    }
+                },
+                {
+                    "name": "DrawExtents",
+                    "access": "UAV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "typeStruct": {
+                            "name": "DrawExtents"
+                        },
+                        "PODAsStructuredBuffer": false
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Conv1",
+            "fileName": "Conv1.hlsl",
+            "resources": [
+                {
+                    "name": "Input",
+                    "access": "SRV",
+                    "type": "Texture",
+                    "texture": {
+                        "viewType": "Float"
+                    }
+                },
+                {
+                    "name": "Weights",
+                    "access": "SRV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "type": "Float"
+                    }
+                },
+                {
+                    "name": "Bias",
+                    "access": "SRV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "type": "Float"
+                    }
+                },
+                {
+                    "name": "Output",
+                    "access": "UAV",
+                    "type": "Texture",
+                    "texture": {
+                        "dimension": "Texture2DArray",
+                        "viewType": "Float"
+                    }
+                },
+                {
+                    "name": "MaxValues",
+                    "access": "UAV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "type": "Uint"
+                    },
+                    "allowAtomicOps": true
+                }
+            ]
+        },
+        {
+            "name": "MaxPool1",
+            "fileName": "MaxPool1.hlsl",
+            "resources": [
+                {
+                    "name": "Input",
+                    "access": "SRV",
+                    "type": "Texture",
+                    "texture": {
+                        "dimension": "Texture2DArray",
+                        "viewType": "Float"
+                    }
+                },
+                {
+                    "name": "MaxValues",
+                    "access": "UAV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "type": "Uint"
+                    },
+                    "allowAtomicOps": true
+                },
+                {
+                    "name": "Output",
+                    "access": "UAV",
+                    "type": "Texture",
+                    "texture": {
+                        "dimension": "Texture2DArray",
+                        "viewType": "Float"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Conv2",
+            "fileName": "Conv2.hlsl",
+            "resources": [
+                {
+                    "name": "Input",
+                    "access": "SRV",
+                    "type": "Texture",
+                    "texture": {
+                        "dimension": "Texture2DArray",
+                        "viewType": "Float"
+                    }
+                },
+                {
+                    "name": "MaxValues",
+                    "access": "UAV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "type": "Uint"
+                    },
+                    "allowAtomicOps": true
+                },
+                {
+                    "name": "Weights",
+                    "access": "SRV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "type": "Float"
+                    }
+                },
+                {
+                    "name": "Bias",
+                    "access": "SRV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "type": "Float"
+                    }
+                },
+                {
+                    "name": "Output",
+                    "access": "UAV",
+                    "type": "Texture",
+                    "texture": {
+                        "dimension": "Texture2DArray",
+                        "viewType": "Float"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "MaxPool2",
+            "fileName": "MaxPool2.hlsl",
+            "resources": [
+                {
+                    "name": "Input",
+                    "access": "SRV",
+                    "type": "Texture",
+                    "texture": {
+                        "dimension": "Texture2DArray",
+                        "viewType": "Float"
+                    }
+                },
+                {
+                    "name": "MaxValues",
+                    "access": "UAV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "type": "Uint"
+                    },
+                    "allowAtomicOps": true
+                },
+                {
+                    "name": "Output",
+                    "access": "UAV",
+                    "type": "Texture",
+                    "texture": {
+                        "dimension": "Texture2DArray",
+                        "viewType": "Float"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Linear",
+            "fileName": "Linear.hlsl",
+            "NumThreads": [
+                64,
+                1,
+                1
+            ],
+            "resources": [
+                {
+                    "name": "Input",
+                    "access": "SRV",
+                    "type": "Texture",
+                    "texture": {
+                        "dimension": "Texture2DArray",
+                        "viewType": "Float"
+                    }
+                },
+                {
+                    "name": "MaxValues",
+                    "access": "UAV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "type": "Uint"
+                    },
+                    "allowAtomicOps": true
+                },
+                {
+                    "name": "Weights",
+                    "access": "SRV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "type": "Float"
+                    }
+                },
+                {
+                    "name": "Bias",
+                    "access": "SRV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "type": "Float"
+                    }
+                },
+                {
+                    "name": "Output",
+                    "access": "UAV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "type": "Float"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "InitMaxValues",
+            "fileName": "InitMaxValues.hlsl",
+            "NumThreads": [
+                64,
+                1,
+                1
+            ],
+            "resources": [
+                {
+                    "name": "MaxValues",
+                    "access": "UAV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "type": "Uint"
+                    }
+                }
+            ]
+        }
+    ],
+    "structs": [
+        {
+            "name": "DrawExtents",
+            "fields": [
+                {
+                    "name": "MinX",
+                    "type": "Uint",
+                    "dflt": "0"
+                },
+                {
+                    "name": "MaxX",
+                    "type": "Uint",
+                    "dflt": "0"
+                },
+                {
+                    "name": "MinY",
+                    "type": "Uint",
+                    "dflt": "0"
+                },
+                {
+                    "name": "MaxY",
+                    "type": "Uint",
+                    "dflt": "0"
+                },
+                {
+                    "name": "PixelCount",
+                    "type": "Uint",
+                    "dflt": "0"
+                },
+                {
+                    "name": "PixelLocationSum",
+                    "type": "Uint2",
+                    "dflt": "0, 0"
+                }
+            ]
+        }
+    ],
+    "fileCopies": [
+        {
+            "fileName": "train2.model.0.bias.bin",
+            "type": "Asset",
+            "binary": true
+        },
+        {
+            "fileName": "train2.model.0.weight.bin",
+            "type": "Asset",
+            "binary": true
+        },
+        {
+            "fileName": "train2.model.3.bias.bin",
+            "type": "Asset",
+            "binary": true
+        },
+        {
+            "fileName": "train2.model.3.weight.bin",
+            "type": "Asset",
+            "binary": true
+        },
+        {
+            "fileName": "train2.model.7.bias.bin",
+            "type": "Asset",
+            "binary": true
+        },
+        {
+            "fileName": "train2.model.7.weight.bin",
+            "type": "Asset",
+            "binary": true
+        }
+    ],
+    "nodes": [
+        {
+            "actionComputeShader": {
+                "name": "Draw",
+                "editorPos": [
+                    355.0,
+                    162.0
+                ],
+                "linkProperties": [
+                    {},
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Canvas",
+                        "dstNode": "Drawing Canvas",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "DrawExtents",
+                        "dstNode": "Draw Extents",
+                        "dstPin": "resource"
+                    }
+                ],
+                "shader": {
+                    "name": "Draw"
+                },
+                "dispatchSize": {
+                    "node": {
+                        "name": "Drawing Canvas"
+                    },
+                    "indirectBuffer": {
+                        "node": "NN Input"
+                    }
+                }
+            }
+        },
+        {
+            "resourceTexture": {
+                "name": "Drawing Canvas",
+                "editorPos": [
+                    197.0,
+                    162.0
+                ],
+                "transient": false,
+                "format": {
+                    "format": "R32_Float"
+                },
+                "size": {
+                    "variable": {
+                        "name": "c_drawingCanvasSize"
+                    }
+                }
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "Shrink",
+                "editorPos": [
+                    691.0,
+                    162.0
+                ],
+                "linkProperties": [
+                    {},
+                    {},
+                    {},
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Canvas",
+                        "dstNode": "CalculateExtents",
+                        "dstPin": "Canvas"
+                    },
+                    {
+                        "srcPin": "DrawExtents",
+                        "dstNode": "CalculateExtents",
+                        "dstPin": "DrawExtents"
+                    },
+                    {
+                        "srcPin": "NNInput",
+                        "dstNode": "NN Input",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "ImportedImage",
+                        "dstNode": "Imported Image",
+                        "dstPin": "resource"
+                    }
+                ],
+                "shader": {
+                    "name": "Shrink"
+                },
+                "dispatchSize": {
+                    "node": {
+                        "name": "NN Input"
+                    },
+                    "indirectBuffer": {
+                        "node": "NN Input"
+                    }
+                }
+            }
+        },
+        {
+            "resourceTexture": {
+                "name": "NN Input",
+                "editorPos": [
+                    509.0,
+                    274.0
+                ],
+                "format": {
+                    "format": "R32_Float"
+                },
+                "size": {
+                    "multiply": [
+                        28,
+                        28,
+                        1
+                    ]
+                }
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "Presentation",
+                "editorPos": [
+                    2559.0,
+                    151.0
+                ],
+                "linkProperties": [
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "DrawCanvas",
+                        "dstNode": "Shrink",
+                        "dstPin": "Canvas"
+                    },
+                    {
+                        "srcPin": "NNInput",
+                        "dstNode": "Conv1",
+                        "dstPin": "Input"
+                    },
+                    {
+                        "srcPin": "Conv1Output",
+                        "dstNode": "MaxPool1",
+                        "dstPin": "Input"
+                    },
+                    {
+                        "srcPin": "MaxPool1Output",
+                        "dstNode": "Conv2",
+                        "dstPin": "Input"
+                    },
+                    {
+                        "srcPin": "Conv2Output",
+                        "dstNode": "MaxPool2",
+                        "dstPin": "Input"
+                    },
+                    {
+                        "srcPin": "MaxPool2Output",
+                        "dstNode": "Linear",
+                        "dstPin": "Input"
+                    },
+                    {
+                        "srcPin": "MaxValues",
+                        "dstNode": "Linear",
+                        "dstPin": "MaxValues"
+                    },
+                    {
+                        "srcPin": "LinearOutput",
+                        "dstNode": "Linear",
+                        "dstPin": "Output"
+                    },
+                    {
+                        "srcPin": "PresentationCanvas",
+                        "dstNode": "Presentation Canvas",
+                        "dstPin": "resource"
+                    }
+                ],
+                "shader": {
+                    "name": "Presentation"
+                },
+                "dispatchSize": {
+                    "node": {
+                        "name": "Presentation Canvas"
+                    },
+                    "indirectBuffer": {
+                        "node": "Presentation Canvas"
+                    }
+                }
+            }
+        },
+        {
+            "resourceTexture": {
+                "name": "Presentation Canvas",
+                "editorPos": [
+                    2350.0,
+                    418.0
+                ],
+                "visibility": "Exported",
+                "format": {
+                    "format": "RGBA8_Unorm_sRGB"
+                },
+                "size": {
+                    "multiply": [
+                        880,
+                        630,
+                        1
+                    ]
+                }
+            }
+        },
+        {
+            "resourceTexture": {
+                "name": "Imported Image",
+                "editorPos": [
+                    485.0,
+                    338.0
+                ],
+                "visibility": "Imported"
+            }
+        },
+        {
+            "resourceBuffer": {
+                "name": "Draw Extents",
+                "editorPos": [
+                    209.0,
+                    242.0
+                ],
+                "format": {
+                    "structureType": {
+                        "name": "DrawExtents"
+                    }
+                }
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "CalculateExtents",
+                "editorPos": [
+                    515.0,
+                    162.0
+                ],
+                "linkProperties": [
+                    {},
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Canvas",
+                        "dstNode": "Draw",
+                        "dstPin": "Canvas"
+                    },
+                    {
+                        "srcPin": "DrawExtents",
+                        "dstNode": "Draw",
+                        "dstPin": "DrawExtents"
+                    }
+                ],
+                "shader": {
+                    "name": "CalculateExtents"
+                },
+                "dispatchSize": {
+                    "node": {
+                        "name": "Drawing Canvas"
+                    }
+                }
+            }
+        },
+        {
+            "resourceBuffer": {
+                "name": "Conv1Weights",
+                "editorPos": [
+                    943.0,
+                    258.0
+                ],
+                "visibility": "Imported"
+            }
+        },
+        {
+            "resourceBuffer": {
+                "name": "Conv1Bias",
+                "editorPos": [
+                    955.0,
+                    306.0
+                ],
+                "visibility": "Imported"
+            }
+        },
+        {
+            "resourceBuffer": {
+                "name": "Conv2Weights",
+                "editorPos": [
+                    1311.0,
+                    450.0
+                ],
+                "visibility": "Imported"
+            }
+        },
+        {
+            "resourceBuffer": {
+                "name": "Conv2Bias",
+                "editorPos": [
+                    1339.0,
+                    498.0
+                ],
+                "visibility": "Imported"
+            }
+        },
+        {
+            "resourceBuffer": {
+                "name": "LinearWeights",
+                "editorPos": [
+                    1773.0,
+                    434.0
+                ],
+                "visibility": "Imported"
+            }
+        },
+        {
+            "resourceBuffer": {
+                "name": "LinearBias",
+                "editorPos": [
+                    1787.0,
+                    482.0
+                ],
+                "visibility": "Imported"
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "Conv1",
+                "editorPos": [
+                    1163.0,
+                    198.0
+                ],
+                "linkProperties": [
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Input",
+                        "dstNode": "Shrink",
+                        "dstPin": "NNInput"
+                    },
+                    {
+                        "srcPin": "Weights",
+                        "dstNode": "Conv1Weights",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "Bias",
+                        "dstNode": "Conv1Bias",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "Output",
+                        "dstNode": "Conv1Output",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "MaxValues",
+                        "dstNode": "InitMaxValues",
+                        "dstPin": "MaxValues"
+                    }
+                ],
+                "shader": {
+                    "name": "Conv1"
+                },
+                "dispatchSize": {
+                    "node": {
+                        "name": "Conv1Output"
+                    }
+                }
+            }
+        },
+        {
+            "resourceTexture": {
+                "name": "Conv1Output",
+                "editorPos": [
+                    954.0,
+                    370.0
+                ],
+                "format": {
+                    "format": "R32_Float"
+                },
+                "size": {
+                    "multiply": [
+                        24,
+                        24,
+                        2
+                    ]
+                },
+                "dimension": "Texture2DArray"
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "MaxPool1",
+                "editorPos": [
+                    1349.0,
+                    233.0
+                ],
+                "linkProperties": [
+                    {},
+                    {},
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Input",
+                        "dstNode": "Conv1",
+                        "dstPin": "Output"
+                    },
+                    {
+                        "srcPin": "MaxValues",
+                        "dstNode": "Conv1",
+                        "dstPin": "MaxValues"
+                    },
+                    {
+                        "srcPin": "Output",
+                        "dstNode": "MaxPool1Output",
+                        "dstPin": "resource"
+                    }
+                ],
+                "shader": {
+                    "name": "MaxPool1"
+                },
+                "dispatchSize": {
+                    "node": {
+                        "name": "MaxPool1Output"
+                    }
+                }
+            }
+        },
+        {
+            "resourceTexture": {
+                "name": "MaxPool1Output",
+                "editorPos": [
+                    1172.0,
+                    354.0
+                ],
+                "format": {
+                    "format": "R32_Float"
+                },
+                "size": {
+                    "multiply": [
+                        12,
+                        12,
+                        2
+                    ]
+                },
+                "dimension": "Texture2DArray"
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "Conv2",
+                "editorPos": [
+                    1547.0,
+                    266.0
+                ],
+                "linkProperties": [
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Input",
+                        "dstNode": "MaxPool1",
+                        "dstPin": "Output"
+                    },
+                    {
+                        "srcPin": "MaxValues",
+                        "dstNode": "MaxPool1",
+                        "dstPin": "MaxValues"
+                    },
+                    {
+                        "srcPin": "Weights",
+                        "dstNode": "Conv2Weights",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "Bias",
+                        "dstNode": "Conv2Bias",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "Output",
+                        "dstNode": "Conv2Output",
+                        "dstPin": "resource"
+                    }
+                ],
+                "shader": {
+                    "name": "Conv2"
+                },
+                "dispatchSize": {
+                    "node": {
+                        "name": "Conv2Output"
+                    }
+                }
+            }
+        },
+        {
+            "resourceTexture": {
+                "name": "Conv2Output",
+                "editorPos": [
+                    1354.0,
+                    546.0
+                ],
+                "format": {
+                    "format": "R32_Float"
+                },
+                "size": {
+                    "multiply": [
+                        10,
+                        10,
+                        4
+                    ]
+                },
+                "dimension": "Texture2DArray"
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "MaxPool2",
+                "editorPos": [
+                    1755.0,
+                    303.0
+                ],
+                "linkProperties": [
+                    {},
+                    {},
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Input",
+                        "dstNode": "Conv2",
+                        "dstPin": "Output"
+                    },
+                    {
+                        "srcPin": "MaxValues",
+                        "dstNode": "Conv2",
+                        "dstPin": "MaxValues"
+                    },
+                    {
+                        "srcPin": "Output",
+                        "dstNode": "MaxPool2Output",
+                        "dstPin": "resource"
+                    }
+                ],
+                "shader": {
+                    "name": "MaxPool2"
+                },
+                "dispatchSize": {
+                    "node": {
+                        "name": "MaxPool2Output"
+                    }
+                }
+            }
+        },
+        {
+            "resourceTexture": {
+                "name": "MaxPool2Output",
+                "editorPos": [
+                    1556.0,
+                    422.0
+                ],
+                "format": {
+                    "format": "R32_Float"
+                },
+                "size": {
+                    "multiply": [
+                        5,
+                        5,
+                        4
+                    ]
+                },
+                "dimension": "Texture2DArray"
+            }
+        },
+        {
+            "resourceBuffer": {
+                "name": "MaxValues",
+                "editorPos": [
+                    795.0,
+                    422.0
+                ],
+                "format": {
+                    "type": "Uint"
+                },
+                "count": {
+                    "multiply": 10
+                }
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "Linear",
+                "editorPos": [
+                    2027.0,
+                    326.0
+                ],
+                "linkProperties": [
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Input",
+                        "dstNode": "MaxPool2",
+                        "dstPin": "Output"
+                    },
+                    {
+                        "srcPin": "MaxValues",
+                        "dstNode": "MaxPool2",
+                        "dstPin": "MaxValues"
+                    },
+                    {
+                        "srcPin": "Weights",
+                        "dstNode": "LinearWeights",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "Bias",
+                        "dstNode": "LinearBias",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "Output",
+                        "dstNode": "LinearOutput",
+                        "dstPin": "resource"
+                    }
+                ],
+                "shader": {
+                    "name": "Linear"
+                },
+                "dispatchSize": {
+                    "node": {
+                        "name": "LinearOutput"
+                    }
+                }
+            }
+        },
+        {
+            "resourceBuffer": {
+                "name": "LinearOutput",
+                "editorPos": [
+                    1780.0,
+                    530.0
+                ],
+                "format": {
+                    "type": "Float"
+                },
+                "count": {
+                    "multiply": 10
+                }
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "InitMaxValues",
+                "editorPos": [
+                    917.0,
+                    422.0
+                ],
+                "linkProperties": [
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "MaxValues",
+                        "dstNode": "MaxValues",
+                        "dstPin": "resource"
+                    }
+                ],
+                "shader": {
+                    "name": "InitMaxValues"
+                },
+                "dispatchSize": {
+                    "node": {
+                        "name": "MaxValues"
+                    },
+                    "divide": [
+                        2,
+                        1,
+                        1
+                    ]
+                }
+            }
+        }
+    ],
+    "setVars": [
+        {
+            "destination": {
+                "name": "iFrame"
+            },
+            "AVar": {
+                "name": "iFrame"
+            },
+            "BLiteral": "1",
+            "condition": {
+                "variable1": "initialized",
+                "comparison": "IsTrue"
+            }
+        },
+        {
+            "destination": {
+                "name": "iFrame"
+            },
+            "ALiteral": "0",
+            "BLiteral": "0",
+            "condition": {
+                "variable1": "initialized",
+                "comparison": "IsFalse"
+            }
+        },
+        {
+            "destination": {
+                "name": "initialized"
+            },
+            "ALiteral": "true",
+            "op": "BitwiseOr",
+            "BLiteral": "true",
+            "setBefore": false
+        }
+    ],
+    "settings": {
+        "webGPU": {
+            "features": {
+                "float32Filterable": true
+            }
+        }
+    },
+    "PrimaryOutput": {
+        "name": "Presentation Canvas"
+    }
+}

@@ -1,0 +1,89 @@
+{
+    "version": "2.0",
+    "systemVars": {
+        "iResolution_textureName": "Drawing_Canvas",
+        "iFrame_varName": ""
+    },
+    "snapshot": {
+        "resourceViewNodeIndex": 4,
+        "resourceViewResourceIndex": 21,
+        "cameraAltitudeAzimuth": [
+            -0.9691861867904663,
+            5.442090034484863
+        ],
+        "importedResources": [
+            {
+                "nodeName": "Conv1Bias",
+                "isATexture": false,
+                "buffer": {
+                    "fileName": "train2.model.0.bias.bin",
+                    "type": "Float",
+                    "BLASOpaque": true
+                }
+            },
+            {
+                "nodeName": "Conv1Weights",
+                "isATexture": false,
+                "buffer": {
+                    "fileName": "train2.model.0.weight.bin",
+                    "type": "Float",
+                    "BLASOpaque": true
+                }
+            },
+            {
+                "nodeName": "Conv2Bias",
+                "isATexture": false,
+                "buffer": {
+                    "fileName": "train2.model.3.bias.bin",
+                    "type": "Float",
+                    "BLASOpaque": true
+                }
+            },
+            {
+                "nodeName": "Conv2Weights",
+                "isATexture": false,
+                "buffer": {
+                    "fileName": "train2.model.3.weight.bin",
+                    "type": "Float",
+                    "BLASOpaque": true
+                }
+            },
+            {
+                "nodeName": "Imported_Image",
+                "texture": {
+                    "fileName": "9.png",
+                    "size": [
+                        28,
+                        28,
+                        1
+                    ],
+                    "format": "R8_Unorm"
+                }
+            },
+            {
+                "nodeName": "LinearBias",
+                "isATexture": false,
+                "buffer": {
+                    "fileName": "train2.model.7.bias.bin",
+                    "type": "Float",
+                    "BLASOpaque": true
+                }
+            },
+            {
+                "nodeName": "LinearWeights",
+                "isATexture": false,
+                "buffer": {
+                    "fileName": "train2.model.7.weight.bin",
+                    "type": "Float",
+                    "BLASOpaque": true
+                }
+            }
+        ],
+        "savedVariables": [
+            {
+                "name": "Clear",
+                "value": "false"
+            }
+        ]
+    }
+}
