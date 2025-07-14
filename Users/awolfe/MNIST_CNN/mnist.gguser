@@ -7,6 +7,10 @@
     "snapshot": {
         "resourceViewNodeIndex": 4,
         "resourceViewResourceIndex": 21,
+        "cameraAltitudeAzimuth": [
+            -0.9691861867904663,
+            5.442090034484863
+        ],
         "importedResources": [
             {
                 "nodeName": "Conv1Bias",

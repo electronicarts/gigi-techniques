@@ -1,5 +1,14 @@
 /*$(ShaderResources)*/
 
+#define USE_MAX_VALUES 1
+// 0 = use sigmoid to map +/- inf to [0,1]
+// 1 = use min/max values to map actual range to [0,1]
+
+float sigmoid(float x)
+{
+    return 1.0f / (1.0f + exp(-x));
+}
+
 float DecodeAtomicInt(uint i)
 {
     // https://www.jeremyong.com/graphics/2023/09/05/f32-interlocked-min-max-hlsl/
@@ -136,9 +145,13 @@ float DecodeAtomicInt(uint i)
             readPx.xy /= c_conv1OutputScale;
 
             // Normalize for display
-            float minValue = DecodeAtomicInt(MaxValues[0].x);
-            float maxValue = DecodeAtomicInt(MaxValues[0].y);
+            #if USE_MAX_VALUES
+            float minValue = DecodeAtomicInt(MaxValues[0 * 2 + 0]);
+            float maxValue = DecodeAtomicInt(MaxValues[0 * 2 + 1]);
             float value = (Conv1Output[readPx] - minValue) / (maxValue - minValue);
+            #else
+            float value = sigmoid(Conv1Output[readPx]);
+            #endif
 
             PresentationCanvas[DTid.xy] = float4(value.xxx, 1.0f);
             return;
@@ -172,9 +185,13 @@ float DecodeAtomicInt(uint i)
             readPx.xy /= c_maxPool1OutputScale;
 
             // Normalize for display
-            float minValue = DecodeAtomicInt(MaxValues[1].x);
-            float maxValue = DecodeAtomicInt(MaxValues[1].y);
+            #if USE_MAX_VALUES
+            float minValue = DecodeAtomicInt(MaxValues[1 * 2 + 0]);
+            float maxValue = DecodeAtomicInt(MaxValues[1 * 2 + 1]);
             float value = (MaxPool1Output[readPx] - minValue) / (maxValue - minValue);
+            #else
+            float value = sigmoid(MaxPool1Output[readPx]);
+            #endif
 
             PresentationCanvas[DTid.xy] = float4(value.xxx, 1.0f);
             return;
@@ -208,9 +225,13 @@ float DecodeAtomicInt(uint i)
             readPx.xy /= c_conv2OutputScale;
 
             // Normalize for display
-            float minValue = DecodeAtomicInt(MaxValues[2].x);
-            float maxValue = DecodeAtomicInt(MaxValues[2].y);
+            #if USE_MAX_VALUES
+            float minValue = DecodeAtomicInt(MaxValues[2 * 2 + 0]);
+            float maxValue = DecodeAtomicInt(MaxValues[2 * 2 + 1]);
             float value = (Conv2Output[readPx] - minValue) / (maxValue - minValue);
+            #else
+            float value = sigmoid(Conv2Output[readPx]);
+            #endif
 
             PresentationCanvas[DTid.xy] = float4(value.xxx, 1.0f);
             return;
@@ -244,9 +265,13 @@ float DecodeAtomicInt(uint i)
             readPx.xy /= c_maxPool2OutputScale;
 
             // Normalize for display
-            float minValue = DecodeAtomicInt(MaxValues[3].x);
-            float maxValue = DecodeAtomicInt(MaxValues[3].y);
+            #if USE_MAX_VALUES
+            float minValue = DecodeAtomicInt(MaxValues[3 * 2 + 0]);
+            float maxValue = DecodeAtomicInt(MaxValues[3 * 2 + 1]);
             float value = (MaxPool2Output[readPx] - minValue) / (maxValue - minValue);
+            #else
+            float value = sigmoid(MaxPool2Output[readPx]);
+            #endif
 
             PresentationCanvas[DTid.xy] = float4(value.xxx, 1.0f);
             return;
@@ -274,9 +299,13 @@ float DecodeAtomicInt(uint i)
             relPos.y /= 31;
 
             // Normalize for display
-            float minValue = DecodeAtomicInt(MaxValues[4].x);
-            float maxValue = DecodeAtomicInt(MaxValues[4].y);
+            #if USE_MAX_VALUES
+            float minValue = DecodeAtomicInt(MaxValues[4 * 2 + 0]);
+            float maxValue = DecodeAtomicInt(MaxValues[4 * 2 + 1]);
             float value = (LinearOutput[relPos.y] - minValue) / (maxValue - minValue);
+            #else
+            float value = sigmoid(LinearOutput[relPos.y]);
+            #endif
 
             PresentationCanvas[DTid.xy] = float4(value.xxx, 1.0f);
             return;
@@ -318,9 +347,13 @@ float DecodeAtomicInt(uint i)
                 if (alpha > 0.0f)
                 {
                     // Normalize for display
-                    float minValue = DecodeAtomicInt(MaxValues[4].x);
-                    float maxValue = DecodeAtomicInt(MaxValues[4].y);
+                    #if USE_MAX_VALUES
+                    float minValue = DecodeAtomicInt(MaxValues[4 * 2 + 0]);
+                    float maxValue = DecodeAtomicInt(MaxValues[4 * 2 + 1]);
                     float value = (LinearOutput[index] - minValue) / (maxValue - minValue);
+                    #else
+                    float value = sigmoid(LinearOutput[index]);
+                    #endif
 
                     float3 pixelColor = lerp(float3(0.4f, 0.0f, 0.0f), float3(1.0f, 1.0f, 0.0f), value);
                     pixelColor = lerp(c_backgroundColor.rgb, pixelColor, alpha);
@@ -363,7 +396,7 @@ float DecodeAtomicInt(uint i)
         }
     }
 
-    // Draw the instructions
+    // Draw the instructions - not on webgpu though because it puts us over budget for sampled textures
     {
         int2 relPos = int2(DTid.xy) - c_instructionsPos;
 

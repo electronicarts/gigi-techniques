@@ -41,8 +41,9 @@
             uvalue = ~uvalue;
         }
 
-        InterlockedMin(MaxValues[0].x, uvalue);
-        InterlockedMax(MaxValues[0].y, uvalue);
+        uint dummy = 0;
+        InterlockedMin(MaxValues[0 * 2 + 0], uvalue, dummy);
+        InterlockedMax(MaxValues[0 * 2 + 1], uvalue, dummy);
     }
 
     // write result

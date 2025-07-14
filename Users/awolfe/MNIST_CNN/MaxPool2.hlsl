@@ -29,8 +29,9 @@
             uvalue = ~uvalue;
         }
 
-        InterlockedMin(MaxValues[3].x, uvalue);
-        InterlockedMax(MaxValues[3].y, uvalue);
+        uint dummy = 0;
+        InterlockedMin(MaxValues[3 * 2 + 0], uvalue, dummy);
+        InterlockedMax(MaxValues[3 * 2 + 1], uvalue, dummy);
     }
 
     Output[DTid] = result;

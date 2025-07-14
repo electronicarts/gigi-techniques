@@ -1,6 +1,7 @@
 {
     "$schema": "gigischema.json",
     "name": "mnist",
+    "comment": "Left mouse to draw, right mouse to erase.\n\nFrom left to right:\n- Input (28x28)\n- Convolution 1 (24x24x2)\n- Max Pool 1 (12x12x2)\n- Convolution 2 (10x10x4)\n- Max Pool 2 (5x5x4)\n- Linear (10)",
     "version": "1.0",
     "variables": [
         {
@@ -283,7 +284,7 @@
                     "access": "SRV",
                     "type": "Buffer",
                     "buffer": {
-                        "type": "Uint2"
+                        "type": "Uint"
                     }
                 },
                 {
@@ -379,7 +380,7 @@
                     "access": "UAV",
                     "type": "Buffer",
                     "buffer": {
-                        "type": "Uint2"
+                        "type": "Uint"
                     },
                     "allowAtomicOps": true
                 }
@@ -403,7 +404,7 @@
                     "access": "UAV",
                     "type": "Buffer",
                     "buffer": {
-                        "type": "Uint2"
+                        "type": "Uint"
                     },
                     "allowAtomicOps": true
                 },
@@ -436,7 +437,7 @@
                     "access": "UAV",
                     "type": "Buffer",
                     "buffer": {
-                        "type": "Uint2"
+                        "type": "Uint"
                     },
                     "allowAtomicOps": true
                 },
@@ -485,7 +486,7 @@
                     "access": "UAV",
                     "type": "Buffer",
                     "buffer": {
-                        "type": "Uint2"
+                        "type": "Uint"
                     },
                     "allowAtomicOps": true
                 },
@@ -523,8 +524,9 @@
                     "access": "UAV",
                     "type": "Buffer",
                     "buffer": {
-                        "type": "Uint2"
-                    }
+                        "type": "Uint"
+                    },
+                    "allowAtomicOps": true
                 },
                 {
                     "name": "Weights",
@@ -566,7 +568,7 @@
                     "access": "UAV",
                     "type": "Buffer",
                     "buffer": {
-                        "type": "Uint2"
+                        "type": "Uint"
                     }
                 }
             ]
@@ -1254,10 +1256,10 @@
                     422.0
                 ],
                 "format": {
-                    "type": "Uint2"
+                    "type": "Uint"
                 },
                 "count": {
-                    "multiply": 5
+                    "multiply": 10
                 }
             }
         },
@@ -1352,7 +1354,12 @@
                 "dispatchSize": {
                     "node": {
                         "name": "MaxValues"
-                    }
+                    },
+                    "divide": [
+                        2,
+                        1,
+                        1
+                    ]
                 }
             }
         }
