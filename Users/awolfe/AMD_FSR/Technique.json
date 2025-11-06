@@ -1,0 +1,10 @@
+{
+    "Title":"AMD FSR",
+    "Description":"A demonstration of AMD FidelityFX upscaling and frame generation",
+    "Author":"Demofox",
+    "Tags":"rendering",
+    "Technique": "Upscale.gg",
+    "Screenshot":"Screenshot.png",
+    "License":"LICENSE.txt",
+    "GigiVersion":"1.01",
+}
