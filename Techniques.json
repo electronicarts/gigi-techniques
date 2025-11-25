@@ -270,6 +270,24 @@
             "Commit": "main",
             "DetailsFile": "Users/awolfe/AMD_FSR/Technique.json",
             "ListedDate" : "2025-11-06",
-        },        
+        },
+        {
+            "Repo": "https://github.com/electronicarts/ShaderToHuman.git",
+            "Commit": "master",
+            "DetailsFile": "gigi_helloWorld.json",
+            "ListedDate" : "2025-11-25",
+        },
+        {
+            "Repo": "https://github.com/electronicarts/ShaderToHuman.git",
+            "Commit": "master",
+            "DetailsFile": "gigi_gaussianSplatting.json",
+            "ListedDate" : "2025-11-25",
+        },
+        {
+            "Repo": "https://github.com/electronicarts/ShaderToHuman.git",
+            "Commit": "master",
+            "DetailsFile": "gigi_features.json",
+            "ListedDate" : "2025-11-25",
+        },
     ]
 }
