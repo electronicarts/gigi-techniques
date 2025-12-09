@@ -289,5 +289,11 @@
             "DetailsFile": "gigi_features.json",
             "ListedDate" : "2025-11-25",
         },
+        {
+            "Repo": "https://github.com/b1skit/LTCAreaLightsGigi.git",
+            "Commit": "139215f698e38fc77dd1b5694e3e46618b21e8e6",
+            "DetailsFile": "Technique.json",
+            "ListedDate": "2025-12-9"
+        },
     ]
 }
