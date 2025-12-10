@@ -295,5 +295,47 @@
             "DetailsFile": "Technique.json",
             "ListedDate": "2025-12-9"
         },
+        {
+            "Repo": "https://github.com/electronicarts/gigi-techniques.git",
+            "Commit": "main",
+            "DetailsFile": "Users/awolfe/AudioInputOutput/Technique.json",
+            "ListedDate" : "2025-12-10",
+        },
+        {
+            "Repo": "https://github.com/electronicarts/gigi-techniques.git",
+            "Commit": "main",
+            "DetailsFile": "Users/awolfe/BezierNoteSlide/Technique.json",
+            "ListedDate" : "2025-12-10",
+        },
+        {
+            "Repo": "https://github.com/electronicarts/gigi-techniques.git",
+            "Commit": "main",
+            "DetailsFile": "Users/awolfe/KarplusStrong/Technique.json",
+            "ListedDate" : "2025-12-10",
+        },
+        {
+            "Repo": "https://github.com/electronicarts/gigi-techniques.git",
+            "Commit": "main",
+            "DetailsFile": "Users/awolfe/SimpleAudio/Technique.json",
+            "ListedDate" : "2025-12-10",
+        },
+        {
+            "Repo": "https://github.com/electronicarts/gigi-techniques.git",
+            "Commit": "main",
+            "DetailsFile": "Users/awolfe/SimpleWaveForms/Technique.json",
+            "ListedDate" : "2025-12-10",
+        },
+        {
+            "Repo": "https://github.com/electronicarts/gigi-techniques.git",
+            "Commit": "main",
+            "DetailsFile": "Users/awolfe/SimpleWebcam/Technique.json",
+            "ListedDate" : "2025-12-10",
+        },
+        {
+            "Repo": "https://github.com/electronicarts/gigi-techniques.git",
+            "Commit": "main",
+            "DetailsFile": "Users/awolfe/SoundOrbit/Technique.json",
+            "ListedDate" : "2025-12-10",
+        },
     ]
 }

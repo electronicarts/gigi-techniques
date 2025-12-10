@@ -1,0 +1,131 @@
+{
+    "$schema": "gigischema.json",
+    "version": "1.01",
+    "variables": [
+        {
+            "name": "Frequency",
+            "type": "Float",
+            "dflt": "440.0",
+            "visibility": "User"
+        },
+        {
+            "name": "AudioOutStereo",
+            "type": "Bool"
+        },
+        {
+            "name": "AudioOutSampleRate",
+            "type": "Uint"
+        },
+        {
+            "name": "AudioOutSampleWindowStart",
+            "type": "Uint"
+        },
+        {
+            "name": "AudioOutSampleWindowCount",
+            "type": "Uint"
+        },
+        {
+            "name": "Volume",
+            "type": "Float",
+            "dflt": "1.0f",
+            "visibility": "User",
+            "UISettings": {
+                "UIHint": "Slider",
+                "min": "0.0",
+                "max": "1.0"
+            }
+        }
+    ],
+    "shaders": [
+        {
+            "name": "MakeAudio",
+            "fileName": "MakeAudioCS.hlsl",
+            "NumThreads": [
+                64,
+                1,
+                1
+            ],
+            "resources": [
+                {
+                    "name": "Audio",
+                    "access": "UAV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "type": "Float"
+                    }
+                }
+            ]
+        }
+    ],
+    "nodes": [
+        {
+            "resourceBuffer": {
+                "name": "Audio",
+                "editorPos": [
+                    -21.0,
+                    -30.0
+                ],
+                "visibility": "Imported"
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "MakeAudio",
+                "editorPos": [
+                    111.0,
+                    -30.0
+                ],
+                "condition": {
+                    "variable1": "AudioOutSampleWindowCount",
+                    "comparison": "GT",
+                    "value2": "0"
+                },
+                "linkProperties": [
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Audio",
+                        "dstNode": "Audio",
+                        "dstPin": "resource"
+                    }
+                ],
+                "shader": {
+                    "name": "MakeAudio"
+                },
+                "dispatchSize": {
+                    "variable": {
+                        "name": "AudioOutSampleWindowCount"
+                    }
+                }
+            }
+        }
+    ],
+    "setVars": [
+        {
+            "destination": {
+                "name": "AudioOutSampleWindowStart"
+            },
+            "AVar": {
+                "name": "AudioOutSampleWindowStart"
+            },
+            "BVar": {
+                "name": "AudioOutSampleWindowCount"
+            },
+            "setBefore": false
+        },
+        {
+            "destination": {
+                "name": "AudioOutSampleWindowStart"
+            },
+            "AVar": {
+                "name": "AudioOutSampleWindowStart"
+            },
+            "op": "Modulo",
+            "BVar": {
+                "name": "AudioOutSampleRate"
+            },
+            "setBefore": false
+        }
+    ]
+}

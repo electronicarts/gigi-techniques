@@ -1,0 +1,10 @@
+{
+    "Title":"KarplusStrong",
+    "Description":"A polyphonic synthesizer using karplus strong string simulation",
+    "Author":"Demofox",
+    "Tags":"audio",
+    "Technique": "KarplusStrong.gg",
+    "Screenshot":"Screenshot.png",
+    "License":"LICENSE.txt",
+    "GigiVersion":"1.01",
+}

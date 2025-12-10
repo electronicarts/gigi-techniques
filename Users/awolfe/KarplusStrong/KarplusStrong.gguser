@@ -1,0 +1,35 @@
+{
+    "version": "2.0",
+    "systemVars": {
+        "KeyState_bufferName": "KeyStates"
+    },
+    "snapshot": {
+        "resourceViewNodeIndex": 3,
+        "resourceViewResourceIndex": 3,
+        "cameraPos": [
+            -2.401534080505371,
+            -1.2146350145339966,
+            -12.491496086120606
+        ],
+        "importedResources": [
+            {
+                "nodeName": "Audio",
+                "resetEveryFrame": false,
+                "isATexture": false,
+                "buffer": {
+                    "type": "Float",
+                    "count": 13230,
+                    "BLASOpaque": true
+                }
+            }
+        ]
+    },
+    "Audio": {
+        "Var_Stereo": "AudioOutStereo",
+        "Var_SampleRate": "AudioOutSampleRate",
+        "outputBuffer": {
+            "name": "Audio"
+        },
+        "outputBufferLengthMs": 150
+    }
+}

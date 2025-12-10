@@ -1,0 +1,39 @@
+{
+    "version": "2.0",
+    "snapshot": {
+        "resourceViewType": 6,
+        "resourceViewNodeIndex": 0,
+        "resourceViewResourceIndex": 1,
+        "importedResources": [
+            {
+                "nodeName": "AudioInput",
+                "resetEveryFrame": false,
+                "isATexture": false,
+                "buffer": {
+                    "type": "Float",
+                    "count": 13230,
+                    "BLASOpaque": true
+                }
+            },
+            {
+                "nodeName": "AudioOutput",
+                "isATexture": false,
+                "buffer": {
+                    "type": "Float",
+                    "count": 13230,
+                    "BLASOpaque": true
+                }
+            }
+        ]
+    },
+    "Audio": {
+        "outputBuffer": {
+            "name": "AudioOutput"
+        },
+        "outputBufferLengthMs": 150,
+        "inputBuffer": {
+            "name": "AudioInput"
+        },
+        "inputBufferLengthMs": 150
+    }
+}

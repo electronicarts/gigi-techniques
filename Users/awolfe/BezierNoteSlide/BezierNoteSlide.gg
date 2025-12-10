@@ -1,0 +1,277 @@
+{
+    "$schema": "gigischema.json",
+    "version": "1.01",
+    "variables": [
+        {
+            "name": "TimeScale",
+            "comment": "How long it should take to play the curve, in seconds",
+            "type": "Float",
+            "dflt": "1.0f",
+            "visibility": "User"
+        },
+        {
+            "name": "FrequencyMultiplyAdd",
+            "comment": "Control points are multiplied by x and added to y to get a frequency",
+            "type": "Float2",
+            "dflt": "2000.0f, 0.0f",
+            "visibility": "User"
+        },
+        {
+            "name": "ControlPoint1",
+            "type": "Float",
+            "dflt": "0.75",
+            "visibility": "User",
+            "UISettings": {
+                "UIHint": "Slider",
+                "min": "0.0f",
+                "max": "1.0f"
+            }
+        },
+        {
+            "name": "ControlPoint2",
+            "type": "Float",
+            "dflt": "0.0",
+            "visibility": "User",
+            "UISettings": {
+                "UIHint": "Slider",
+                "min": "0.0f",
+                "max": "1.0f"
+            }
+        },
+        {
+            "name": "ControlPoint3",
+            "type": "Float",
+            "dflt": "0.0",
+            "visibility": "User",
+            "UISettings": {
+                "UIHint": "Slider",
+                "min": "0.0f",
+                "max": "1.0f"
+            }
+        },
+        {
+            "name": "ControlPoint4",
+            "type": "Float",
+            "dflt": "0.25",
+            "visibility": "User",
+            "UISettings": {
+                "UIHint": "Slider",
+                "min": "0.0f",
+                "max": "1.0f"
+            }
+        },
+        {
+            "name": "AudioOutStereo",
+            "type": "Bool"
+        },
+        {
+            "name": "AudioOutSampleRate",
+            "type": "Uint"
+        },
+        {
+            "name": "AudioOutSampleWindowStart",
+            "type": "Uint"
+        },
+        {
+            "name": "AudioOutSampleWindowCount",
+            "type": "Uint"
+        },
+        {
+            "name": "_AudioOutSampleRateF",
+            "type": "Float"
+        },
+        {
+            "name": "_MaxAudioSampleF",
+            "type": "Float"
+        },
+        {
+            "name": "_MaxAudioSample",
+            "type": "Uint"
+        }
+    ],
+    "shaders": [
+        {
+            "name": "MakeAudio",
+            "fileName": "MakeAudioCS.hlsl",
+            "NumThreads": [
+                64,
+                1,
+                1
+            ],
+            "resources": [
+                {
+                    "name": "Audio",
+                    "access": "UAV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "type": "Float"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "MakeVideo",
+            "fileName": "MakeVideoCS.hlsl",
+            "resources": [
+                {
+                    "name": "Output",
+                    "access": "UAV",
+                    "type": "Texture"
+                }
+            ]
+        }
+    ],
+    "fileCopies": [
+        {
+            "fileName": "Shared.hlsli",
+            "type": "Shader"
+        }
+    ],
+    "nodes": [
+        {
+            "resourceBuffer": {
+                "name": "Audio",
+                "editorPos": [
+                    -21.0,
+                    -30.0
+                ],
+                "visibility": "Imported"
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "MakeAudio",
+                "editorPos": [
+                    111.0,
+                    -30.0
+                ],
+                "condition": {
+                    "variable1": "AudioOutSampleWindowCount",
+                    "comparison": "GT",
+                    "value2": "0"
+                },
+                "linkProperties": [
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Audio",
+                        "dstNode": "Audio",
+                        "dstPin": "resource"
+                    }
+                ],
+                "shader": {
+                    "name": "MakeAudio"
+                },
+                "dispatchSize": {
+                    "variable": {
+                        "name": "AudioOutSampleWindowCount"
+                    }
+                }
+            }
+        },
+        {
+            "resourceTexture": {
+                "name": "Video",
+                "editorPos": [
+                    -21.0,
+                    34.0
+                ],
+                "format": {
+                    "format": "RGBA8_Unorm"
+                },
+                "size": {
+                    "multiply": [
+                        512,
+                        512,
+                        1
+                    ]
+                }
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "MakeVideo",
+                "editorPos": [
+                    105.0,
+                    34.0
+                ],
+                "linkProperties": [
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Output",
+                        "dstNode": "Video",
+                        "dstPin": "resource"
+                    }
+                ],
+                "shader": {
+                    "name": "MakeVideo"
+                },
+                "dispatchSize": {
+                    "node": {
+                        "name": "Video"
+                    }
+                }
+            }
+        }
+    ],
+    "setVars": [
+        {
+            "destination": {
+                "name": "_AudioOutSampleRateF"
+            },
+            "AVar": {
+                "name": "AudioOutSampleRate"
+            },
+            "op": "Noop"
+        },
+        {
+            "destination": {
+                "name": "_MaxAudioSampleF"
+            },
+            "AVar": {
+                "name": "_AudioOutSampleRateF"
+            },
+            "op": "Multiply",
+            "BVar": {
+                "name": "TimeScale"
+            }
+        },
+        {
+            "destination": {
+                "name": "_MaxAudioSample"
+            },
+            "AVar": {
+                "name": "_MaxAudioSampleF"
+            },
+            "op": "Noop"
+        },
+        {
+            "destination": {
+                "name": "AudioOutSampleWindowStart"
+            },
+            "AVar": {
+                "name": "AudioOutSampleWindowStart"
+            },
+            "BVar": {
+                "name": "AudioOutSampleWindowCount"
+            },
+            "setBefore": false
+        },
+        {
+            "destination": {
+                "name": "AudioOutSampleWindowStart"
+            },
+            "AVar": {
+                "name": "AudioOutSampleWindowStart"
+            },
+            "op": "Modulo",
+            "BVar": {
+                "name": "_MaxAudioSample"
+            },
+            "setBefore": false
+        }
+    ]
+}

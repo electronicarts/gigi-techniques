@@ -1,0 +1,10 @@
+{
+    "Title":"SimpleWebcam",
+    "Description":"A simple demo showing how to use webcam video input.",
+    "Author":"Demofox",
+    "Tags":"audio",
+    "Technique": "SimpleWebcam.gg",
+    "Screenshot":"Screenshot.png",
+    "License":"LICENSE.txt",
+    "GigiVersion":"1.01",
+}

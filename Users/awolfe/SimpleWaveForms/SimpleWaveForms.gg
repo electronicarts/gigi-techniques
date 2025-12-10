@@ -1,0 +1,470 @@
+{
+    "$schema": "gigischema.json",
+    "version": "1.01",
+    "variables": [
+        {
+            "name": "Silence",
+            "comment": "Force all voices to stop",
+            "type": "Bool",
+            "visibility": "User",
+            "UISettings": {
+                "UIHint": "Button"
+            }
+        },
+        {
+            "name": "WaveForm",
+            "type": "Int",
+            "dflt": "Square",
+            "visibility": "User",
+            "Enum": "WaveForms"
+        },
+        {
+            "name": "Harmonics",
+            "comment": "The number of harmonics for band limited wave forms (additive synthesis). 0 means not bandlimited.",
+            "type": "Int",
+            "dflt": "8",
+            "visibility": "User"
+        },
+        {
+            "name": "Volume",
+            "type": "Float",
+            "dflt": "1.0f",
+            "visibility": "User",
+            "UISettings": {
+                "UIHint": "Slider",
+                "min": "0.0",
+                "max": "1.0"
+            }
+        },
+        {
+            "name": "Attack",
+            "comment": "ADSR envelope. When a key pressed, it goes up to x volume over y seconds.",
+            "type": "Float2",
+            "dflt": "1.0, 0.01",
+            "visibility": "User"
+        },
+        {
+            "name": "Decay",
+            "comment": "ADSR envelope. When attack is over, it goes to x volume over y seconds.",
+            "type": "Float2",
+            "dflt": "0.5, 0.3",
+            "visibility": "User"
+        },
+        {
+            "name": "Sustain",
+            "comment": "If true, the note stays at the decayed volume until released. If false, the note goes to release automatically",
+            "type": "Bool",
+            "dflt": "false",
+            "visibility": "User"
+        },
+        {
+            "name": "Release",
+            "comment": "ADSR envelope. How long to go from decay volume to 0.",
+            "type": "Float",
+            "dflt": "0.75",
+            "visibility": "User"
+        },
+        {
+            "name": "Polyphony",
+            "comment": "How many notes can play at the same time",
+            "type": "Uint",
+            "dflt": "8",
+            "visibility": "User"
+        },
+        {
+            "name": "AudioOutStereo",
+            "type": "Bool"
+        },
+        {
+            "name": "AudioOutSampleRate",
+            "type": "Uint"
+        },
+        {
+            "name": "AudioOutSampleWindowCount",
+            "type": "Uint"
+        },
+        {
+            "name": "iTime",
+            "type": "Float"
+        }
+    ],
+    "shaders": [
+        {
+            "name": "MakeVideo",
+            "fileName": "MakeVideoCS.hlsl",
+            "resources": [
+                {
+                    "name": "Output",
+                    "access": "UAV",
+                    "type": "Texture"
+                }
+            ]
+        },
+        {
+            "name": "SpawnVoices",
+            "fileName": "SpawnVoicesCS.hlsl",
+            "NumThreads": [
+                1,
+                1,
+                1
+            ],
+            "resources": [
+                {
+                    "name": "Voices",
+                    "access": "UAV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "typeStruct": {
+                            "name": "Voice"
+                        }
+                    }
+                },
+                {
+                    "name": "KeyStates",
+                    "access": "SRV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "type": "Uint"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "MakeAudio",
+            "fileName": "MakeAudioCS.hlsl",
+            "NumThreads": [
+                64,
+                1,
+                1
+            ],
+            "resources": [
+                {
+                    "name": "Audio",
+                    "access": "UAV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "type": "Float"
+                    }
+                },
+                {
+                    "name": "Voices",
+                    "access": "SRV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "typeStruct": {
+                            "name": "Voice"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "AdvanceVoices",
+            "fileName": "AdvanceVoicesCS.hlsl",
+            "NumThreads": [
+                1,
+                1,
+                1
+            ],
+            "resources": [
+                {
+                    "name": "Voices",
+                    "access": "UAV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "typeStruct": {
+                            "name": "Voice"
+                        }
+                    }
+                },
+                {
+                    "name": "KeyStates",
+                    "access": "SRV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "type": "Uint"
+                    }
+                }
+            ]
+        }
+    ],
+    "structs": [
+        {
+            "name": "Voice",
+            "fields": [
+                {
+                    "name": "note",
+                    "type": "Uint"
+                },
+                {
+                    "name": "key",
+                    "type": "Uint"
+                },
+                {
+                    "name": "sampleOffset",
+                    "type": "Uint"
+                },
+                {
+                    "name": "releaseSample",
+                    "type": "Uint"
+                }
+            ]
+        }
+    ],
+    "fileCopies": [
+        {
+            "fileName": "ADSR.hlsli",
+            "type": "Shader"
+        }
+    ],
+    "nodes": [
+        {
+            "resourceBuffer": {
+                "name": "Audio",
+                "editorPos": [
+                    203.0,
+                    -62.0
+                ],
+                "visibility": "Imported"
+            }
+        },
+        {
+            "resourceBuffer": {
+                "name": "KeyStates",
+                "editorPos": [
+                    -21.0,
+                    34.0
+                ],
+                "transient": false,
+                "format": {
+                    "type": "Uint"
+                },
+                "count": {
+                    "multiply": 512
+                }
+            }
+        },
+        {
+            "resourceTexture": {
+                "name": "Video",
+                "editorPos": [
+                    331.0,
+                    114.0
+                ],
+                "format": {
+                    "format": "RGBA8_Unorm"
+                },
+                "size": {
+                    "multiply": [
+                        512,
+                        256,
+                        1
+                    ]
+                }
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "MakeVideo",
+                "editorPos": [
+                    485.0,
+                    114.0
+                ],
+                "linkProperties": [
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Output",
+                        "dstNode": "Video",
+                        "dstPin": "resource"
+                    }
+                ],
+                "shader": {
+                    "name": "MakeVideo"
+                },
+                "dispatchSize": {
+                    "node": {
+                        "name": "Video"
+                    }
+                }
+            }
+        },
+        {
+            "resourceBuffer": {
+                "name": "Voices",
+                "comment": "x is note, y is sample time, z is release sample time.",
+                "editorPos": [
+                    -21.0,
+                    -30.0
+                ],
+                "transient": false,
+                "format": {
+                    "structureType": {
+                        "name": "Voice"
+                    }
+                },
+                "count": {
+                    "variable": {
+                        "name": "Polyphony"
+                    }
+                }
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "SpawnVoices",
+                "editorPos": [
+                    117.0,
+                    15.0
+                ],
+                "linkProperties": [
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Voices",
+                        "dstNode": "Voices",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "KeyStates",
+                        "dstNode": "KeyStates",
+                        "dstPin": "resource"
+                    }
+                ],
+                "shader": {
+                    "name": "SpawnVoices"
+                }
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "MakeAudio",
+                "editorPos": [
+                    319.0,
+                    -14.0
+                ],
+                "condition": {
+                    "variable1": "AudioOutSampleWindowCount",
+                    "comparison": "GT",
+                    "value2": "0"
+                },
+                "linkProperties": [
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Audio",
+                        "dstNode": "Audio",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "Voices",
+                        "dstNode": "SpawnVoices",
+                        "dstPin": "Voices"
+                    }
+                ],
+                "shader": {
+                    "name": "MakeAudio"
+                },
+                "dispatchSize": {
+                    "variable": {
+                        "name": "AudioOutSampleWindowCount"
+                    }
+                }
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "AdvanceVoices",
+                "editorPos": [
+                    485.0,
+                    18.0
+                ],
+                "linkProperties": [
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Voices",
+                        "dstNode": "MakeAudio",
+                        "dstPin": "Voices"
+                    },
+                    {
+                        "srcPin": "KeyStates",
+                        "dstNode": "SpawnVoices",
+                        "dstPin": "KeyStates"
+                    }
+                ],
+                "shader": {
+                    "name": "AdvanceVoices"
+                }
+            }
+        }
+    ],
+    "enums": [
+        {
+            "name": "WaveForms",
+            "items": [
+                {
+                    "label": "Sine"
+                },
+                {
+                    "label": "Triangle"
+                },
+                {
+                    "label": "Square"
+                },
+                {
+                    "label": "Saw"
+                }
+            ]
+        }
+    ],
+    "setVars": [
+        {
+            "destination": {
+                "name": "Polyphony"
+            },
+            "AVar": {
+                "name": "Polyphony"
+            },
+            "op": "Maximum",
+            "BLiteral": "1"
+        },
+        {
+            "destination": {
+                "name": "Polyphony"
+            },
+            "AVar": {
+                "name": "Polyphony"
+            },
+            "op": "Minimum",
+            "BLiteral": "32"
+        },
+        {
+            "destination": {
+                "name": "Harmonics"
+            },
+            "AVar": {
+                "name": "Harmonics"
+            },
+            "op": "Maximum",
+            "BLiteral": "0"
+        },
+        {
+            "destination": {
+                "name": "Harmonics"
+            },
+            "AVar": {
+                "name": "Harmonics"
+            },
+            "op": "Minimum",
+            "BLiteral": "16"
+        }
+    ]
+}

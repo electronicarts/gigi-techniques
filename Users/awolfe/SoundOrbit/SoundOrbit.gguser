@@ -1,0 +1,29 @@
+{
+    "version": "2.0",
+    "systemVars": {
+        "KeyState_bufferName": "KeyStates"
+    },
+    "snapshot": {
+        "resourceViewNodeIndex": 3,
+        "resourceViewResourceIndex": 2,
+        "importedResources": [
+            {
+                "nodeName": "Audio",
+                "resetEveryFrame": false,
+                "isATexture": false,
+                "buffer": {
+                    "type": "Float",
+                    "count": 26460,
+                    "BLASOpaque": true
+                }
+            }
+        ]
+    },
+    "Audio": {
+        "Var_Stereo": "AudioOutStereo",
+        "Var_SampleRate": "AudioOutSampleRate",
+        "outputBuffer": {
+            "name": "Audio"
+        }
+    }
+}

@@ -1,0 +1,10 @@
+{
+    "Title":"BezierNoteSlide",
+    "Description":"A bezier curve controls a sine wave frequency over time",
+    "Author":"Demofox",
+    "Tags":"audio",
+    "Technique": "BezierNoteSlide.gg",
+    "Screenshot":"Screenshot.png",
+    "License":"LICENSE.txt",
+    "GigiVersion":"1.01",
+}

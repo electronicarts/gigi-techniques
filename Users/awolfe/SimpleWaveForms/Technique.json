@@ -1,0 +1,10 @@
+{
+    "Title":"SimpleWaveForms",
+    "Description":"A polyphonic synthesizer supporting various wave forms and a user specified ADSR envelope.",
+    "Author":"Demofox",
+    "Tags":"audio",
+    "Technique": "SimpleWaveForms.gg",
+    "Screenshot":"Screenshot.png",
+    "License":"LICENSE.txt",
+    "GigiVersion":"1.01",
+}

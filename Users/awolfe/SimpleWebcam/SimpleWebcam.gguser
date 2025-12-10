@@ -1,0 +1,31 @@
+{
+    "version": "2.0",
+    "snapshot": {
+        "resourceViewNodeIndex": 2,
+        "resourceViewResourceIndex": 3,
+        "cameraAltitudeAzimuth": [
+            0.010129979811608792,
+            6.253066062927246
+        ],
+        "importedResources": [
+            {
+                "nodeName": "WebCam",
+                "resetEveryFrame": false,
+                "texture": {
+                    "size": [
+                        640,
+                        480,
+                        1
+                    ],
+                    "format": "RGBA8_Unorm",
+                    "binaryFormat": "Any"
+                }
+            }
+        ]
+    },
+    "WebCam": {
+        "outputTexture": {
+            "name": "WebCam"
+        }
+    }
+}

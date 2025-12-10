@@ -1,0 +1,10 @@
+{
+    "Title":"AudioInputOutput",
+    "Description":"Showing how audio input and output works",
+    "Author":"Demofox",
+    "Tags":"audio",
+    "Technique": "AudioInputOutput.gg",
+    "Screenshot":"Screenshot.png",
+    "License":"LICENSE.txt",
+    "GigiVersion":"1.01",
+}

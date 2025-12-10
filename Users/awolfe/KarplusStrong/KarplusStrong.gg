@@ -1,0 +1,920 @@
+{
+    "$schema": "gigischema.json",
+    "version": "1.01",
+    "variables": [
+        {
+            "name": "Silence",
+            "comment": "Force all voices to stop",
+            "type": "Bool",
+            "visibility": "User",
+            "UISettings": {
+                "UIHint": "Button"
+            }
+        },
+        {
+            "name": "Volume",
+            "type": "Float",
+            "dflt": "1.0f",
+            "visibility": "User",
+            "UISettings": {
+                "UIHint": "Slider",
+                "min": "0.0",
+                "max": "1.0"
+            }
+        },
+        {
+            "name": "SpinnerFrequency",
+            "comment": "Spinner stereo audio effect. How many times it spins per second. 0 for off.",
+            "type": "Float",
+            "dflt": "0.0f",
+            "visibility": "User",
+            "UIGroup": "Effects"
+        },
+        {
+            "name": "Delay",
+            "comment": "x is delay in seconds, delayed sound is multiplied by y before mixing in.",
+            "type": "Float2",
+            "dflt": "0, 0.25",
+            "visibility": "User",
+            "UIGroup": "Effects"
+        },
+        {
+            "name": "Tuning",
+            "comment": "Add this many notes worth of frequency to the calculated frequencies. Negative numbers to make the notes lower, positive to make the notes higher.",
+            "type": "Float",
+            "dflt": "-24.0f",
+            "visibility": "User",
+            "UIGroup": "Effects"
+        },
+        {
+            "name": "Feedback",
+            "comment": "A multiplier to make the notes lose amplitude (strings lose energy) over time",
+            "type": "Float",
+            "dflt": "0.95",
+            "visibility": "User"
+        },
+        {
+            "name": "AudibleThreshold",
+            "comment": "a voice must have an amplitude greater than this value to be considered audible. If it doesn't, it will be stopped.",
+            "type": "Float",
+            "dflt": "0.001",
+            "visibility": "User"
+        },
+        {
+            "name": "Polyphony",
+            "comment": "How many notes can play at the same time",
+            "type": "Uint",
+            "dflt": "16",
+            "visibility": "User"
+        },
+        {
+            "name": "AudioOutStereo",
+            "type": "Bool"
+        },
+        {
+            "name": "AudioOutSampleRate",
+            "type": "Uint"
+        },
+        {
+            "name": "AudioOutSampleWindowCount",
+            "type": "Uint"
+        },
+        {
+            "name": "SpinnerSampleClock",
+            "type": "Uint"
+        },
+        {
+            "name": "_MaxNotesSamples",
+            "type": "Uint"
+        },
+        {
+            "name": "_NotesBufferSize",
+            "type": "Uint"
+        },
+        {
+            "name": "iTime",
+            "type": "Float"
+        },
+        {
+            "name": "AudioOutSampleRateF",
+            "type": "Float"
+        },
+        {
+            "name": "_DelaySamplesF",
+            "type": "Float"
+        },
+        {
+            "name": "_DelaySamplesU",
+            "type": "Uint"
+        },
+        {
+            "name": "DelayClock",
+            "type": "Uint"
+        }
+    ],
+    "shaders": [
+        {
+            "name": "MakeVideo",
+            "fileName": "MakeVideoCS.hlsl",
+            "resources": [
+                {
+                    "name": "Output",
+                    "access": "UAV",
+                    "type": "Texture"
+                }
+            ]
+        },
+        {
+            "name": "SpawnVoices",
+            "fileName": "SpawnVoicesCS.hlsl",
+            "NumThreads": [
+                1,
+                1,
+                1
+            ],
+            "resources": [
+                {
+                    "name": "Voices",
+                    "access": "UAV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "typeStruct": {
+                            "name": "Voice"
+                        }
+                    }
+                },
+                {
+                    "name": "KeyStates",
+                    "access": "SRV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "type": "Uint"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "MakeAudio",
+            "fileName": "MakeAudioCS.hlsl",
+            "NumThreads": [
+                64,
+                1,
+                1
+            ],
+            "resources": [
+                {
+                    "name": "Audio",
+                    "access": "UAV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "type": "Float"
+                    }
+                },
+                {
+                    "name": "Voices",
+                    "access": "UAV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "typeStruct": {
+                            "name": "Voice"
+                        }
+                    }
+                },
+                {
+                    "name": "NotesBuffer",
+                    "access": "SRV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "type": "Float"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "AdvanceVoices",
+            "fileName": "AdvanceVoicesCS.hlsl",
+            "NumThreads": [
+                1,
+                1,
+                1
+            ],
+            "resources": [
+                {
+                    "name": "Voices",
+                    "access": "UAV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "typeStruct": {
+                            "name": "Voice"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "InitNotes",
+            "fileName": "InitNotesCS.hlsl",
+            "NumThreads": [
+                64,
+                1,
+                1
+            ],
+            "resources": [
+                {
+                    "name": "Voices",
+                    "access": "UAV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "typeStruct": {
+                            "name": "Voice"
+                        }
+                    }
+                },
+                {
+                    "name": "NotesBuffer",
+                    "access": "UAV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "type": "Float"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "DecayNotes",
+            "fileName": "DecayNotesCS.hlsl",
+            "NumThreads": [
+                64,
+                1,
+                1
+            ],
+            "resources": [
+                {
+                    "name": "Voices",
+                    "access": "UAV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "typeStruct": {
+                            "name": "Voice"
+                        }
+                    }
+                },
+                {
+                    "name": "Out",
+                    "access": "UAV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "type": "Float"
+                    }
+                },
+                {
+                    "name": "NotesBuffer",
+                    "access": "SRV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "type": "Float"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "DetectSilentVoices",
+            "fileName": "DetectSilentVoicesCS.hlsl",
+            "resources": [
+                {
+                    "name": "Voices",
+                    "access": "UAV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "typeStruct": {
+                            "name": "Voice"
+                        }
+                    }
+                },
+                {
+                    "name": "NotesBuffer",
+                    "access": "SRV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "type": "Float"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Delay",
+            "fileName": "DelayCS.hlsl",
+            "NumThreads": [
+                64,
+                1,
+                1
+            ],
+            "resources": [
+                {
+                    "name": "DelayBuffer",
+                    "access": "UAV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "type": "Float"
+                    }
+                },
+                {
+                    "name": "Audio",
+                    "access": "UAV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "type": "Float"
+                    }
+                }
+            ]
+        }
+    ],
+    "structs": [
+        {
+            "name": "Voice",
+            "fields": [
+                {
+                    "name": "noteSamples",
+                    "type": "Uint"
+                },
+                {
+                    "name": "sampleOffset",
+                    "type": "Uint"
+                },
+                {
+                    "name": "needsInitialization",
+                    "type": "Bool"
+                },
+                {
+                    "name": "audible",
+                    "type": "Uint"
+                },
+                {
+                    "name": "maxVolume",
+                    "type": "Uint"
+                }
+            ]
+        }
+    ],
+    "fileCopies": [
+        {
+            "fileName": "PCG.hlsli",
+            "type": "Shader"
+        }
+    ],
+    "nodes": [
+        {
+            "resourceBuffer": {
+                "name": "Audio",
+                "editorPos": [
+                    315.0,
+                    -46.0
+                ],
+                "visibility": "Imported"
+            }
+        },
+        {
+            "resourceBuffer": {
+                "name": "KeyStates",
+                "editorPos": [
+                    -21.0,
+                    34.0
+                ],
+                "transient": false,
+                "format": {
+                    "type": "Uint"
+                },
+                "count": {
+                    "multiply": 512
+                }
+            }
+        },
+        {
+            "resourceTexture": {
+                "name": "Video",
+                "editorPos": [
+                    367.0,
+                    162.0
+                ],
+                "format": {
+                    "format": "RGBA8_Unorm"
+                },
+                "size": {
+                    "multiply": [
+                        512,
+                        256,
+                        1
+                    ]
+                }
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "MakeVideo",
+                "editorPos": [
+                    489.0,
+                    162.0
+                ],
+                "linkProperties": [
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Output",
+                        "dstNode": "Video",
+                        "dstPin": "resource"
+                    }
+                ],
+                "shader": {
+                    "name": "MakeVideo"
+                },
+                "dispatchSize": {
+                    "node": {
+                        "name": "Video"
+                    }
+                }
+            }
+        },
+        {
+            "resourceBuffer": {
+                "name": "Voices",
+                "comment": "x is note, y is sample time, z is release sample time.",
+                "editorPos": [
+                    -21.0,
+                    -30.0
+                ],
+                "transient": false,
+                "format": {
+                    "structureType": {
+                        "name": "Voice"
+                    }
+                },
+                "count": {
+                    "variable": {
+                        "name": "Polyphony"
+                    }
+                }
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "SpawnVoices",
+                "editorPos": [
+                    117.0,
+                    15.0
+                ],
+                "linkProperties": [
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Voices",
+                        "dstNode": "Voices",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "KeyStates",
+                        "dstNode": "KeyStates",
+                        "dstPin": "resource"
+                    }
+                ],
+                "shader": {
+                    "name": "SpawnVoices"
+                }
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "MakeAudio",
+                "editorPos": [
+                    485.0,
+                    -4.0
+                ],
+                "condition": {
+                    "variable1": "AudioOutSampleWindowCount",
+                    "comparison": "GT",
+                    "value2": "0"
+                },
+                "linkProperties": [
+                    {},
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Audio",
+                        "dstNode": "Audio",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "Voices",
+                        "dstNode": "InitNotes",
+                        "dstPin": "Voices"
+                    },
+                    {
+                        "srcPin": "NotesBuffer",
+                        "dstNode": "InitNotes",
+                        "dstPin": "NotesBuffer"
+                    }
+                ],
+                "shader": {
+                    "name": "MakeAudio"
+                },
+                "dispatchSize": {
+                    "variable": {
+                        "name": "AudioOutSampleWindowCount"
+                    }
+                }
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "AdvanceVoices",
+                "editorPos": [
+                    1130.0,
+                    2.0
+                ],
+                "condition": {
+                    "variable1": "AudioOutSampleWindowCount",
+                    "comparison": "GT",
+                    "value2": "0"
+                },
+                "linkProperties": [
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Voices",
+                        "dstNode": "DetectSilentVoices",
+                        "dstPin": "Voices"
+                    }
+                ],
+                "shader": {
+                    "name": "AdvanceVoices"
+                }
+            }
+        },
+        {
+            "resourceBuffer": {
+                "name": "NotesBuffer",
+                "editorPos": [
+                    138.0,
+                    98.0
+                ],
+                "transient": false,
+                "format": {
+                    "type": "Float"
+                },
+                "count": {
+                    "variable": {
+                        "name": "_NotesBufferSize"
+                    }
+                }
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "InitNotes",
+                "editorPos": [
+                    277.0,
+                    15.0
+                ],
+                "linkProperties": [
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Voices",
+                        "dstNode": "SpawnVoices",
+                        "dstPin": "Voices"
+                    },
+                    {
+                        "srcPin": "NotesBuffer",
+                        "dstNode": "NotesBuffer",
+                        "dstPin": "resource"
+                    }
+                ],
+                "shader": {
+                    "name": "InitNotes"
+                },
+                "dispatchSize": {
+                    "variable": {
+                        "name": "_MaxNotesSamples"
+                    }
+                }
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "DecayNotes",
+                "editorPos": [
+                    662.0,
+                    -4.0
+                ],
+                "condition": {
+                    "variable1": "AudioOutSampleWindowCount",
+                    "comparison": "GT",
+                    "value2": "0"
+                },
+                "linkProperties": [
+                    {},
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Voices",
+                        "dstNode": "MakeAudio",
+                        "dstPin": "Voices"
+                    },
+                    {
+                        "srcPin": "Out",
+                        "dstNode": "NotesBufferCopy",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "NotesBuffer",
+                        "dstNode": "MakeAudio",
+                        "dstPin": "NotesBuffer"
+                    }
+                ],
+                "shader": {
+                    "name": "DecayNotes"
+                },
+                "dispatchSize": {
+                    "variable": {
+                        "name": "AudioOutSampleWindowCount"
+                    }
+                }
+            }
+        },
+        {
+            "resourceBuffer": {
+                "name": "NotesBufferCopy",
+                "editorPos": [
+                    479.0,
+                    -62.0
+                ],
+                "format": {
+                    "type": "Float"
+                },
+                "count": {
+                    "variable": {
+                        "name": "_NotesBufferSize"
+                    }
+                }
+            }
+        },
+        {
+            "actionCopyResource": {
+                "name": "CopyNotes",
+                "editorPos": [
+                    836.0,
+                    34.0
+                ],
+                "condition": {
+                    "variable1": "AudioOutSampleWindowCount",
+                    "comparison": "GT",
+                    "value2": "0"
+                },
+                "linkProperties": [
+                    {},
+                    {}
+                ],
+                "source": {
+                    "node": "DecayNotes",
+                    "pin": "Out"
+                },
+                "dest": {
+                    "node": "DecayNotes",
+                    "pin": "NotesBuffer"
+                }
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "DetectSilentVoices",
+                "editorPos": [
+                    966.0,
+                    -1.0
+                ],
+                "linkProperties": [
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Voices",
+                        "dstNode": "DecayNotes",
+                        "dstPin": "Voices"
+                    },
+                    {
+                        "srcPin": "NotesBuffer",
+                        "dstNode": "CopyNotes",
+                        "dstPin": "dest"
+                    }
+                ],
+                "shader": {
+                    "name": "DetectSilentVoices"
+                },
+                "dispatchSize": {
+                    "variable": {
+                        "name": "_MaxNotesSamples"
+                    }
+                }
+            }
+        },
+        {
+            "resourceBuffer": {
+                "name": "DelayBuffer",
+                "editorPos": [
+                    554.0,
+                    -174.0
+                ],
+                "transient": false,
+                "format": {
+                    "type": "Float"
+                },
+                "count": {
+                    "variable": {
+                        "name": "_DelaySamplesU"
+                    },
+                    "multiply": 2
+                }
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "Delay",
+                "editorPos": [
+                    709.0,
+                    -145.0
+                ],
+                "condition": {
+                    "variable1": "AudioOutSampleWindowCount",
+                    "comparison": "GT",
+                    "value2": "0"
+                },
+                "linkProperties": [
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "DelayBuffer",
+                        "dstNode": "DelayBuffer",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "Audio",
+                        "dstNode": "MakeAudio",
+                        "dstPin": "Audio"
+                    }
+                ],
+                "shader": {
+                    "name": "Delay"
+                },
+                "dispatchSize": {
+                    "variable": {
+                        "name": "AudioOutSampleWindowCount"
+                    }
+                }
+            }
+        }
+    ],
+    "setVars": [
+        {
+            "destination": {
+                "name": "Polyphony"
+            },
+            "AVar": {
+                "name": "Polyphony"
+            },
+            "op": "Maximum",
+            "BLiteral": "1"
+        },
+        {
+            "destination": {
+                "name": "Polyphony"
+            },
+            "AVar": {
+                "name": "Polyphony"
+            },
+            "op": "Minimum",
+            "BLiteral": "32"
+        },
+        {
+            "destination": {
+                "name": "_MaxNotesSamples"
+            },
+            "AVar": {
+                "name": "AudioOutSampleRate"
+            },
+            "op": "Divide",
+            "BLiteral": "20"
+        },
+        {
+            "destination": {
+                "name": "_NotesBufferSize"
+            },
+            "AVar": {
+                "name": "_MaxNotesSamples"
+            },
+            "op": "Multiply",
+            "BVar": {
+                "name": "Polyphony"
+            }
+        },
+        {
+            "destination": {
+                "name": "SpinnerSampleClock"
+            },
+            "AVar": {
+                "name": "SpinnerSampleClock"
+            },
+            "BVar": {
+                "name": "AudioOutSampleWindowCount"
+            }
+        },
+        {
+            "destination": {
+                "name": "SpinnerSampleClock"
+            },
+            "AVar": {
+                "name": "SpinnerSampleClock"
+            },
+            "op": "Modulo",
+            "BVar": {
+                "name": "AudioOutSampleRate"
+            }
+        },
+        {
+            "destination": {
+                "name": "AudioOutSampleRateF"
+            },
+            "AVar": {
+                "name": "AudioOutSampleRate"
+            },
+            "AVarIndex": 0,
+            "op": "Noop"
+        },
+        {
+            "destination": {
+                "name": "_DelaySamplesF"
+            },
+            "AVar": {
+                "name": "AudioOutSampleRateF"
+            },
+            "op": "Multiply",
+            "BVar": {
+                "name": "Delay"
+            },
+            "BVarIndex": 0
+        },
+        {
+            "destination": {
+                "name": "_DelaySamplesU"
+            },
+            "AVar": {
+                "name": "_DelaySamplesF"
+            },
+            "op": "Noop"
+        },
+        {
+            "destination": {
+                "name": "_DelaySamplesU"
+            },
+            "AVar": {
+                "name": "_DelaySamplesU"
+            },
+            "BLiteral": "1"
+        },
+        {
+            "destination": {
+                "name": "DelayClock"
+            },
+            "AVar": {
+                "name": "DelayClock"
+            },
+            "BVar": {
+                "name": "AudioOutSampleWindowCount"
+            },
+            "setBefore": false
+        },
+        {
+            "destination": {
+                "name": "DelayClock"
+            },
+            "AVar": {
+                "name": "DelayClock"
+            },
+            "op": "Modulo",
+            "BVar": {
+                "name": "_DelaySamplesU"
+            },
+            "setBefore": false
+        }
+    ]
+}

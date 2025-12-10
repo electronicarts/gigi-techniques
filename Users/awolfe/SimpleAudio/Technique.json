@@ -1,0 +1,10 @@
+{
+    "Title":"SimpleAudio",
+    "Description":"A simple audio output demo, playing a sine wave of user specifiable frequency and volume.",
+    "Author":"Demofox",
+    "Tags":"audio",
+    "Technique": "SimpleAudio.gg",
+    "Screenshot":"Screenshot.png",
+    "License":"LICENSE.txt",
+    "GigiVersion":"1.01",
+}

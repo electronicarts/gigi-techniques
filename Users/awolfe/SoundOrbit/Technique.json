@@ -1,0 +1,10 @@
+{
+    "Title":"SoundOrbit",
+    "Description":"A simple stereo audio effect.",
+    "Author":"Demofox",
+    "Tags":"audio",
+    "Technique": "SoundOrbit.gg",
+    "Screenshot":"Screenshot.png",
+    "License":"LICENSE.txt",
+    "GigiVersion":"1.01",
+}

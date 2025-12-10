@@ -1,0 +1,115 @@
+{
+    "$schema": "gigischema.json",
+    "version": "1.01",
+    "variables": [
+        {
+            "name": "Tint",
+            "type": "Float3",
+            "dflt": "1, 0.8, 0.2",
+            "visibility": "User",
+            "UISettings": {
+                "UIHint": "Color"
+            }
+        },
+        {
+            "name": "OffsetR",
+            "type": "Int2",
+            "dflt": "-5,0,0",
+            "visibility": "User"
+        },
+        {
+            "name": "OffsetG",
+            "type": "Int2",
+            "dflt": "0,0,0",
+            "visibility": "User"
+        },
+        {
+            "name": "OffsetB",
+            "type": "Int2",
+            "dflt": "5,0,0",
+            "visibility": "User"
+        }
+    ],
+    "shaders": [
+        {
+            "name": "DistortVideo",
+            "fileName": "DistortVideoCS.hlsl",
+            "resources": [
+                {
+                    "name": "WebCam",
+                    "access": "SRV",
+                    "type": "Texture"
+                },
+                {
+                    "name": "Output",
+                    "access": "UAV",
+                    "type": "Texture"
+                }
+            ]
+        }
+    ],
+    "nodes": [
+        {
+            "resourceTexture": {
+                "name": "WebCam",
+                "editorPos": [
+                    -37.0,
+                    -14.0
+                ],
+                "visibility": "Imported"
+            }
+        },
+        {
+            "resourceTexture": {
+                "name": "Output",
+                "editorPos": [
+                    -37.0,
+                    50.0
+                ],
+                "format": {
+                    "node": {
+                        "name": "WebCam"
+                    }
+                },
+                "size": {
+                    "node": {
+                        "name": "WebCam"
+                    }
+                }
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "DistortVideo",
+                "editorPos": [
+                    101.0,
+                    2.0
+                ],
+                "linkProperties": [
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "WebCam",
+                        "dstNode": "WebCam",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "Output",
+                        "dstNode": "Output",
+                        "dstPin": "resource"
+                    }
+                ],
+                "shader": {
+                    "name": "DistortVideo"
+                },
+                "dispatchSize": {
+                    "node": {
+                        "name": "Output"
+                    }
+                }
+            }
+        }
+    ]
+}

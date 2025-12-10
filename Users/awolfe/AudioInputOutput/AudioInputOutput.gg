@@ -1,0 +1,635 @@
+{
+    "$schema": "gigischema.json",
+    "version": "1.01",
+    "variables": [
+        {
+            "name": "OrbitHz",
+            "comment": "How many times the speaker orbits per second",
+            "type": "Float",
+            "dflt": "1.0f",
+            "visibility": "User"
+        },
+        {
+            "name": "AudioStereo",
+            "type": "Bool"
+        },
+        {
+            "name": "AudioSampleRate",
+            "type": "Uint"
+        },
+        {
+            "name": "AudioOutSampleWindowCount",
+            "type": "Uint"
+        },
+        {
+            "name": "AudioInSampleWindowCount",
+            "type": "Uint"
+        },
+        {
+            "name": "CircularBufferSizeFloats",
+            "comment": "Total size of the buffer, in floats",
+            "type": "Uint",
+            "dflt": "0"
+        },
+        {
+            "name": "CircularBufferSizeSamples",
+            "comment": "Total size of the buffer, in floats",
+            "type": "Uint",
+            "dflt": "0"
+        },
+        {
+            "name": "CircularBufferWritePos",
+            "comment": "The write position, in samples",
+            "type": "Uint",
+            "dflt": "0"
+        },
+        {
+            "name": "CircularBufferCount",
+            "comment": "How many items it contains, in samples",
+            "type": "Uint",
+            "dflt": "0"
+        },
+        {
+            "name": "SamplesAvailableRead",
+            "comment": "How many samples are available to be read from the circular buffer this frame",
+            "type": "Uint"
+        },
+        {
+            "name": "SamplesAvailableWrite",
+            "comment": "How many samples are available to be written to the circular buffer this frame",
+            "type": "Uint"
+        },
+        {
+            "name": "SamplesActuallyRead",
+            "comment": "How many samples were actually read from the circular buffer this frame",
+            "type": "Uint"
+        },
+        {
+            "name": "SamplesActuallyWritten",
+            "comment": "How many samples were actually written to the circular buffer this frame",
+            "type": "Uint"
+        },
+        {
+            "name": "SampleInputSum",
+            "type": "Uint",
+            "transient": true
+        },
+        {
+            "name": "SampleOutputSum",
+            "type": "Uint",
+            "transient": true
+        },
+        {
+            "name": "SampleTimeSum",
+            "type": "Float",
+            "transient": true
+        },
+        {
+            "name": "iTimeDelta",
+            "type": "Float",
+            "transient": true
+        },
+        {
+            "name": "SampleInputSumF",
+            "type": "Float",
+            "transient": true
+        },
+        {
+            "name": "SampleOutputSumF",
+            "type": "Float",
+            "transient": true
+        },
+        {
+            "name": "ActualInputSampleRate",
+            "type": "Float",
+            "visibility": "User",
+            "transient": true,
+            "UIGroup": "Measured Sample Rates"
+        },
+        {
+            "name": "ActualOutputSampleRate",
+            "type": "Float",
+            "visibility": "User",
+            "transient": true,
+            "UIGroup": "Measured Sample Rates"
+        },
+        {
+            "name": "Reset",
+            "type": "Bool",
+            "visibility": "User",
+            "transient": true,
+            "UISettings": {
+                "UIHint": "Button"
+            },
+            "UIGroup": "Measured Sample Rates"
+        },
+        {
+            "name": "AudioClockMod1Sec_Out",
+            "type": "Uint"
+        }
+    ],
+    "shaders": [
+        {
+            "name": "ReadInputCS",
+            "fileName": "ReadInputCS.hlsl",
+            "NumThreads": [
+                64,
+                1,
+                1
+            ],
+            "resources": [
+                {
+                    "name": "AudioInput",
+                    "access": "SRV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "type": "Float"
+                    }
+                },
+                {
+                    "name": "CircularBuffer",
+                    "access": "UAV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "type": "Float"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "WriteOutputCS",
+            "fileName": "WriteOutputCS.hlsl",
+            "NumThreads": [
+                64,
+                1,
+                1
+            ],
+            "resources": [
+                {
+                    "name": "CircularBuffer",
+                    "access": "SRV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "type": "Float"
+                    }
+                },
+                {
+                    "name": "AudioOutput",
+                    "access": "UAV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "type": "Float"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "OutputEffectCS",
+            "fileName": "OutputEffectCS.hlsl",
+            "NumThreads": [
+                64,
+                1,
+                1
+            ],
+            "resources": [
+                {
+                    "name": "AudioOutput",
+                    "access": "UAV",
+                    "type": "Buffer",
+                    "buffer": {
+                        "type": "Float"
+                    }
+                }
+            ]
+        }
+    ],
+    "nodes": [
+        {
+            "resourceBuffer": {
+                "name": "AudioInput",
+                "editorPos": [
+                    -21.0,
+                    -62.0
+                ],
+                "transient": false,
+                "visibility": "Imported"
+            }
+        },
+        {
+            "resourceBuffer": {
+                "name": "AudioOutput",
+                "editorPos": [
+                    152.0,
+                    34.0
+                ],
+                "transient": false,
+                "visibility": "Imported"
+            }
+        },
+        {
+            "resourceBuffer": {
+                "name": "CircularBuffer",
+                "editorPos": [
+                    -34.0,
+                    2.0
+                ],
+                "transient": false,
+                "format": {
+                    "type": "Float"
+                },
+                "count": {
+                    "variable": {
+                        "name": "CircularBufferSizeFloats"
+                    }
+                }
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "ReadInput",
+                "editorPos": [
+                    111.0,
+                    -49.0
+                ],
+                "condition": {
+                    "variable1": "SamplesActuallyWritten",
+                    "comparison": "GT",
+                    "value2": "0"
+                },
+                "linkProperties": [
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "AudioInput",
+                        "dstNode": "AudioInput",
+                        "dstPin": "resource"
+                    },
+                    {
+                        "srcPin": "CircularBuffer",
+                        "dstNode": "CircularBuffer",
+                        "dstPin": "resource"
+                    }
+                ],
+                "shader": {
+                    "name": "ReadInputCS"
+                },
+                "dispatchSize": {
+                    "variable": {
+                        "name": "SamplesActuallyWritten"
+                    }
+                }
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "WriteOutput",
+                "editorPos": [
+                    297.0,
+                    -49.0
+                ],
+                "condition": {
+                    "variable1": "SamplesActuallyRead",
+                    "comparison": "GT",
+                    "value2": "0"
+                },
+                "linkProperties": [
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "CircularBuffer",
+                        "dstNode": "ReadInput",
+                        "dstPin": "CircularBuffer"
+                    },
+                    {
+                        "srcPin": "AudioOutput",
+                        "dstNode": "AudioOutput",
+                        "dstPin": "resource"
+                    }
+                ],
+                "shader": {
+                    "name": "WriteOutputCS"
+                },
+                "dispatchSize": {
+                    "variable": {
+                        "name": "SamplesActuallyRead"
+                    }
+                }
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "OutputEffect",
+                "editorPos": [
+                    473.0,
+                    -46.0
+                ],
+                "condition": {
+                    "variable1": "SamplesActuallyRead",
+                    "comparison": "GT",
+                    "value2": "0"
+                },
+                "linkProperties": [
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "AudioOutput",
+                        "dstNode": "WriteOutput",
+                        "dstPin": "AudioOutput"
+                    }
+                ],
+                "shader": {
+                    "name": "OutputEffectCS"
+                },
+                "dispatchSize": {
+                    "variable": {
+                        "name": "SamplesActuallyRead"
+                    }
+                }
+            }
+        }
+    ],
+    "setVars": [
+        {
+            "destination": {
+                "name": "CircularBufferSizeSamples"
+            },
+            "AVar": {
+                "name": "AudioSampleRate"
+            },
+            "op": "Divide",
+            "BLiteral": "4",
+            "comment": "===== [Pre] Calculate CircularBufferSize ====="
+        },
+        {
+            "destination": {
+                "name": "CircularBufferSizeFloats"
+            },
+            "AVar": {
+                "name": "CircularBufferSizeSamples"
+            },
+            "op": "Noop",
+            "BLiteral": "2"
+        },
+        {
+            "destination": {
+                "name": "CircularBufferSizeFloats"
+            },
+            "AVar": {
+                "name": "CircularBufferSizeFloats"
+            },
+            "op": "Multiply",
+            "BLiteral": "2",
+            "condition": {
+                "variable1": "AudioStereo",
+                "comparison": "IsTrue"
+            }
+        },
+        {
+            "destination": {
+                "name": "SamplesAvailableRead"
+            },
+            "AVar": {
+                "name": "CircularBufferCount"
+            },
+            "op": "Noop",
+            "comment": "===== [Pre] Calculate Available Samples ====="
+        },
+        {
+            "destination": {
+                "name": "SamplesAvailableWrite"
+            },
+            "AVar": {
+                "name": "CircularBufferSizeSamples"
+            },
+            "op": "Subtract",
+            "BVar": {
+                "name": "CircularBufferCount"
+            }
+        },
+        {
+            "destination": {
+                "name": "SamplesActuallyWritten"
+            },
+            "AVar": {
+                "name": "SamplesAvailableWrite"
+            },
+            "op": "Minimum",
+            "BVar": {
+                "name": "AudioInSampleWindowCount"
+            }
+        },
+        {
+            "destination": {
+                "name": "SamplesActuallyRead"
+            },
+            "AVar": {
+                "name": "SamplesAvailableRead"
+            },
+            "op": "Minimum",
+            "BVar": {
+                "name": "AudioOutSampleWindowCount"
+            }
+        },
+        {
+            "destination": {
+                "name": "CircularBufferCount"
+            },
+            "AVar": {
+                "name": "CircularBufferCount"
+            },
+            "BVar": {
+                "name": "SamplesActuallyWritten"
+            },
+            "setBefore": false,
+            "comment": "===== [Post] Update CircularBuffer - Input ====="
+        },
+        {
+            "destination": {
+                "name": "CircularBufferWritePos"
+            },
+            "AVar": {
+                "name": "CircularBufferWritePos"
+            },
+            "BVar": {
+                "name": "SamplesActuallyWritten"
+            },
+            "setBefore": false
+        },
+        {
+            "destination": {
+                "name": "CircularBufferWritePos"
+            },
+            "AVar": {
+                "name": "CircularBufferWritePos"
+            },
+            "op": "Modulo",
+            "BVar": {
+                "name": "CircularBufferSizeSamples"
+            }
+        },
+        {
+            "destination": {
+                "name": "CircularBufferCount"
+            },
+            "AVar": {
+                "name": "CircularBufferCount"
+            },
+            "op": "Subtract",
+            "BVar": {
+                "name": "SamplesActuallyRead"
+            },
+            "setBefore": false,
+            "comment": "===== [Post] Update CircularBuffer - Output ====="
+        },
+        {
+            "destination": {
+                "name": "SampleInputSum"
+            },
+            "AVar": {
+                "name": "SampleInputSum"
+            },
+            "BVar": {
+                "name": "AudioInSampleWindowCount"
+            },
+            "setBefore": false,
+            "comment": "===== [Post] Calculate Actual Sample Rate ====="
+        },
+        {
+            "destination": {
+                "name": "SampleInputSumF"
+            },
+            "AVar": {
+                "name": "SampleInputSum"
+            },
+            "op": "Noop",
+            "setBefore": false
+        },
+        {
+            "destination": {
+                "name": "SampleOutputSum"
+            },
+            "AVar": {
+                "name": "SampleOutputSum"
+            },
+            "BVar": {
+                "name": "AudioOutSampleWindowCount"
+            },
+            "setBefore": false
+        },
+        {
+            "destination": {
+                "name": "SampleOutputSumF"
+            },
+            "AVar": {
+                "name": "SampleOutputSum"
+            },
+            "op": "Noop",
+            "setBefore": false
+        },
+        {
+            "destination": {
+                "name": "SampleTimeSum"
+            },
+            "AVar": {
+                "name": "SampleTimeSum"
+            },
+            "BVar": {
+                "name": "iTimeDelta"
+            },
+            "setBefore": false
+        },
+        {
+            "destination": {
+                "name": "ActualInputSampleRate"
+            },
+            "AVar": {
+                "name": "SampleInputSumF"
+            },
+            "op": "Divide",
+            "BVar": {
+                "name": "SampleTimeSum"
+            },
+            "setBefore": false
+        },
+        {
+            "destination": {
+                "name": "ActualOutputSampleRate"
+            },
+            "AVar": {
+                "name": "SampleOutputSumF"
+            },
+            "op": "Divide",
+            "BVar": {
+                "name": "SampleTimeSum"
+            },
+            "setBefore": false
+        },
+        {
+            "destination": {
+                "name": "SampleInputSum"
+            },
+            "ALiteral": "0",
+            "op": "Noop",
+            "setBefore": false,
+            "condition": {
+                "variable1": "Reset",
+                "comparison": "IsTrue"
+            }
+        },
+        {
+            "destination": {
+                "name": "SampleOutputSum"
+            },
+            "ALiteral": "0",
+            "op": "Noop",
+            "setBefore": false,
+            "condition": {
+                "variable1": "Reset",
+                "comparison": "IsTrue"
+            }
+        },
+        {
+            "destination": {
+                "name": "SampleTimeSum"
+            },
+            "ALiteral": "0",
+            "op": "Noop",
+            "setBefore": false,
+            "condition": {
+                "variable1": "Reset",
+                "comparison": "IsTrue"
+            }
+        },
+        {
+            "destination": {
+                "name": "AudioClockMod1Sec_Out"
+            },
+            "AVar": {
+                "name": "AudioClockMod1Sec_Out"
+            },
+            "BVar": {
+                "name": "AudioOutSampleWindowCount"
+            },
+            "setBefore": false,
+            "comment": "===== [Post] Update AudioClockMod1Sec_Out  ====="
+        },
+        {
+            "destination": {
+                "name": "AudioClockMod1Sec_Out"
+            },
+            "AVar": {
+                "name": "AudioClockMod1Sec_Out"
+            },
+            "op": "Modulo",
+            "BVar": {
+                "name": "AudioSampleRate"
+            },
+            "setBefore": false
+        }
+    ]
+}
