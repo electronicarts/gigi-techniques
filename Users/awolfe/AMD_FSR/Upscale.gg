@@ -338,6 +338,10 @@
             "name": "RenderSizeFloat",
             "type": "Float2",
             "dflt": "1.000000, 1.000000"
+        },
+        {
+            "name": "iFrame",
+            "type": "Int"
         }
     ],
     "shaders": [
@@ -391,6 +395,39 @@
                     "type": "Texture"
                 }
             ],
+            "samplers": [
+                {
+                    "name": "linearWrapSampler"
+                }
+            ]
+        },
+        {
+            "name": "RenderUI",
+            "fileName": "ui.hlsl",
+            "resources": [
+                {
+                    "name": "Color",
+                    "access": "UAV",
+                    "type": "Texture"
+                }
+            ],
+            "samplers": [
+                {
+                    "name": "linearWrapSampler"
+                }
+            ]
+        },
+        {
+            "name": "VSScrollingText",
+            "fileName": "vsScrolling.hlsl",
+            "type": "Vertex",
+            "entryPoint": "vsmain"
+        },
+        {
+            "name": "PSScrollingText",
+            "fileName": "psScrolling.hlsl",
+            "type": "Pixel",
+            "entryPoint": "psmain",
             "samplers": [
                 {
                     "name": "linearWrapSampler"
@@ -682,7 +719,7 @@
             "resourceTexture": {
                 "name": "Color",
                 "editorPos": [
-                    -568.0,
+                    -760.0,
                     274.0
                 ],
                 "format": {
@@ -699,7 +736,7 @@
             "resourceTexture": {
                 "name": "Depth",
                 "editorPos": [
-                    -568.0,
+                    -760.0,
                     210.0
                 ],
                 "format": {
@@ -716,7 +753,7 @@
             "resourceTexture": {
                 "name": "Motion Vectors",
                 "editorPos": [
-                    -580.0,
+                    -772.0,
                     402.0
                 ],
                 "format": {
@@ -750,7 +787,7 @@
             "actionDrawCall": {
                 "name": "Opaue",
                 "editorPos": [
-                    -350.0,
+                    -542.0,
                     182.0
                 ],
                 "linkProperties": [
@@ -842,7 +879,7 @@
             "resourceTexture": {
                 "name": "LinearDepth",
                 "editorPos": [
-                    -568.0,
+                    -760.0,
                     338.0
                 ],
                 "format": {
@@ -859,7 +896,7 @@
             "resourceBuffer": {
                 "name": "vertexBuffer",
                 "editorPos": [
-                    -571.0,
+                    -763.0,
                     162.0
                 ],
                 "visibility": "Imported"
@@ -927,20 +964,20 @@
                 ],
                 "frontIsCounterClockwise": false,
                 "vertexBuffer": {
-                    "node": "Opaue",
-                    "pin": "vertexBuffer"
+                    "node": "Node 3",
+                    "pin": "Pin"
                 },
                 "colorTargets": [
                     {
-                        "node": "Opaue",
+                        "node": "ScrollingText",
                         "pin": "colorTarget0"
                     },
                     {
-                        "node": "Opaue",
+                        "node": "ScrollingText",
                         "pin": "colorTarget1"
                     },
                     {
-                        "node": "Opaue",
+                        "node": "ScrollingText",
                         "pin": "colorTarget2"
                     },
                     {},
@@ -950,7 +987,7 @@
                     {}
                 ],
                 "depthTarget": {
-                    "node": "Opaue",
+                    "node": "ScrollingText",
                     "pin": "depthTarget"
                 }
             }
@@ -1075,7 +1112,7 @@
             "reroute": {
                 "name": "Node 1",
                 "editorPos": [
-                    -133.0,
+                    -123.0,
                     421.0
                 ],
                 "linkProperties": [
@@ -1084,7 +1121,7 @@
                 "connections": [
                     {
                         "srcPin": "Pin",
-                        "dstNode": "Opaue",
+                        "dstNode": "ScrollingText",
                         "dstPin": "colorTarget0"
                     }
                 ]
@@ -1104,6 +1141,187 @@
                     "node": {
                         "name": "Color"
                     }
+                }
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "RenderUI",
+                "editorPos": [
+                    949.0,
+                    290.0
+                ],
+                "linkProperties": [
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Color",
+                        "dstNode": "Copy No HUD",
+                        "dstPin": "source"
+                    }
+                ],
+                "shader": {
+                    "name": "RenderUI"
+                },
+                "dispatchSize": {
+                    "node": {
+                        "name": "Output SDR"
+                    }
+                }
+            }
+        },
+        {
+            "actionDrawCall": {
+                "name": "ScrollingText",
+                "editorPos": [
+                    -334.0,
+                    182.0
+                ],
+                "linkProperties": [
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {}
+                ],
+                "vertexShader": {
+                    "name": "VSScrollingText"
+                },
+                "pixelShader": {
+                    "name": "PSScrollingText"
+                },
+                "countPerInstance": 6,
+                "instanceCount": 2,
+                "depthTest": "Greater",
+                "colorTargetSettings": [
+                    {
+                        "writeChannels": [
+                            true,
+                            true,
+                            true,
+                            false
+                        ]
+                    },
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {}
+                ],
+                "defines": [
+                    {
+                        "name": "OPAQUE_PASS",
+                        "value": "1"
+                    }
+                ],
+                "frontIsCounterClockwise": false,
+                "colorTargets": [
+                    {
+                        "node": "Opaue",
+                        "pin": "colorTarget0"
+                    },
+                    {
+                        "node": "Opaue",
+                        "pin": "colorTarget1"
+                    },
+                    {
+                        "node": "Opaue",
+                        "pin": "colorTarget2"
+                    },
+                    {},
+                    {},
+                    {},
+                    {},
+                    {}
+                ],
+                "depthTarget": {
+                    "node": "Opaue",
+                    "pin": "depthTarget"
+                }
+            }
+        },
+        {
+            "reroute": {
+                "name": "Node 2",
+                "editorPos": [
+                    -325.0,
+                    133.0
+                ],
+                "linkProperties": [
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Pin",
+                        "dstNode": "Opaue",
+                        "dstPin": "vertexBuffer"
+                    }
+                ]
+            }
+        },
+        {
+            "reroute": {
+                "name": "Node 3",
+                "editorPos": [
+                    -229.0,
+                    133.0
+                ],
+                "linkProperties": [
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Pin",
+                        "dstNode": "Node 2",
+                        "dstPin": "Pin"
+                    }
+                ]
+            }
+        },
+        {
+            "resourceTexture": {
+                "name": "Output SDR No HUD",
+                "editorPos": [
+                    655.0,
+                    370.0
+                ],
+                "format": {
+                    "node": {
+                        "name": "Output SDR"
+                    }
+                },
+                "size": {
+                    "node": {
+                        "name": "Output SDR"
+                    }
+                }
+            }
+        },
+        {
+            "actionCopyResource": {
+                "name": "Copy No HUD",
+                "editorPos": [
+                    805.0,
+                    271.0
+                ],
+                "linkProperties": [
+                    {},
+                    {}
+                ],
+                "source": {
+                    "node": "Tonemap",
+                    "pin": "SDR"
+                },
+                "dest": {
+                    "node": "Output SDR No HUD",
+                    "pin": "resource"
                 }
             }
         }
