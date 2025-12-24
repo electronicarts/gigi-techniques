@@ -1,0 +1,11 @@
+{
+    "Title":"Stochastic Transparency",
+    "Description":"Stochastic transparency playground",
+    "Author":"Alan Wolfe",
+    "Tags":"noise,transparency",
+    "Technique": "Transparency.gg",
+    "Website": "",
+    "Screenshot":"Screenshot.png",
+    "License":"LICENSE.txt",
+    "GigiVersion":"1.01",
+}

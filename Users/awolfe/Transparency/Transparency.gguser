@@ -1,0 +1,51 @@
+{
+    "version": "2.0",
+    "systemVars": {
+        "iResolution_textureName": "Color",
+        "camera": {
+            "reverseZInfiniteDepth": true,
+            "startingCameraPos": [
+                -0.5981335043907166,
+                0.8979684710502625,
+                10.77202033996582
+            ],
+            "startingCameraAltitudeAzimuth": [
+                -0.04994247108697891,
+                3.4665629863739015
+            ]
+        },
+        "ProjMtx_textureName": "Color"
+    },
+    "snapshot": {
+        "resourceViewNodeIndex": 7,
+        "resourceViewResourceIndex": 3,
+        "cameraPos": [
+            13.413955688476563,
+            1.375411868095398,
+            4.402461528778076
+        ],
+        "cameraAltitudeAzimuth": [
+            -0.030597766861319543,
+            2.057478427886963
+        ],
+        "importedResources": [
+            {
+                "nodeName": "BunnyTex",
+                "texture": {
+                    "fileName": "grass.png",
+                    "makeMips": true,
+                    "binaryFormat": "Any"
+                }
+            },
+            {
+                "nodeName": "VertexBuffer",
+                "isATexture": false,
+                "buffer": {
+                    "fileName": "bunny_old.obj",
+                    "structIndex": 0,
+                    "BLASOpaque": true
+                }
+            }
+        ]
+    }
+}

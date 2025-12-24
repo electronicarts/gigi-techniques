@@ -1,0 +1,555 @@
+{
+    "$schema": "gigischema.json",
+    "version": "1.01",
+    "variables": [
+        {
+            "name": "TransparencyMode",
+            "type": "Int",
+            "visibility": "User",
+            "Enum": "TransparencyModes",
+            "onUserChange": {
+                "name": "ParamChanged"
+            }
+        },
+        {
+            "name": "AnimateNoise",
+            "type": "Bool",
+            "dflt": "true",
+            "visibility": "User",
+            "onUserChange": {
+                "name": "ParamChanged"
+            }
+        },
+        {
+            "name": "InstanceNoise",
+            "comment": "offset noise pattern for each instance",
+            "type": "Bool",
+            "visibility": "User",
+            "onUserChange": {
+                "name": "ParamChanged"
+            }
+        },
+        {
+            "name": "Alpha1",
+            "type": "Float",
+            "dflt": "1.0",
+            "visibility": "User",
+            "onUserChange": {
+                "name": "ParamChanged"
+            },
+            "UISettings": {
+                "UIHint": "Slider",
+                "min": "0",
+                "max": "1"
+            }
+        },
+        {
+            "name": "Alpha2",
+            "type": "Float",
+            "dflt": "0.8",
+            "visibility": "User",
+            "onUserChange": {
+                "name": "ParamChanged"
+            },
+            "UISettings": {
+                "UIHint": "Slider",
+                "min": "0",
+                "max": "1"
+            }
+        },
+        {
+            "name": "Alpha3",
+            "type": "Float",
+            "dflt": "0.6",
+            "visibility": "User",
+            "onUserChange": {
+                "name": "ParamChanged"
+            },
+            "UISettings": {
+                "UIHint": "Slider",
+                "min": "0",
+                "max": "1"
+            }
+        },
+        {
+            "name": "Alpha4",
+            "type": "Float",
+            "dflt": "0.4",
+            "visibility": "User",
+            "onUserChange": {
+                "name": "ParamChanged"
+            },
+            "UISettings": {
+                "UIHint": "Slider",
+                "min": "0",
+                "max": "1"
+            }
+        },
+        {
+            "name": "Alpha5",
+            "type": "Float",
+            "dflt": "0.2",
+            "visibility": "User",
+            "onUserChange": {
+                "name": "ParamChanged"
+            },
+            "UISettings": {
+                "UIHint": "Slider",
+                "min": "0",
+                "max": "1"
+            }
+        },
+        {
+            "name": "ColorMode",
+            "type": "Int",
+            "visibility": "User",
+            "Enum": "ColorModes",
+            "onUserChange": {
+                "name": "ParamChanged"
+            }
+        },
+        {
+            "name": "SolidColor",
+            "type": "Float3",
+            "dflt": "0.75, 0.25, 0.25",
+            "visibility": "User",
+            "onUserChange": {
+                "name": "ParamChanged"
+            },
+            "UISettings": {
+                "UIHint": "Color"
+            }
+        },
+        {
+            "name": "TemporalMode",
+            "type": "Int",
+            "visibility": "User",
+            "Enum": "TemporalModes",
+            "onUserChange": {
+                "name": "ParamChanged"
+            }
+        },
+        {
+            "name": "EMAAlpha",
+            "type": "Float",
+            "dflt": "0.1",
+            "visibility": "User",
+            "onUserChange": {
+                "name": "ParamChanged"
+            },
+            "UISettings": {
+                "UIHint": "Slider",
+                "min": "0",
+                "max": "1"
+            }
+        },
+        {
+            "name": "Reset Temporal",
+            "type": "Bool",
+            "visibility": "User",
+            "UISettings": {
+                "UIHint": "Button"
+            }
+        },
+        {
+            "name": "RenderSize",
+            "type": "Uint2",
+            "dflt": "1024, 768",
+            "visibility": "User",
+            "onUserChange": {
+                "name": "ParamChanged"
+            }
+        },
+        {
+            "name": "iFrame",
+            "type": "Int"
+        },
+        {
+            "name": "InvViewProjMtx",
+            "type": "Float4x4"
+        },
+        {
+            "name": "CameraPos",
+            "type": "Float3"
+        },
+        {
+            "name": "ViewProjMtx",
+            "type": "Float4x4"
+        },
+        {
+            "name": "CameraChanged",
+            "type": "Bool"
+        },
+        {
+            "name": "TemporalModeLastFrame",
+            "type": "Int",
+            "Enum": "TemporalModes"
+        },
+        {
+            "name": "ParamChanged",
+            "type": "Bool"
+        }
+    ],
+    "shaders": [
+        {
+            "name": "SkyboxCS",
+            "fileName": "SkyboxCS.hlsl",
+            "resources": [
+                {
+                    "name": "Color",
+                    "access": "UAV",
+                    "type": "Texture"
+                }
+            ],
+            "samplers": [
+                {
+                    "name": "texSampler"
+                }
+            ]
+        },
+        {
+            "name": "BunnyVS",
+            "fileName": "BunnyVS.hlsl",
+            "type": "Vertex"
+        },
+        {
+            "name": "BunnyPS",
+            "fileName": "BunnyPS.hlsl",
+            "type": "Pixel",
+            "resources": [
+                {
+                    "name": "BunnyTex",
+                    "access": "SRV",
+                    "type": "Texture"
+                }
+            ],
+            "samplers": [
+                {
+                    "name": "texSampler"
+                }
+            ]
+        },
+        {
+            "name": "TemporalCS",
+            "fileName": "TemporalCS.hlsl",
+            "resources": [
+                {
+                    "name": "Color",
+                    "access": "UAV",
+                    "type": "Texture"
+                },
+                {
+                    "name": "Temporal",
+                    "access": "UAV",
+                    "type": "Texture"
+                }
+            ]
+        }
+    ],
+    "structs": [
+        {
+            "name": "Vertex",
+            "fields": [
+                {
+                    "name": "position",
+                    "type": "Float3",
+                    "semantic": "Position"
+                },
+                {
+                    "name": "normal",
+                    "type": "Float3",
+                    "semantic": "Normal"
+                },
+                {
+                    "name": "UV",
+                    "type": "Float2",
+                    "semantic": "UV"
+                }
+            ]
+        }
+    ],
+    "fileCopies": [
+        {
+            "fileName": "SRGB.hlsli",
+            "type": "Shader"
+        },
+        {
+            "fileName": "PCG.hlsli",
+            "type": "Shader"
+        }
+    ],
+    "nodes": [
+        {
+            "actionComputeShader": {
+                "name": "SkyboxCS",
+                "editorPos": [
+                    -11.0,
+                    -62.0
+                ],
+                "linkProperties": [
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Color",
+                        "dstNode": "Color",
+                        "dstPin": "resource"
+                    }
+                ],
+                "shader": {
+                    "name": "SkyboxCS"
+                },
+                "dispatchSize": {
+                    "node": {
+                        "name": "Color"
+                    }
+                }
+            }
+        },
+        {
+            "resourceTexture": {
+                "name": "Color",
+                "editorPos": [
+                    -149.0,
+                    -62.0
+                ],
+                "format": {
+                    "format": "RGBA8_Unorm_sRGB"
+                },
+                "size": {
+                    "variable": {
+                        "name": "RenderSize"
+                    }
+                }
+            }
+        },
+        {
+            "resourceBuffer": {
+                "name": "VertexBuffer",
+                "editorPos": [
+                    -9.0,
+                    -158.0
+                ],
+                "visibility": "Imported"
+            }
+        },
+        {
+            "actionDrawCall": {
+                "name": "DrawBunnies",
+                "editorPos": [
+                    149.0,
+                    -189.0
+                ],
+                "linkProperties": [
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "BunnyTex",
+                        "dstNode": "BunnyTex",
+                        "dstPin": "resource"
+                    }
+                ],
+                "vertexShader": {
+                    "name": "BunnyVS"
+                },
+                "pixelShader": {
+                    "name": "BunnyPS"
+                },
+                "instanceCount": 5,
+                "depthTargetClear": true,
+                "depthTest": "Greater",
+                "colorTargetSettings": [
+                    {
+                        "writeChannels": [
+                            true,
+                            true,
+                            true,
+                            false
+                        ],
+                        "enableBlending": true,
+                        "srcBlend": "SrcAlpha",
+                        "destBlend": "InvSrcAlpha"
+                    },
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {}
+                ],
+                "cullMode": "Back",
+                "frontIsCounterClockwise": false,
+                "vertexBuffer": {
+                    "node": "VertexBuffer",
+                    "pin": "resource"
+                },
+                "colorTargets": [
+                    {
+                        "node": "SkyboxCS",
+                        "pin": "Color"
+                    },
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {}
+                ],
+                "depthTarget": {
+                    "node": "Depth",
+                    "pin": "resource"
+                }
+            }
+        },
+        {
+            "resourceTexture": {
+                "name": "Depth",
+                "editorPos": [
+                    -5.0,
+                    -110.0
+                ],
+                "format": {
+                    "format": "D32_Float"
+                },
+                "size": {
+                    "variable": {
+                        "name": "RenderSize"
+                    }
+                }
+            }
+        },
+        {
+            "resourceTexture": {
+                "name": "BunnyTex",
+                "editorPos": [
+                    -5.0,
+                    -206.0
+                ],
+                "visibility": "Imported"
+            }
+        },
+        {
+            "resourceTexture": {
+                "name": "Temporal",
+                "editorPos": [
+                    219.0,
+                    2.0
+                ],
+                "transient": false,
+                "format": {
+                    "format": "RGBA32_Float"
+                },
+                "size": {
+                    "variable": {
+                        "name": "RenderSize"
+                    }
+                }
+            }
+        },
+        {
+            "actionComputeShader": {
+                "name": "TemporalCS",
+                "editorPos": [
+                    377.0,
+                    -65.0
+                ],
+                "linkProperties": [
+                    {},
+                    {}
+                ],
+                "connections": [
+                    {
+                        "srcPin": "Color",
+                        "dstNode": "DrawBunnies",
+                        "dstPin": "colorTarget0"
+                    },
+                    {
+                        "srcPin": "Temporal",
+                        "dstNode": "Temporal",
+                        "dstPin": "resource"
+                    }
+                ],
+                "shader": {
+                    "name": "TemporalCS"
+                },
+                "dispatchSize": {
+                    "node": {
+                        "name": "Color"
+                    }
+                }
+            }
+        }
+    ],
+    "enums": [
+        {
+            "name": "ColorModes",
+            "items": [
+                {
+                    "label": "Normal"
+                },
+                {
+                    "label": "UV"
+                },
+                {
+                    "label": "SolidColor"
+                },
+                {
+                    "label": "Texture"
+                }
+            ]
+        },
+        {
+            "name": "TransparencyModes",
+            "items": [
+                {
+                    "label": "Transparency"
+                },
+                {
+                    "label": "White"
+                },
+                {
+                    "label": "Blue"
+                },
+                {
+                    "label": "IGN"
+                }
+            ]
+        },
+        {
+            "name": "TemporalModes",
+            "items": [
+                {
+                    "label": "None"
+                },
+                {
+                    "label": "EMA"
+                },
+                {
+                    "label": "Integrate"
+                }
+            ]
+        }
+    ],
+    "setVars": [
+        {
+            "destination": {
+                "name": "TemporalModeLastFrame"
+            },
+            "AVar": {
+                "name": "TemporalMode"
+            },
+            "op": "Noop",
+            "setBefore": false
+        }
+    ]
+}
