@@ -161,7 +161,7 @@ float3 IBL (float3 N, float3 V, float3 R, float3 albedo, float metallic, float r
     float3 prefilteredColor = lerp(spec0, spec1, frac(specularLevel));
 
     float2 brdf = SplitSum.SampleLevel(LinearWrap, float2(max(dot(N, V), 0.0), roughness), 0).rg;
-    float3 specular = prefilteredColor * (F * brdf.x + brdf.y);
+    float3 specular = prefilteredColor * (F0 * brdf.x + brdf.y);
 
     float3 ambient    = (kD * diffuse + specular);
     return ambient;
