@@ -349,5 +349,11 @@
             "DetailsFile": "Users/awolfe/AMD_FSR_2/Technique.json",
             "ListedDate" : "2026-02-09",
         },
+        {
+            "Repo": "https://github.com/nemjit001/atmosphere-rendering",
+            "Commit": "efc0fd9b3a8a567c716ec827639b1178721d4f97",
+            "DetailsFile": "Technique.json",
+            "ListedDate" : "2026-03-30",
+        },
     ]
 }
