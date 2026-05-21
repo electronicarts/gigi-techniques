@@ -1,0 +1,35 @@
+{
+    "version": "2.0",
+    "systemVars": {
+        "iResolution_textureName": "Drawing_Canvas",
+        "iFrame_varName": ""
+    },
+    "snapshot": {
+        "resourceViewNodeIndex": 4,
+        "resourceViewResourceIndex": 16,
+        "cameraAltitudeAzimuth": [
+            -0.51500004529953,
+            5.958184242248535
+        ],
+        "importedResources": [
+            {
+                "nodeName": "Imported_Image",
+                "texture": {
+                    "fileName": "9.png",
+                    "size": [
+                        28,
+                        28,
+                        1
+                    ],
+                    "format": "R8_Unorm"
+                }
+            }
+        ],
+        "savedVariables": [
+            {
+                "name": "Clear",
+                "value": "false"
+            }
+        ]
+    }
+}

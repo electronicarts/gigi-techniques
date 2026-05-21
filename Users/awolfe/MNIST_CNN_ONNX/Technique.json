@@ -1,0 +1,11 @@
+{
+    "Title":"MNIST CNN DirectML",
+    "Description":"Recognizes what number you draw by doing convolutional neural network inference in real time, using DirectML to run an onnx graph. Includes python training scripts, see readme.txt for more information.",
+    "Author":"Demofox",
+    "Tags":"ML,inference,DirectML,ONNX",
+    "Technique": "mnist.gg",
+    "Website": "",
+    "Screenshot":"Screenshot.png",
+    "License":"LICENSE.txt",
+    "GigiVersion":"1.01",
+}

@@ -355,5 +355,11 @@
             "DetailsFile": "Technique.json",
             "ListedDate" : "2026-03-30",
         },
+        {
+            "Repo": "https://github.com/electronicarts/gigi-techniques.git",
+            "Commit": "main",
+            "DetailsFile": "Users/awolfe/MNIST_CNN_ONNX/Technique.json",
+            "ListedDate" : "2026-05-21",
+        },
     ]
 }
