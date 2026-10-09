@@ -104,6 +104,12 @@
             "ListedDate" : "2025-01-01",
         },
         {
+            "Repo": "https://github.com/Kosmokleaner/GigiRadianceCascades.git",
+            "Commit": "main",
+            "DetailsFile": "Technique.json",
+            "ListedDate" : "2026-10-09",
+        },
+        {
             "Repo": "https://github.com/electronicarts/gigi-techniques.git",
             "Commit": "main",
             "DetailsFile": "Misc/GigiJamJune2024/mpalko_SpaceBattle/Technique.json",
